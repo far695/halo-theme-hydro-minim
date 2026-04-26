@@ -1,0 +1,46 @@
+<section id="categories" class="hydro-section hydro-categories" data-categories-section>
+  <div class="hydro-section-heading">
+    <h2 class="hydro-section-title">分类</h2>
+  </div>
+
+  <div class="hydro-category-slices" th:with="categories = ${categoryFinder.listAsTree()}">
+    <a
+      class="hydro-category-slice"
+      th:each="category,stat : ${categories}"
+      th:if="${stat.index < 4}"
+      th:href="@{${category.status.permalink}}"
+    >
+      <span class="hydro-category-slice__top">
+        <small th:text="${#numbers.formatInteger(stat.index + 1, 2)}">01</small>
+        <small th:text="|${category.postCount ?: 0} 篇文章|">24 篇文章</small>
+      </span>
+      <strong th:text="${category.spec.displayName}">设计</strong>
+      <em th:text="${category.spec.description ?: '继续探索这个分类下的内容'}">视觉艺术与界面设计的探索</em>
+      <span class="hydro-category-slice__cta">
+        探索
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7"></path>
+        </svg>
+      </span>
+      <b th:text="${#numbers.formatInteger(stat.index + 1, 2)}">01</b>
+    </a>
+
+    <a class="hydro-category-slice hydro-category-slice--all" th:href="@{/archives}">
+      <span class="hydro-category-slice__top">
+        <small th:text="${#numbers.formatInteger(#lists.size(categories) + 1, 2)}">05</small>
+        <small th:text="|${posts.total ?: 0} 篇文章|">63 篇文章</small>
+      </span>
+      <strong>全部</strong>
+      <em>浏览所有文章内容</em>
+      <span class="hydro-category-slice__cta">
+        探索
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7"></path>
+        </svg>
+      </span>
+      <b th:text="${#numbers.formatInteger(#lists.size(categories) + 1, 2)}">05</b>
+    </a>
+  </div>
+
+  <div class="hydro-cursor" data-hydro-cursor>查看</div>
+</section>

@@ -1,0 +1,80 @@
+<header class="hydro-nav" data-hydro-nav th:with="menu = ${menuFinder.getPrimary()}">
+  <div class="hydro-nav__inner">
+    <a class="hydro-logo" th:href="@{/}" aria-label="Hydro-Minim">氢</a>
+
+    <nav class="hydro-nav__links" aria-label="Primary">
+      <th:block th:if="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+        <a
+          th:each="item : ${menu.menuItems}"
+          th:href="@{${item.status.href}}"
+          th:text="${item.status.displayName}"
+          th:target="${item.spec.target?.value}"
+          data-scramble
+        ></a>
+      </th:block>
+      <th:block th:unless="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+        <a href="#articles" data-scramble>文章</a>
+        <a href="#categories" data-scramble>分类</a>
+        <a href="#about" data-scramble>关于</a>
+      </th:block>
+    </nav>
+
+    <div class="hydro-nav__actions">
+      <a
+        th:if="${pluginFinder.available('PluginSearchWidget')}"
+        class="hydro-icon-button"
+        href="javascript:SearchWidget.open()"
+        aria-label="搜索"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+      </a>
+      <button
+        th:unless="${pluginFinder.available('PluginSearchWidget')}"
+        class="hydro-icon-button"
+        type="button"
+        data-hydro-search-toggle
+        aria-label="搜索"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+      </button>
+      <button class="hydro-icon-button hydro-menu-button" type="button" data-hydro-mobile-toggle aria-label="菜单">
+        <svg class="hydro-menu-open" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+        <svg class="hydro-menu-close" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hydro-search-panel" data-hydro-search-panel>
+    <form th:action="@{/search}" method="get">
+      <input name="keyword" type="search" placeholder="搜索文章..." autocomplete="off" />
+    </form>
+  </div>
+</header>
+
+<div class="hydro-mobile-menu" data-hydro-mobile-menu th:with="menu = ${menuFinder.getPrimary()}">
+  <nav aria-label="Mobile">
+    <th:block th:if="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+      <a
+        th:each="item : ${menu.menuItems}"
+        th:href="@{${item.status.href}}"
+        th:text="${item.status.displayName}"
+        th:target="${item.spec.target?.value}"
+      ></a>
+    </th:block>
+    <th:block th:unless="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+      <a href="#articles">文章</a>
+      <a href="#categories">分类</a>
+      <a href="#about">关于</a>
+    </th:block>
+  </nav>
+</div>

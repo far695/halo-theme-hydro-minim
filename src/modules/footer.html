@@ -1,0 +1,82 @@
+<footer class="hydro-footer" th:with="menu = ${menuFinder.getPrimary()}">
+  <div class="hydro-footer__marquee" aria-hidden="true">
+    <div class="hydro-marquee-track">
+      <span>氢</span>
+      <span>氢</span>
+      <span>氢</span>
+      <span>氢</span>
+    </div>
+  </div>
+
+  <div class="hydro-footer__inner">
+    <div class="hydro-footer__grid">
+      <div>
+        <a class="hydro-footer__brand" th:href="@{/}">氢</a>
+        <p th:text="${site.subtitle ?: '艺术的生活家。在结构化与自由之间，寻找设计的平衡。'}">
+          艺术的生活家。在结构化与自由之间，寻找设计的平衡。
+        </p>
+      </div>
+
+      <div>
+        <h2>导航</h2>
+        <ul>
+          <th:block th:if="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+            <li th:each="item : ${menu.menuItems}">
+              <a class="hydro-wavy-link" th:href="@{${item.status.href}}" th:target="${item.spec.target?.value}">
+                <span th:text="${item.status.displayName}">Menu</span>
+                <include src="wavy-line.html" />
+              </a>
+            </li>
+          </th:block>
+          <th:block th:unless="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+            <li>
+              <a class="hydro-wavy-link" href="#about">关于<include src="wavy-line.html" /></a>
+            </li>
+            <li>
+              <a class="hydro-wavy-link" href="#categories">分类<include src="wavy-line.html" /></a>
+            </li>
+            <li>
+              <a class="hydro-wavy-link" th:href="@{/archives}">归档<include src="wavy-line.html" /></a>
+            </li>
+            <li>
+              <a class="hydro-wavy-link" th:href="@{/rss.xml}">RSS<include src="wavy-line.html" /></a>
+            </li>
+          </th:block>
+        </ul>
+      </div>
+
+      <div>
+        <h2>社交</h2>
+        <ul>
+          <li th:if="${not #strings.isEmpty(theme.config.social.twitter)}">
+            <a class="hydro-wavy-link" th:href="${theme.config.social.twitter}" target="_blank" rel="noreferrer">
+              Twitter<include src="wavy-line.html" />
+            </a>
+          </li>
+          <li th:if="${not #strings.isEmpty(theme.config.social.dribbble)}">
+            <a class="hydro-wavy-link" th:href="${theme.config.social.dribbble}" target="_blank" rel="noreferrer">
+              Dribbble<include src="wavy-line.html" />
+            </a>
+          </li>
+          <li th:if="${not #strings.isEmpty(theme.config.social.github)}">
+            <a class="hydro-wavy-link" th:href="${theme.config.social.github}" target="_blank" rel="noreferrer">
+              GitHub<include src="wavy-line.html" />
+            </a>
+          </li>
+          <li th:if="${not #strings.isEmpty(theme.config.social.email)}">
+            <a class="hydro-wavy-link" th:href="${theme.config.social.email}">
+              Email<include src="wavy-line.html" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hydro-footer__bar">
+      <p th:text="|© ${#dates.format(#dates.createNow(), 'yyyy')} ${site.title}. 保留所有权利.|">
+        © 2026 Hydro-Minim. 保留所有权利.
+      </p>
+      <p>用 <span>♥</span> 与氢气构建</p>
+    </div>
+  </div>
+</footer>

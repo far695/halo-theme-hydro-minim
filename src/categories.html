@@ -1,0 +1,23 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|分类 - ${site.title}|">分类</title>
+  </template>
+
+  <th:block
+    th:with="eyebrow='Hydro-Minim', title='分类', description='按主题浏览所有内容。'"
+    th:replace="~{modules/list-hero}"
+  />
+
+  <section class="hydro-list-section" th:with="categories = ${categoryFinder.listAsTree()}">
+    <div class="hydro-container">
+      <div class="hydro-taxonomy-grid" th:if="${not #lists.isEmpty(categories)}">
+        <a th:each="category : ${categories}" th:href="@{${category.status.permalink}}" class="hydro-taxonomy-card">
+          <span th:text="|${category.postCount ?: 0} 篇文章|">0 篇文章</span>
+          <strong th:text="${category.spec.displayName}">分类</strong>
+          <p th:text="${category.spec.description ?: '继续探索这个分类下的内容'}">分类描述</p>
+        </a>
+      </div>
+      <div th:if="${#lists.isEmpty(categories)}" class="hydro-empty">还没有创建分类。</div>
+    </div>
+  </section>
+</include>

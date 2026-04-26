@@ -1,0 +1,14 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${error.status} - ${site.title}|">出错了</title>
+  </template>
+
+  <section class="hydro-error">
+    <div class="hydro-container">
+      <span>Hydro-Minim</span>
+      <h1 th:text="${error.status ?: '404'}">404</h1>
+      <p th:text="${error.title ?: '页面没有找到，或它已经像氢气一样轻轻飘走。'}">页面没有找到。</p>
+      <a class="hydro-pill-link" th:href="@{/}">返回首页</a>
+    </div>
+  </section>
+</include>

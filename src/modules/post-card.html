@@ -1,0 +1,27 @@
+<article
+  th:fragment="post-card(post, index)"
+  class="hydro-list-card"
+  th:with="
+    fallbackCover=${index % 3 == 0 ? theme.config.assets.article_cover_1 : (index % 3 == 1 ? theme.config.assets.article_cover_2 : theme.config.assets.article_cover_3)},
+    cover=${#strings.isEmpty(post.spec.cover) ? fallbackCover : post.spec.cover}
+  "
+>
+  <a th:href="@{${post.status.permalink}}">
+    <div class="hydro-list-card__media">
+      <img th:src="${cover}" th:alt="${post.spec.title}" />
+    </div>
+    <div class="hydro-list-card__body">
+      <div class="hydro-list-card__meta">
+        <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+        <span th:if="${not #lists.isEmpty(post.categories)}" th:text="${post.categories[0].spec.displayName}">
+          分类
+        </span>
+      </div>
+      <h2 th:text="${post.spec.title}">文章标题</h2>
+      <p th:text="${post.status.excerpt}">文章摘要</p>
+      <div class="hydro-list-card__tags" th:if="${not #lists.isEmpty(post.tags)}">
+        <span th:each="tag : ${post.tags}" th:text="|#${tag.spec.displayName}|">#tag</span>
+      </div>
+    </div>
+  </a>
+</article>

@@ -1,0 +1,56 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${post.spec.title} - ${site.title}|">文章</title>
+  </template>
+
+  <article class="hydro-content-page">
+    <header
+      class="hydro-content-cover"
+      th:if="${not #strings.isEmpty(post.spec.cover)}"
+      th:style="|background-image: url('${post.spec.cover}')|"
+    >
+      <div>
+        <span>Post</span>
+        <h1 th:text="${post.spec.title}">文章标题</h1>
+      </div>
+    </header>
+
+    <div class="hydro-content-shell">
+      <header class="hydro-content-header">
+        <div class="hydro-content-kicker">
+          <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+          <span th:if="${not #lists.isEmpty(post.categories)}">
+            /
+            <a th:href="@{${post.categories[0].status.permalink}}" th:text="${post.categories[0].spec.displayName}"></a>
+          </span>
+        </div>
+        <h1 th:if="${#strings.isEmpty(post.spec.cover)}" th:text="${post.spec.title}">文章标题</h1>
+        <p th:text="${post.status.excerpt}">文章摘要</p>
+      </header>
+
+      <div class="hydro-prose" th:utext="${post.content.content}"></div>
+
+      <div class="hydro-content-tags" th:if="${not #lists.isEmpty(post.tags)}">
+        <a th:each="tag : ${post.tags}" th:href="@{${tag.status.permalink}}" th:text="|#${tag.spec.displayName}|"
+          >#tag</a
+        >
+      </div>
+
+      <nav class="hydro-post-nav" th:with="cursor = ${postFinder.cursor(post.metadata.name)}">
+        <a th:if="${cursor.hasPrevious()}" th:href="@{${cursor.previous.status.permalink}}">
+          <span>上一篇</span>
+          <strong th:text="${cursor.previous.spec.title}">Previous</strong>
+        </a>
+        <a th:if="${cursor.hasNext()}" th:href="@{${cursor.next.status.permalink}}">
+          <span>下一篇</span>
+          <strong th:text="${cursor.next.spec.title}">Next</strong>
+        </a>
+      </nav>
+
+      <section id="comment" class="hydro-comments" th:if="${haloCommentEnabled}">
+        <h2>评论</h2>
+        <halo:comment group="content.halo.run" kind="Post" th:attr="name=${post.metadata.name}" />
+      </section>
+    </div>
+  </article>
+</include>

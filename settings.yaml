@@ -1,0 +1,109 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: halo-theme-hydro-minim-setting
+spec:
+  forms:
+    - group: style
+      label: 样式
+      formSchema:
+        - $formkit: color
+          name: background_color
+          label: 背景颜色
+          value: "#F3F3F3"
+        - $formkit: color
+          name: accent_color
+          label: 强调色
+          value: "#FF6B6B"
+        - $formkit: checkbox
+          name: grain
+          label: 显示轻微颗粒
+          value: true
+        - $formkit: checkbox
+          name: enable_motion
+          label: 启用动效
+          value: true
+        - $formkit: checkbox
+          name: smooth_scroll
+          label: 启用平滑滚动
+          value: true
+    - group: hero
+      label: 首屏
+      formSchema:
+        - $formkit: text
+          name: label
+          label: 首屏标签
+          value: 氢视窗
+        - $formkit: text
+          name: title
+          label: 首屏标题
+          value: 探索
+        - $formkit: textarea
+          name: description
+          label: 首屏描述
+          value: 精选的想法、故事和创意，全部汇集于此。如氢气般轻快、简洁、流畅的体验。
+        - $formkit: attachment
+          name: cover
+          label: 首屏封面
+          value: /themes/halo-theme-hydro-minim/assets/images/hero-featured.jpg
+    - group: about
+      label: 关于
+      formSchema:
+        - $formkit: text
+          name: title
+          label: 主标题
+          value: 关于
+        - $formkit: text
+          name: subtitle
+          label: 副标题
+          value: 艺术的生活家
+        - $formkit: textarea
+          name: paragraph_1
+          label: 段落一
+          value: 氢风格博客诞生于对简约美学的追求。我们相信，好的设计应该像氢气一样——轻快、简洁、流畅，却蕴含着无限的可能。
+        - $formkit: textarea
+          name: paragraph_2
+          label: 段落二
+          value: 在这里，我们分享关于设计、科技与生活方式的思考。每一篇文章都是精心策划的创意表达，旨在为读者带来启发与美的享受。
+        - $formkit: textarea
+          name: paragraph_3
+          label: 段落三
+          value: 33% 的自由，66% 的内容。这是氢视窗的哲学，也是我们对内容创作的坚持——在结构化的框架中，保留艺术的呼吸空间。
+        - $formkit: text
+          name: readers
+          label: 读者展示值
+          value: 2.4k
+    - group: social
+      label: 社交
+      formSchema:
+        - $formkit: text
+          name: twitter
+          label: Twitter
+          value: "#"
+        - $formkit: text
+          name: github
+          label: GitHub
+          value: "#"
+        - $formkit: text
+          name: dribbble
+          label: Dribbble
+          value: "#"
+        - $formkit: text
+          name: email
+          label: Email
+          value: "mailto:"
+    - group: assets
+      label: 默认图片
+      formSchema:
+        - $formkit: attachment
+          name: article_cover_1
+          label: 默认文章封面 1
+          value: /themes/halo-theme-hydro-minim/assets/images/article-1.jpg
+        - $formkit: attachment
+          name: article_cover_2
+          label: 默认文章封面 2
+          value: /themes/halo-theme-hydro-minim/assets/images/article-2.jpg
+        - $formkit: attachment
+          name: article_cover_3
+          label: 默认文章封面 3
+          value: /themes/halo-theme-hydro-minim/assets/images/article-3.jpg

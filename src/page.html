@@ -1,0 +1,34 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${singlePage.spec.title} - ${site.title}|">页面</title>
+  </template>
+
+  <article class="hydro-content-page">
+    <header
+      class="hydro-content-cover"
+      th:if="${not #strings.isEmpty(singlePage.spec.cover)}"
+      th:style="|background-image: url('${singlePage.spec.cover}')|"
+    >
+      <div>
+        <span>Page</span>
+        <h1 th:text="${singlePage.spec.title}">页面标题</h1>
+      </div>
+    </header>
+
+    <div class="hydro-content-shell">
+      <header class="hydro-content-header">
+        <div class="hydro-content-kicker">
+          <time th:text="${#dates.format(singlePage.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+        </div>
+        <h1 th:if="${#strings.isEmpty(singlePage.spec.cover)}" th:text="${singlePage.spec.title}">页面标题</h1>
+      </header>
+
+      <div class="hydro-prose" th:utext="${singlePage.content.content}"></div>
+
+      <section id="comment" class="hydro-comments" th:if="${haloCommentEnabled}">
+        <h2>评论</h2>
+        <halo:comment group="content.halo.run" kind="SinglePage" th:attr="name=${singlePage.metadata.name}" />
+      </section>
+    </div>
+  </article>
+</include>

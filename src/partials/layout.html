@@ -1,0 +1,25 @@
+<!doctype html>
+<html th:lang="${#locale.toLanguageTag}" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <include src="base-head.html" />
+    <slot name="head">
+      <title th:text="${site.title}">Hydro-Minim</title>
+    </slot>
+  </head>
+  <body
+    class="hydro-page"
+    th:style="|--hydro-bg:${theme.config.style.background_color}; --hydro-coral:${theme.config.style.accent_color};|"
+    th:attr="data-smooth-scroll=${theme.config.style.smooth_scroll},data-enable-motion=${theme.config.style.enable_motion}"
+  >
+    <div th:if="${theme.config.style.grain}" class="grain-overlay" aria-hidden="true"></div>
+
+    <th:block th:replace="~{modules/header}" />
+
+    <main class="tilt-on-scroll" style="transform-style: preserve-3d">
+      <slot />
+    </main>
+
+    <th:block th:replace="~{modules/footer}" />
+    <halo:footer />
+  </body>
+</html>

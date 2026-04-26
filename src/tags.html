@@ -1,0 +1,22 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|标签 - ${site.title}|">标签</title>
+  </template>
+
+  <th:block
+    th:with="eyebrow='Hydro-Minim', title='标签', description='用关键词重新发现内容。'"
+    th:replace="~{modules/list-hero}"
+  />
+
+  <section class="hydro-list-section" th:with="tags = ${tagFinder.listAll()}">
+    <div class="hydro-container">
+      <div class="hydro-tag-cloud" th:if="${not #lists.isEmpty(tags)}">
+        <a th:each="tag : ${tags}" th:href="@{${tag.status.permalink}}">
+          <span th:text="|#${tag.spec.displayName}|">#tag</span>
+          <sup th:text="${tag.postCount ?: 0}">0</sup>
+        </a>
+      </div>
+      <div th:if="${#lists.isEmpty(tags)}" class="hydro-empty">还没有创建标签。</div>
+    </div>
+  </section>
+</include>
