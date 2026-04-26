@@ -330,7 +330,9 @@ function initScrollTilt() {
     return;
   }
 
+  const tiltTarget = ".tilt-on-scroll";
   let lastScrollY = window.scrollY;
+  let settleTimer: number | undefined;
   let ticking = false;
 
   window.addEventListener(
@@ -343,7 +345,19 @@ function initScrollTilt() {
         const currentScrollY = window.scrollY;
         const velocity = currentScrollY - lastScrollY;
         const rotateX = Math.max(-2, Math.min(2, velocity * 0.05));
-        gsap.to(".tilt-on-scroll", { duration: 0.3, ease: "power2.out", rotateX });
+        gsap.killTweensOf(tiltTarget);
+        gsap.to(tiltTarget, { duration: 0.3, ease: "power2.out", rotateX });
+        if (settleTimer) {
+          window.clearTimeout(settleTimer);
+        }
+        settleTimer = window.setTimeout(() => {
+          gsap.to(tiltTarget, {
+            clearProps: "transform",
+            duration: 0.35,
+            ease: "power2.out",
+            rotateX: 0,
+          });
+        }, 140);
         lastScrollY = currentScrollY;
         ticking = false;
       });
