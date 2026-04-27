@@ -703,25 +703,10 @@ function initBackToTop() {
   const btn = document.querySelector<HTMLButtonElement>("[data-hydro-back-to-top]");
   if (!btn) return;
 
-  let lastScrollY = window.scrollY;
-  let rafId: number | null = null;
+  const sync = () => btn.classList.toggle("is-visible", window.scrollY > 100);
 
-  const onScroll = () => {
-    if (rafId) return;
-    rafId = requestAnimationFrame(() => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY <= 100) {
-        btn.classList.remove("is-visible");
-      } else if (currentScrollY > lastScrollY) {
-        btn.classList.add("is-visible");
-      }
-      // 向上滚动但未到顶：保持当前状态
-      lastScrollY = currentScrollY;
-      rafId = null;
-    });
-  };
-
-  window.addEventListener("scroll", onScroll, { passive: true });
+  sync(); // 刷新时立即同步
+  window.addEventListener("scroll", sync, { passive: true });
 
   btn.addEventListener("click", () => {
     const lenis = (window as unknown as Record<string, unknown>).__lenis as
@@ -745,12 +730,15 @@ function initFab() {
 
   // 扇形：固定间隔 25°，以 225°（左上）为中心，向两侧展开
   const RADIUS = 80;
-  const BTN_SIZE = 40; // px，按钮直径
-  const GAP = 8; // px，按钮间最小间隙
-  // 弧长 = R × θ（弧度），要求弧长 ≥ BTN_SIZE + GAP
-  const MIN_STEP = Math.ceil(((BTN_SIZE + GAP) / RADIUS) * (180 / Math.PI)); // 转为角度
+  const BTN_SIZE = 40;
+  const GAP = 8;
+  const MIN_STEP = Math.ceil(((BTN_SIZE + GAP) / RADIUS) * (180 / Math.PI));
   const STEP = Math.max(MIN_STEP, 25);
-  const CENTER = 225;
+  const halfSpan = ((items.length - 1) / 2) * STEP;
+  // 优先约束在 180°~270° 内；总跨度超过 90° 时以 225° 为中心对称展开（逆时针偏移最小）
+  // 约束：最逆时针按钮不超正上方(270°)，即 CENTER + halfSpan ≤ 270
+  // 理想中心 225°，按需逆时针旋转（减小 CENTER）
+  const CENTER = Math.min(225, 270 - halfSpan);
 
   items.forEach((item, i) => {
     const deg = CENTER + (i - (items.length - 1) / 2) * STEP;

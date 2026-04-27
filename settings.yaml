@@ -111,13 +111,17 @@ spec:
       label: 快捷操作
       formSchema:
         - $formkit: switch
+          id: fab_enabled
+          key: fab_enabled
           name: enabled
           label: 启用快捷操作按钮
           value: true
         - $formkit: array
+          if: $get(fab_enabled).value === true
           name: items
           label: 快捷项
           value: []
+          min: 3
           max: 5
           addLabel: 添加快捷项
           itemLabels:
