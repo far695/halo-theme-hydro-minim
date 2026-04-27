@@ -206,13 +206,13 @@ function initNavigation() {
     const currentScrollY = window.scrollY;
     const deltaTime = currentTime - lastTime;
     const deltaY = Math.abs(currentScrollY - lastScrollY);
-    
+
     if (deltaTime > 0) {
       // 像素/毫秒，然后平滑处理
       const instantVelocity = deltaY / deltaTime;
       scrollVelocity = scrollVelocity * 0.6 + instantVelocity * 0.4;
     }
-    
+
     lastScrollY = currentScrollY;
     lastTime = currentTime;
   };
@@ -221,9 +221,9 @@ function initNavigation() {
     if (!nav) return;
 
     updateVelocity();
-    
+
     const shouldBePill = window.scrollY > 100;
-    
+
     // 速度越快，倍数越小；速度越慢，倍数越大
     // scrollVelocity: 0 px/ms (很慢) → 倍数 5.0
     // scrollVelocity: 2.5 px/ms (快) → 倍数 0.2
@@ -233,13 +233,13 @@ function initNavigation() {
       clearNavTimers();
       resetNavTransitionClasses();
       navMode = "pill";
-      
+
       const exitDuration = Math.round(70 * speedMultiplier);
       const enterDuration = Math.round(600 * speedMultiplier);
-      
+
       nav.style.setProperty("--nav-exit-duration", `${exitDuration}ms`);
       nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
-      
+
       nav.classList.add("is-nav-transitioning", "is-exiting-top");
       navTimers.push(
         window.setTimeout(() => {
@@ -257,13 +257,13 @@ function initNavigation() {
       clearNavTimers();
       resetNavTransitionClasses();
       navMode = "top";
-      
+
       const exitDuration = Math.round(160 * speedMultiplier);
       const enterDuration = Math.round(100 * speedMultiplier);
-      
+
       nav.style.setProperty("--nav-exit-duration", `${exitDuration}ms`);
       nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
-      
+
       nav.classList.add("is-nav-transitioning", "is-leaving-pill");
       navTimers.push(
         window.setTimeout(() => {
@@ -698,3 +698,110 @@ function initLightbox() {
 initLinkCards();
 initMomentsReveal();
 initLightbox();
+
+function initBackToTop() {
+  const btn = document.querySelector<HTMLButtonElement>("[data-hydro-back-to-top]");
+  if (!btn) return;
+
+  let lastScrollY = window.scrollY;
+  let rafId: number | null = null;
+
+  const onScroll = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 100) {
+        btn.classList.remove("is-visible");
+      } else if (currentScrollY > lastScrollY) {
+        btn.classList.add("is-visible");
+      }
+      // 向上滚动但未到顶：保持当前状态
+      lastScrollY = currentScrollY;
+      rafId = null;
+    });
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  btn.addEventListener("click", () => {
+    const lenis = (window as unknown as Record<string, unknown>).__lenis as
+      | { scrollTo?: (target: number) => void }
+      | undefined;
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(0);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+function initFab() {
+  const trigger = document.querySelector<HTMLButtonElement>("[data-hydro-fab-trigger]");
+  const menu = document.querySelector<HTMLElement>("[data-hydro-fab]");
+  if (!trigger || !menu) return;
+
+  const items = Array.from(menu.querySelectorAll<HTMLElement>(".hydro-fab-item"));
+  if (items.length === 0) return;
+
+  // 扇形：固定间隔 25°，以 225°（左上）为中心，向两侧展开
+  const RADIUS = 80;
+  const BTN_SIZE = 40; // px，按钮直径
+  const GAP = 8; // px，按钮间最小间隙
+  // 弧长 = R × θ（弧度），要求弧长 ≥ BTN_SIZE + GAP
+  const MIN_STEP = Math.ceil(((BTN_SIZE + GAP) / RADIUS) * (180 / Math.PI)); // 转为角度
+  const STEP = Math.max(MIN_STEP, 25);
+  const CENTER = 225;
+
+  items.forEach((item, i) => {
+    const deg = CENTER + (i - (items.length - 1) / 2) * STEP;
+    const rad = (deg * Math.PI) / 180;
+    item.style.setProperty("--fab-x", `${Math.round(Math.cos(rad) * RADIUS)}px`);
+    item.style.setProperty("--fab-y", `${Math.round(Math.sin(rad) * RADIUS)}px`);
+  });
+
+  let closeTimer: number | undefined;
+
+  const open = () => {
+    window.clearTimeout(closeTimer);
+    menu.classList.add("is-open");
+    trigger.setAttribute("aria-expanded", "true");
+  };
+
+  const scheduleClose = () => {
+    closeTimer = window.setTimeout(() => {
+      menu.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    }, 300);
+  };
+
+  // trigger hover
+  trigger.addEventListener("mouseenter", open);
+  trigger.addEventListener("mouseleave", scheduleClose);
+
+  // 每个 item 独立绑定，鼠标进入时取消关闭计时器
+  items.forEach((item) => {
+    item.addEventListener("mouseenter", open);
+    item.addEventListener("mouseleave", scheduleClose);
+  });
+
+  // 移动端点击
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.classList.contains("is-open")
+      ? (window.clearTimeout(closeTimer),
+        menu.classList.remove("is-open"),
+        trigger.setAttribute("aria-expanded", "false"))
+      : open();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target as Node) && e.target !== trigger) {
+      window.clearTimeout(closeTimer);
+      menu.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+initBackToTop();
+initFab();

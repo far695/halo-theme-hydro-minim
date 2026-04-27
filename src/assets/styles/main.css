@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -185,7 +183,7 @@ input {
 .hydro-nav.is-exiting-top {
   opacity: 0;
   transform: translateY(-1.25rem);
-  transition: 
+  transition:
     opacity var(--nav-exit-duration) ease,
     transform var(--nav-exit-duration) ease;
 }
@@ -2471,4 +2469,144 @@ html.lenis body {
   border-color: var(--hydro-solid);
   background: var(--hydro-solid);
   color: var(--hydro-solid-contrast);
+}
+
+/* ── FAB Group ─────────────────────────────────────────────── */
+/* ── FAB Group ─────────────────────────────────────────────── */
+.hydro-fab-group {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 共用圆形按钮基础样式 — 对齐胶囊菜单配色 */
+.hydro-back-to-top,
+.hydro-fab-trigger,
+.hydro-fab-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 5%);
+  background: rgb(var(--hydro-paper-rgb) / 80%);
+  box-shadow: 0 16px 40px rgb(var(--hydro-shadow-rgb) / 10%);
+  color: var(--hydro-solid);
+  cursor: pointer;
+  text-decoration: none;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition:
+    background 0.2s ease,
+    opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-back-to-top:hover,
+.hydro-fab-trigger:hover,
+.hydro-fab-item:hover {
+  background: rgb(var(--hydro-ink-rgb) / 5%);
+}
+
+/* SVG 图标继承颜色 */
+.hydro-back-to-top svg,
+.hydro-fab-trigger svg,
+.hydro-fab-item svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 返回顶部：向下滚动时显示 */
+.hydro-back-to-top {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+}
+
+.hydro-back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* FAB 触发按钮：展开时旋转 */
+.hydro-fab-trigger svg {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-fab-menu.is-open .hydro-fab-trigger svg {
+  transform: rotate(45deg);
+}
+
+/* FAB 扇形容器：绝对定位，以触发按钮为原点 */
+.hydro-fab-menu {
+  position: relative;
+}
+
+.hydro-fab-items {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none; /* 容器本身不响应，但子元素可以覆盖 */
+}
+
+/* 展开时容器允许子元素事件穿透 */
+.hydro-fab-menu.is-open .hydro-fab-items {
+  pointer-events: none; /* 保持容器透明，item 自己设置 auto */
+}
+
+/* 扇形展开：每个 item 绝对定位，初始收缩在原点 */
+.hydro-fab-item {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, 0) scale(0.6);
+  /* 扇形角度由 JS 通过 CSS 变量注入 */
+  transition:
+    opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.2s ease;
+}
+
+.hydro-fab-menu.is-open .hydro-fab-item {
+  opacity: 1;
+  pointer-events: auto;
+  /* translate 由 JS 根据角度和半径计算后写入 style */
+  transform: translate(var(--fab-x, 0px), var(--fab-y, 0px)) scale(1);
+}
+
+/* stagger */
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(1) {
+  transition-delay: 0ms;
+}
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(2) {
+  transition-delay: 0ms;
+}
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(3) {
+  transition-delay: 0ms;
+}
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(4) {
+  transition-delay: 0ms;
+}
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(5) {
+  transition-delay: 0ms;
+}
+.hydro-fab-menu.is-open .hydro-fab-item:nth-child(5) {
+  transition-delay: 160ms;
 }

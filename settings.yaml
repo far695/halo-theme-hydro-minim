@@ -107,6 +107,40 @@ spec:
           name: email
           label: Email
           value: "mailto:"
+    - group: fab
+      label: 快捷操作
+      formSchema:
+        - $formkit: switch
+          name: enabled
+          label: 启用快捷操作按钮
+          value: true
+        - $formkit: array
+          name: items
+          label: 快捷项
+          value: []
+          max: 5
+          addLabel: 添加快捷项
+          itemLabels:
+            - type: text
+              label: $value.label
+          children:
+            - $formkit: iconify
+              name: icon
+              label: 图标
+              format: svg
+              value-only: true
+            - $formkit: text
+              name: label
+              label: 提示文字（tooltip）
+              value: ""
+            - $formkit: text
+              name: url
+              label: 链接地址
+              value: ""
+            - $formkit: switch
+              name: new_tab
+              label: 在新标签页打开
+              value: true
     - group: assets
       label: 默认图片
       formSchema:

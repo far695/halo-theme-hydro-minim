@@ -36,7 +36,11 @@
                     th:src="${link.spec.logo}"
                     th:alt="${link.spec.displayName}"
                   />
-                  <span th:if="${#strings.isEmpty(link.spec.logo)}" th:text="${#strings.substring(link.spec.displayName,0,1)}">A</span>
+                  <span
+                    th:if="${#strings.isEmpty(link.spec.logo)}"
+                    th:text="${#strings.substring(link.spec.displayName,0,1)}"
+                    >A</span
+                  >
                 </div>
                 <svg class="hydro-link-card__icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 17 17 7M8 7h9v9"></path>
