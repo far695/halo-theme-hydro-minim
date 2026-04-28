@@ -11,6 +11,48 @@
     </div>
   </section>
 
+  <!-- 站点信息 -->
+  <section class="hydro-site-info" th:if="${not #lists.isEmpty(groups)}">
+    <div class="hydro-container">
+      <div class="hydro-site-info__card">
+        <div class="hydro-site-info__header">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+          <h2>我的站点信息</h2>
+          <span>方便你回链</span>
+        </div>
+        <div class="hydro-site-info__grid">
+          <div class="hydro-site-info__row">
+            <span class="hydro-site-info__label">站名</span>
+            <span class="hydro-site-info__value" th:text="${site.title}">站点名称</span>
+            <button class="hydro-copy-btn" data-copy th:data-copy-text="${site.title}" aria-label="复制站名">
+              <svg viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="hydro-site-info__row">
+            <span class="hydro-site-info__label">链接</span>
+            <span class="hydro-site-info__value hydro-site-info__value--mono" th:text="${site.url}"
+              >https://example.com</span
+            >
+            <button class="hydro-copy-btn" data-copy th:data-copy-text="${site.url}" aria-label="复制链接">
+              <svg viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 友链列表 -->
   <section class="hydro-links-section">
     <div class="hydro-container">
       <th:block th:if="${not #lists.isEmpty(groups)}">
@@ -19,17 +61,34 @@
             <div class="hydro-links-group__line"></div>
             <h2 th:text="${group.spec.displayName}">分组名称</h2>
             <span class="hydro-links-group__count" th:text="|${#lists.size(group.links)} 个链接|">0 个链接</span>
+            <button
+              class="hydro-links-random"
+              th:if="${#lists.size(group.links) > 1}"
+              th:attr="data-links=${#strings.arrayJoin(group.links.![spec.url], ',')}"
+              data-random-link
+              aria-label="随机访问"
+              title="随机访问"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
+                <path d="m18 2 4 4-4 4"></path>
+                <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"></path>
+                <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"></path>
+                <path d="m18 14 4 4-4 4"></path>
+              </svg>
+            </button>
           </div>
           <div class="hydro-links-grid">
             <a
               class="hydro-link-card"
-              th:each="link : ${group.links}"
+              th:each="link, linkStat : ${group.links}"
               th:href="${link.spec.url}"
               target="_blank"
               rel="noreferrer noopener"
-              data-link-card
+              th:style="|animation-delay: ${linkStat.index * 60}ms|"
             >
-              <div class="hydro-link-card__header">
+              <span class="hydro-link-card__index" th:text="${linkStat.index + 1}">1</span>
+              <div class="hydro-link-card__head">
                 <div class="hydro-link-card__avatar">
                   <img
                     th:if="${not #strings.isEmpty(link.spec.logo)}"
@@ -42,12 +101,15 @@
                     >A</span
                   >
                 </div>
-                <svg class="hydro-link-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="hydro-link-card__meta">
+                  <strong th:text="${link.spec.displayName}">站点名称</strong>
+                  <code th:text="${#strings.substringAfter(link.spec.url, '//')}">example.com</code>
+                </div>
+                <svg class="hydro-link-card__arrow" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 17 17 7M8 7h9v9"></path>
                 </svg>
               </div>
-              <div class="hydro-link-card__body">
-                <strong th:text="${link.spec.displayName}">站点名称</strong>
+              <div class="hydro-link-card__desc">
                 <p th:text="${link.spec.description}">站点描述</p>
               </div>
             </a>
@@ -59,6 +121,7 @@
     </div>
   </section>
 
+  <!-- 申请友链 -->
   <section class="hydro-links-apply" th:if="${not #strings.isEmpty(singlePage.content.content)}">
     <div class="hydro-container">
       <div class="hydro-links-apply__inner">
@@ -73,10 +136,42 @@
     </div>
   </section>
 
+  <!-- 评论 -->
   <section id="comment" class="hydro-links-comments" th:if="${haloCommentEnabled}">
     <div class="hydro-container">
       <h2>评论</h2>
       <halo:comment group="plugin.halo.run" kind="Plugin" th:attr="name=${pluginName}" />
     </div>
   </section>
+
+  <!-- 友链页交互 -->
+  <script th:inline="javascript">
+    /* 复制按钮 */
+    document.querySelectorAll("[data-copy]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var text = btn.dataset.copyText;
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(function () {
+          btn.classList.add("is-copied");
+          setTimeout(function () {
+            btn.classList.remove("is-copied");
+          }, 1500);
+        });
+      });
+    });
+
+    /* 随机访问 */
+    document.querySelectorAll("[data-random-link]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var links = (btn.dataset.links || "").split(",").filter(Boolean);
+        if (links.length === 0) return;
+        var pick = links[Math.floor(Math.random() * links.length)];
+        window.open(pick, "_blank", "noreferrer");
+      });
+    });
+  </script>
 </include>

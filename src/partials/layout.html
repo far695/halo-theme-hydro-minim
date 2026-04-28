@@ -34,7 +34,7 @@
             <a
               class="hydro-fab-item"
               th:href="${item.url}"
-              th:target="${item.new_tab ? '_blank' : '_self'}"
+              th:target="${item.new_tab == true ? '_blank' : '_self'}"
               th:attr="aria-label=${item.label},title=${item.label}"
               rel="noopener noreferrer"
             >

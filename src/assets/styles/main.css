@@ -1645,6 +1645,24 @@ html.lenis body {
     width: min(100% - 2rem, 80rem);
   }
 
+  .hydro-section {
+    padding: 6.5rem 0;
+  }
+
+  /* 移动端卡片触控反馈 */
+  .hydro-card:active,
+  .hydro-album-card:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* 移动端图片触控反馈 */
+  .hydro-photo-item:active img,
+  .hydro-moment__img-btn:active img {
+    transform: scale(1.02);
+    transition-duration: 0.1s;
+  }
+
   .hydro-nav {
     top: 0;
     right: 0;
@@ -1778,11 +1796,31 @@ html.lenis body {
   }
 
   .hydro-section {
-    padding: 5rem 0;
+    padding: 4.5rem 0;
   }
 
   .hydro-list-hero {
-    padding-top: 8rem;
+    padding-top: 7rem;
+  }
+
+  .hydro-container,
+  .hydro-section-heading,
+  .hydro-footer__inner,
+  .hydro-content-shell {
+    width: min(100% - 1.25rem, 80rem);
+  }
+
+  .hydro-section-title {
+    margin-bottom: 2.5rem;
+  }
+
+  .hydro-moment__images-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hydro-moment__images-grid.is-single {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 100%;
   }
 }
 
@@ -1790,6 +1828,129 @@ html.lenis body {
    友链页 Links
    ============================================================ */
 
+/* ── 站点信息 ─────────────────────────────────────────────── */
+.hydro-site-info {
+  padding: 0 0 4rem;
+}
+
+.hydro-site-info__card {
+  padding: 2rem 2.5rem;
+  border: 1px dashed rgb(var(--hydro-ink-rgb) / 15%);
+  border-radius: 0.75rem;
+  background: rgb(var(--hydro-paper-rgb) / 30%);
+}
+
+.hydro-site-info__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.hydro-site-info__header svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: var(--hydro-coral);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.hydro-site-info__header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.hydro-site-info__header span {
+  color: rgb(var(--hydro-ink-rgb) / 35%);
+  font-size: 0.8125rem;
+}
+
+.hydro-site-info__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hydro-site-info__row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(var(--hydro-ink-rgb) / 6%);
+}
+
+.hydro-site-info__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.hydro-site-info__row:first-child {
+  padding-top: 0;
+}
+
+.hydro-site-info__label {
+  flex-shrink: 0;
+  width: 2.5rem;
+  color: rgb(var(--hydro-ink-rgb) / 40%);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.hydro-site-info__value {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hydro-site-info__value--mono {
+  font-family: "Space Mono", monospace;
+  font-size: 0.8125rem;
+  color: var(--hydro-muted);
+}
+
+.hydro-copy-btn {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: rgb(var(--hydro-ink-rgb) / 35%);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.hydro-copy-btn:hover {
+  border-color: var(--hydro-coral);
+  color: var(--hydro-coral);
+}
+
+.hydro-copy-btn.is-copied {
+  border-color: var(--hydro-teal);
+  color: var(--hydro-teal);
+}
+
+.hydro-copy-btn svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+/* ── 友链列表 ─────────────────────────────────────────────── */
 .hydro-links-section {
   padding: 0 0 7rem;
 }
@@ -1834,81 +1995,147 @@ html.lenis body {
 }
 
 .hydro-links-group__count {
-  margin-left: auto;
   color: rgb(var(--hydro-ink-rgb) / 40%);
   font-size: 0.875rem;
   font-weight: 700;
 }
 
+.hydro-links-random {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(var(--hydro-ink-rgb) / 40%);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-links-random:hover {
+  border-color: var(--hydro-coral);
+  color: var(--hydro-coral);
+  transform: rotate(180deg);
+}
+
+.hydro-links-random svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
 .hydro-links-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
   gap: 1.25rem;
 }
 
+/* ── 友链卡 ──────────────────────────────────────────────── */
 .hydro-link-card {
   display: flex;
   flex-direction: column;
-  min-height: 10rem;
-  padding: 1.5rem;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
-  border-radius: 0.75rem;
-  background: rgb(var(--hydro-paper-rgb) / 40%);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.25rem 1.5rem 1rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 6%);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 35%);
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  opacity: 0;
+  animation: hydro-link-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition:
+    border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hydro-link-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgb(var(--hydro-ink-rgb) / 3%), transparent 50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hydro-coral), var(--hydro-teal));
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
+@keyframes hydro-link-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hydro-link-card:hover {
-  border-color: var(--hydro-solid);
-  background: rgb(var(--hydro-paper-rgb) / 70%);
-  transform: translateY(-0.25rem);
+  border-color: rgb(var(--hydro-ink-rgb) / 10%);
+  background: rgb(var(--hydro-paper-rgb) / 60%);
   box-shadow: 0 8px 24px rgb(var(--hydro-shadow-rgb) / 8%);
+  transform: translateY(-0.25rem);
 }
 
 .hydro-link-card:hover::before {
   opacity: 1;
 }
 
-.hydro-link-card__header {
+/* 序号 */
+.hydro-link-card__index {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.75rem;
+  color: rgb(var(--hydro-ink-rgb) / 10%);
+  font-family: "Space Mono", monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.hydro-link-card:hover .hydro-link-card__index {
+  color: rgb(var(--hydro-ink-rgb) / 20%);
+}
+
+/* 头部：头像 + 名称域 + 箭头 */
+.hydro-link-card__head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
+  align-items: center;
+  gap: 0.875rem;
   pointer-events: none;
 }
 
 .hydro-link-card__avatar {
   flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 0.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.375rem;
   overflow: hidden;
   border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
   display: grid;
   place-items: center;
   background: rgb(var(--hydro-ink-rgb) / 3%);
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hydro-link-card:hover .hydro-link-card__avatar {
-  transform: scale(1.08) rotate(-3deg);
+  transform: scale(1.06) rotate(-2deg);
 }
 
 .hydro-link-card__avatar img {
@@ -1917,53 +2144,87 @@ html.lenis body {
   object-fit: cover;
 }
 
-.hydro-link-card__icon {
+.hydro-link-card__meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.hydro-link-card__meta strong {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.5s ease;
+}
+
+.hydro-link-card:hover .hydro-link-card__meta strong {
+  background: linear-gradient(90deg, var(--hydro-coral), var(--hydro-teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hydro-link-card__meta code {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(var(--hydro-ink-rgb) / 30%);
+  font-family: "Space Mono", monospace;
+  font-size: 0.6875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 外链箭头 */
+.hydro-link-card__arrow {
   flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   fill: none;
-  stroke: rgb(var(--hydro-ink-rgb) / 30%);
+  stroke: rgb(var(--hydro-ink-rgb) / 0%);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
-  opacity: 0;
-  transform: translate(-0.5rem, 0.5rem);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate(-0.25rem, 0.25rem);
 }
 
-.hydro-link-card:hover .hydro-link-card__icon {
-  opacity: 1;
+.hydro-link-card:hover .hydro-link-card__arrow {
+  stroke: var(--hydro-coral);
   transform: translate(0, 0);
-  stroke: var(--hydro-solid);
 }
 
-.hydro-link-card__body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  position: relative;
-  z-index: 1;
+/* 描述：默认隐藏，hover 展开 */
+.hydro-link-card__desc {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease,
+    margin 0.4s ease;
   pointer-events: none;
 }
 
-.hydro-link-card__body strong {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  transition: color 0.3s ease;
+.hydro-link-card:hover .hydro-link-card__desc {
+  max-height: 3.5rem;
+  opacity: 1;
+  margin-top: 0.75rem;
 }
 
-.hydro-link-card:hover .hydro-link-card__body strong {
-  color: var(--hydro-coral);
-}
-
-.hydro-link-card__body p {
+.hydro-link-card__desc p {
   margin: 0;
+  padding-top: 0.625rem;
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 6%);
   color: var(--hydro-muted);
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -1973,6 +2234,7 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* ── 申请友链 ─────────────────────────────────────────────── */
 .hydro-links-apply {
   padding: 6rem 0;
   background: linear-gradient(to bottom, transparent, rgb(var(--hydro-ink-rgb) / 2%), transparent);
@@ -2025,17 +2287,44 @@ html.lenis body {
 
 @media (max-width: 64rem) {
   .hydro-links-grid {
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   }
 }
 
 @media (max-width: 40rem) {
   .hydro-links-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
+  }
+
+  .hydro-link-card__index {
+    display: none;
   }
 
   .hydro-links-apply__inner {
     padding: 2rem 1.5rem;
+  }
+
+  .hydro-site-info__card {
+    padding: 1.5rem;
+  }
+
+  .hydro-site-info__row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hydro-site-info__value {
+    white-space: normal;
+  }
+
+  .hydro-links-group__header {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .hydro-links-random {
+    order: 3;
+    margin-left: 0;
   }
 }
 
@@ -2408,6 +2697,10 @@ html.lenis body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .hydro-link-card__index {
+    display: none;
+  }
+
   .hydro-albums-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2427,7 +2720,7 @@ html.lenis body {
   }
 
   .hydro-photos-masonry {
-    columns: 2;
+    columns: 1;
   }
 
   .hydro-moment {
@@ -2435,12 +2728,82 @@ html.lenis body {
     gap: 0 1rem;
   }
 
+  /* 灯箱移动端优化 */
+  .hydro-lightbox__img {
+    max-width: 95vw;
+    max-height: 80dvh;
+    max-height: 80vh;
+    border-radius: 0.25rem;
+  }
+
+  .hydro-lightbox__close {
+    top: max(1rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .hydro-lightbox__prev,
+  .hydro-lightbox__next {
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.7;
+  }
+
   .hydro-lightbox__prev {
-    left: 0.75rem;
+    left: max(0.5rem, env(safe-area-inset-left));
   }
 
   .hydro-lightbox__next {
-    right: 0.75rem;
+    right: max(0.5rem, env(safe-area-inset-right));
+  }
+
+  .hydro-lightbox__counter {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* 图库 tab 移动端 */
+  .hydro-photos-tabs {
+    gap: 0.375rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hydro-photos-tab {
+    padding: 0.375rem 0.85rem;
+    font-size: 0.8125rem;
+  }
+
+  /* 移动端 FAB 安全区域 */
+  .hydro-fab-group {
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* 移动端链接申请区 */
+  .hydro-links-apply__inner {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .hydro-links-apply__header h2 {
+    font-size: 1.375rem;
+  }
+
+  /* 移动端站点信息 */
+  .hydro-site-info {
+    padding-bottom: 2.5rem;
+  }
+
+  .hydro-site-info__card {
+    padding: 1.25rem;
+  }
+
+  .hydro-site-info__header h2 {
+    font-size: 0.9375rem;
+  }
+
+  .hydro-site-info__label {
+    width: 2rem;
+    font-size: 0.75rem;
   }
 }
 
