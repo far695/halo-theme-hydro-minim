@@ -970,7 +970,7 @@ input {
 .hydro-cursor {
   position: fixed;
   z-index: 60;
-  display: none;
+  display: flex;
   width: 5rem;
   height: 5rem;
   align-items: center;
@@ -981,11 +981,16 @@ input {
   color: var(--hydro-solid-contrast);
   font-size: 0.75rem;
   font-weight: 700;
-  transform: translate(-50%, -50%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.88);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .hydro-cursor.is-visible {
-  display: flex;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .hydro-about__grid {

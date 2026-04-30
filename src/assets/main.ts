@@ -614,15 +614,21 @@ function initCategoryCursor() {
     return;
   }
 
+  const positionCursor = (event: MouseEvent) => {
+    cursor.style.left = `${event.clientX}px`;
+    cursor.style.top = `${event.clientY}px`;
+  };
+
   section.querySelectorAll(".hydro-category-slice").forEach((slice) => {
-    slice.addEventListener("mouseenter", () => cursor.classList.add("is-visible"));
+    slice.addEventListener("mouseenter", (event) => {
+      positionCursor(event as MouseEvent);
+      cursor.classList.add("is-visible");
+    });
     slice.addEventListener("mouseleave", () => cursor.classList.remove("is-visible"));
   });
 
-  section.addEventListener("mousemove", (event) => {
-    cursor.style.left = `${event.clientX}px`;
-    cursor.style.top = `${event.clientY}px`;
-  });
+  section.addEventListener("mousemove", positionCursor);
+  section.addEventListener("mouseleave", () => cursor.classList.remove("is-visible"));
 }
 
 function initScrollTilt() {
