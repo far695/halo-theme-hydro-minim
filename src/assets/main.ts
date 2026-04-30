@@ -453,11 +453,13 @@ function initRevealAnimations() {
 
     gsap.set(title, { opacity: 0, y: 50, force3D: true });
     gsap.set(cards, {
-      opacity: 0,
-      rotateX: prefersReducedMotion.matches ? 0 : 36,
+      opacity: prefersReducedMotion.matches ? 0.2 : 0.08,
+      rotateX: prefersReducedMotion.matches ? 0 : 10,
+      scale: prefersReducedMotion.matches ? 1 : 0.965,
       transformPerspective: 1000,
       transformOrigin: "50% 70%",
-      y: prefersReducedMotion.matches ? 20 : 90,
+      willChange: "transform, opacity",
+      y: prefersReducedMotion.matches ? 12 : 56,
       force3D: true,
     });
     gsap
@@ -474,13 +476,14 @@ function initRevealAnimations() {
         {
           opacity: 1,
           rotateX: 0,
-          duration: prefersReducedMotion.matches ? 0.35 : 0.72,
-          ease: "expo.out",
-          stagger: prefersReducedMotion.matches ? 0.03 : 0.08,
+          scale: 1,
+          duration: prefersReducedMotion.matches ? 0.65 : 1.75,
+          ease: "power2.out",
+          stagger: prefersReducedMotion.matches ? 0.1 : 0.24,
           y: 0,
           onComplete: () => gsap.set(cards, { clearProps: "willChange" }),
         },
-        "-=0.18",
+        "-=0.08",
       );
   });
 
