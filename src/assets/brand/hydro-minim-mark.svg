@@ -1,0 +1,30 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Hydro-Minim mark</title>
+  <desc id="desc">A minimal hydrogen themed logo mark for the Hydro-Minim theme.</desc>
+  <style>
+    :root {
+      color: #101112;
+    }
+
+    .soft {
+      stroke: currentColor;
+      opacity: 0.14;
+    }
+
+    .ink {
+      stroke: currentColor;
+    }
+
+    .accent {
+      fill: #4ecdc4;
+    }
+  </style>
+  <circle class="soft" cx="64" cy="64" r="47" stroke-width="2" />
+  <path class="soft" d="M32 79C44 100 80 100 96 76" stroke-width="10" stroke-linecap="round" />
+  <path class="ink" d="M45 39V89" stroke-width="9" stroke-linecap="round" />
+  <path class="ink" d="M83 39V89" stroke-width="9" stroke-linecap="round" />
+  <path class="ink" d="M45 65C55 58 73 58 83 65" stroke-width="9" stroke-linecap="round" />
+  <path class="ink" d="M35 34C28 43 26 54 31 64" stroke-width="4" stroke-linecap="round" />
+  <circle class="accent" cx="91" cy="34" r="5" />
+  <circle class="ink" cx="91" cy="34" r="9" stroke-width="2" opacity="0.22" />
+</svg>
