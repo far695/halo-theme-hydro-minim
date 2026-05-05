@@ -8,6 +8,8 @@ spec:
       label: 品牌
       formSchema:
         - $formkit: radio
+          id: brand_logo_display
+          key: brand_logo_display
           name: logo_display
           label: 顶部品牌展示
           value: logo
@@ -17,22 +19,37 @@ spec:
             - label: 展示站点名称
               value: name
         - $formkit: attachment
+          if: $get(brand_logo_display).value === logo
+          id: brand_logo
+          key: brand_logo
           name: logo
           label: 方形标识（胶囊菜单）
           value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-mark.svg
         - $formkit: attachment
+          if: $get(brand_logo_display).value === logo
+          id: brand_dark_logo
+          key: brand_dark_logo
           name: dark_logo
           label: 深色方形标识（胶囊菜单）
           value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-mark-dark.svg
         - $formkit: attachment
+          if: $get(brand_logo_display).value === logo
+          id: brand_nav_logo
+          key: brand_nav_logo
           name: nav_logo
           label: 长方形 Logo（顶部菜单）
           value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-lockup.svg
         - $formkit: attachment
+          if: $get(brand_logo_display).value === logo
+          id: brand_dark_nav_logo
+          key: brand_dark_nav_logo
           name: dark_nav_logo
           label: 深色长方形 Logo（顶部菜单）
           value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-lockup-dark.svg
         - $formkit: text
+          if: $get(brand_logo_display).value !== logo
+          id: brand_logo_alt
+          key: brand_logo_alt
           name: logo_alt
           label: Logo 替代文本
           value: 氢·简 Hydro-Minim
