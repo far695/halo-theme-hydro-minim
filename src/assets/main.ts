@@ -9,7 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const motionEnabled = document.body.dataset.enableMotion !== "false";
 const colorSchemeStorageKey = "hydro-color-scheme";
+const momentUpvoteStorageKey = "halo.upvoted.moment.names";
 type ColorSchemeMode = "auto" | "dark" | "light";
+type HydroLenis = {
+  scrollTo?: (target: number) => void;
+  start?: () => void;
+  stop?: () => void;
+};
 
 function isColorSchemeMode(value: string | null): value is ColorSchemeMode {
   return value === "auto" || value === "dark" || value === "light";
@@ -30,6 +36,27 @@ function writeStoredColorScheme(mode: ColorSchemeMode) {
   } catch {
     // Ignore storage failures so private browsing still gets a working toggle.
   }
+}
+
+function readJsonArray(key: string) {
+  try {
+    const value = JSON.parse(window.localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeJsonArray(key: string, value: string[]) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Ignore storage failures; the action itself can still complete.
+  }
+}
+
+function getHydroLenis() {
+  return (window as unknown as { __lenis?: HydroLenis }).__lenis;
 }
 
 function escapeHtml(value: string) {
@@ -340,6 +367,10 @@ function initScrambleLinks() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   document.querySelectorAll<HTMLAnchorElement>("[data-scramble]").forEach((link) => {
+    if (link.closest(".hydro-nav__links")) {
+      return;
+    }
+
     const label = link.textContent ?? "";
     link.addEventListener("mouseenter", () => {
       let iterations = 0;
@@ -803,9 +834,69 @@ function initMomentsReveal() {
   });
 }
 
+function initMomentsContent() {
+  document.querySelectorAll<HTMLElement>(".hydro-moment__content").forEach((content) => {
+    content.querySelectorAll<HTMLAnchorElement>("a.tag").forEach((tag) => tag.remove());
+    content.querySelectorAll<HTMLElement>("p").forEach((paragraph) => {
+      if (paragraph.textContent?.trim() === "" && paragraph.children.length === 0) {
+        paragraph.remove();
+      }
+    });
+  });
+}
+
+function initMomentActions() {
+  const upvotedNames = new Set(readJsonArray(momentUpvoteStorageKey));
+
+  document.querySelectorAll<HTMLButtonElement>("[data-moment-upvote]").forEach((button) => {
+    const name = button.dataset.momentUpvote;
+    if (!name) return;
+
+    button.classList.toggle("is-upvoted", upvotedNames.has(name));
+    button.disabled = upvotedNames.has(name);
+    button.addEventListener("click", async () => {
+      if (upvotedNames.has(name) || button.disabled) return;
+
+      button.disabled = true;
+      try {
+        const response = await window.fetch("/apis/api.halo.run/v1alpha1/trackers/upvote", {
+          body: JSON.stringify({ group: "moment.halo.run", name, plural: "moments" }),
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+        });
+        if (!response.ok) throw new Error(`Upvote failed with ${response.status}`);
+
+        upvotedNames.add(name);
+        writeJsonArray(momentUpvoteStorageKey, Array.from(upvotedNames));
+        button.classList.add("is-upvoted");
+
+        const count = document.querySelector<HTMLElement>(`[data-upvote-moment-name="${CSS.escape(name)}"]`);
+        if (count) count.textContent = String(Number.parseInt(count.textContent || "0", 10) + 1);
+      } catch {
+        button.disabled = false;
+        window.alert("点赞失败，请稍后再试");
+      }
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-moment-comment-toggle]").forEach((button) => {
+    const name = button.dataset.momentCommentToggle;
+    const panel = name ? document.querySelector<HTMLElement>(`[data-moment-comment="${CSS.escape(name)}"]`) : null;
+    if (!panel) return;
+
+    button.addEventListener("click", () => {
+      const nextExpanded = panel.hidden === true;
+      panel.hidden = !nextExpanded;
+      button.classList.toggle("is-active", nextExpanded);
+      button.setAttribute("aria-expanded", String(nextExpanded));
+    });
+  });
+}
+
 function initLightbox() {
   const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
   if (!lightbox) return;
+  document.body.append(lightbox);
 
   const img = lightbox.querySelector<HTMLImageElement>("[data-lightbox-img]");
   const closeBtn = lightbox.querySelector<HTMLButtonElement>("[data-lightbox-close]");
@@ -828,6 +919,7 @@ function initLightbox() {
     lightbox.classList.add("is-open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.classList.add("hydro-menu-lock");
+    getHydroLenis()?.stop?.();
     if (counter) counter.textContent = `${index + 1} / ${triggers.length}`;
     if (prevBtn) prevBtn.style.display = triggers.length > 1 ? "" : "none";
     if (nextBtn) nextBtn.style.display = triggers.length > 1 ? "" : "none";
@@ -837,6 +929,7 @@ function initLightbox() {
     lightbox.classList.remove("is-open");
     lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("hydro-menu-lock");
+    getHydroLenis()?.start?.();
   };
 
   triggers.forEach((trigger, index) => {
@@ -860,6 +953,8 @@ function initLightbox() {
 }
 
 initLinkCards();
+initMomentsContent();
+initMomentActions();
 initMomentsReveal();
 initLightbox();
 
@@ -873,9 +968,7 @@ function initBackToTop() {
   window.addEventListener("scroll", sync, { passive: true });
 
   btn.addEventListener("click", () => {
-    const lenis = (window as unknown as Record<string, unknown>).__lenis as
-      | { scrollTo?: (target: number) => void }
-      | undefined;
+    const lenis = getHydroLenis();
     if (lenis?.scrollTo) {
       lenis.scrollTo(0);
     } else {
@@ -939,11 +1032,13 @@ function initFab() {
   // 移动端点击
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
-    menu.classList.contains("is-open")
-      ? (window.clearTimeout(closeTimer),
-        menu.classList.remove("is-open"),
-        trigger.setAttribute("aria-expanded", "false"))
-      : open();
+    if (menu.classList.contains("is-open")) {
+      window.clearTimeout(closeTimer);
+      menu.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+      return;
+    }
+    open();
   });
 
   document.addEventListener("click", (e) => {
