@@ -3,18 +3,39 @@
     <title th:text="|标签 - ${site.title}|">标签</title>
   </template>
 
-  <th:block
-    th:with="eyebrow='Hydro-Minim', title='标签', description='用关键词重新发现内容。'"
-    th:replace="~{modules/list-hero}"
-  />
-
-  <section class="hydro-list-section" th:with="tags = ${tagFinder.listAll()}">
+  <section class="hydro-tags-page">
     <div class="hydro-container">
-      <div class="hydro-tag-cloud" th:if="${not #lists.isEmpty(tags)}">
-        <a th:each="tag : ${tags}" th:href="@{${tag.status.permalink}}">
-          <span th:text="|#${tag.spec.displayName}|">#tag</span>
-          <sup th:text="${tag.postCount ?: 0}">0</sup>
-        </a>
+      <header class="hydro-tags-hero">
+        <div class="hydro-tags-hero__copy">
+          <p>Hydro-Minim / Tags</p>
+          <h1>标签</h1>
+          <span>把散落的文章压缩成一组轻量关键词，从一个符号进入另一条阅读路径。</span>
+        </div>
+        <dl class="hydro-tags-hero__meta" th:if="${not #lists.isEmpty(tags)}">
+          <div>
+            <dt>Keywords</dt>
+            <dd th:text="${#lists.size(tags)}">0</dd>
+          </div>
+          <div>
+            <dt>Shape</dt>
+            <dd>Cloud</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div class="hydro-tags-cloud-board" th:if="${not #lists.isEmpty(tags)}">
+        <div class="hydro-tags-cloud" aria-label="标签云">
+          <a
+            th:each="tag,stat : ${tags}"
+            th:href="@{${tag.status.permalink}}"
+            th:style="|--tag-order: ${stat.index}; --tag-weight: ${tag.postCount ?: 0}; --tag-lane: ${stat.index % 9}; --tag-drift: ${stat.index % 7};|"
+            class="hydro-tag-chip"
+          >
+            <span class="hydro-tag-chip__hash">#</span>
+            <span class="hydro-tag-chip__name" th:text="${tag.spec.displayName}">Tag</span>
+            <sup th:text="${tag.postCount ?: 0}">0</sup>
+          </a>
+        </div>
       </div>
       <div th:if="${#lists.isEmpty(tags)}" class="hydro-empty">还没有创建标签。</div>
     </div>

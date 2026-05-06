@@ -1762,6 +1762,217 @@ input {
   transform: translate(0.25rem, -0.25rem);
 }
 
+.hydro-tags-page {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(10rem, 13vw, 13rem) 0 clamp(6rem, 9vw, 9rem);
+}
+
+.hydro-tags-page::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(var(--hydro-ink-rgb) / 4.5%) 1px, transparent 1px) 0 0 / min(14vw, 10rem) 100%,
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 22%), transparent 34rem),
+    radial-gradient(circle at 82% 16%, rgb(var(--hydro-coral-rgb) / 11%), transparent 23rem);
+  content: "";
+}
+
+.hydro-tags-page .hydro-container {
+  position: relative;
+}
+
+.hydro-tags-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.34fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  padding-bottom: clamp(2.5rem, 4vw, 4rem);
+  border-bottom: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+}
+
+.hydro-tags-hero__copy p {
+  margin: 0 0 1rem;
+  color: rgb(var(--hydro-ink-rgb) / 42%);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hydro-tags-hero h1 {
+  margin: 0;
+  font-size: clamp(4rem, 12vw, 9rem);
+  line-height: 0.95;
+}
+
+.hydro-tags-hero__copy span {
+  display: block;
+  max-width: 42rem;
+  margin-top: 1.5rem;
+  color: var(--hydro-muted);
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  line-height: 1.8;
+}
+
+.hydro-tags-hero__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-block: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+}
+
+.hydro-tags-hero__meta div {
+  padding: 1.35rem;
+}
+
+.hydro-tags-hero__meta div + div {
+  border-left: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+}
+
+.hydro-tags-hero__meta dt {
+  margin-bottom: 0.9rem;
+  color: rgb(var(--hydro-ink-rgb) / 42%);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hydro-tags-hero__meta dd {
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 3.3rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hydro-tags-cloud-board {
+  margin-top: clamp(3rem, 5vw, 5rem);
+}
+
+.hydro-tags-cloud {
+  --tag-cloud-padding: clamp(1.5rem, 4vw, 4rem);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.35rem, 1.1vw, 1.35rem) clamp(0.25rem, 1.4vw, 1.65rem);
+  align-content: center;
+  justify-content: center;
+  min-height: clamp(25rem, 48vw, 44rem);
+  padding: var(--tag-cloud-padding);
+  overflow: hidden;
+  border-radius: 50% 46% 54% 48% / 44% 57% 43% 56%;
+  background:
+    radial-gradient(ellipse at 36% 34%, rgb(var(--hydro-paper-rgb) / 72%), transparent 19rem),
+    radial-gradient(ellipse at 67% 46%, rgb(var(--hydro-teal-rgb) / 12%), transparent 18rem),
+    radial-gradient(ellipse at 50% 64%, rgb(var(--hydro-coral-rgb) / 9%), transparent 22rem);
+  isolation: isolate;
+}
+
+.hydro-tags-cloud::before {
+  position: absolute;
+  inset: 3% 5% 6%;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 6%);
+  border-radius: 50% 46% 54% 48% / 44% 57% 43% 56%;
+  background: rgb(var(--hydro-paper-rgb) / 18%);
+  filter: blur(0.2px);
+  content: "";
+}
+
+.hydro-tags-cloud::after {
+  position: absolute;
+  inset: 9% 12% 14%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 18% 42%, rgb(var(--hydro-ink-rgb) / 5%) 0 0.12rem, transparent 0.16rem),
+    radial-gradient(circle at 78% 36%, rgb(var(--hydro-ink-rgb) / 4%) 0 0.1rem, transparent 0.15rem),
+    radial-gradient(circle at 64% 78%, rgb(var(--hydro-ink-rgb) / 4%) 0 0.1rem, transparent 0.14rem);
+  content: "";
+}
+
+.hydro-tag-chip {
+  --tag-order: 0;
+  --tag-weight: 0;
+  --tag-lane: 0;
+  --tag-drift: 0;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  min-height: clamp(2.1rem, calc(2rem + min(var(--tag-weight), 8) * 0.12rem), 3.1rem);
+  margin: calc((var(--tag-lane) - 4) * 0.22rem) calc((var(--tag-drift) - 3) * 0.18rem)
+    calc((4 - var(--tag-lane)) * 0.12rem);
+  padding: 0.52rem clamp(0.66rem, calc(0.68rem + min(var(--tag-weight), 10) * 0.055rem), 1.25rem);
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 56% 44% 52% 48% / 48% 55% 45% 52%;
+  background:
+    radial-gradient(circle at 34% 25%, rgb(var(--hydro-paper-rgb) / 86%), rgb(var(--hydro-paper-rgb) / 42%) 70%),
+    rgb(var(--hydro-paper-rgb) / 24%);
+  color: rgb(var(--hydro-ink-rgb) / 72%);
+  font-size: clamp(0.9rem, calc(0.88rem + min(var(--tag-weight), 12) * 0.055rem), 1.55rem);
+  font-weight: 700;
+  line-height: 1;
+  box-shadow:
+    0 18px 46px rgb(var(--hydro-shadow-rgb) / 5%),
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 72%);
+  opacity: 0;
+  transform: translate(calc((var(--tag-drift) - 3) * 0.45rem), calc((var(--tag-lane) - 4) * 0.34rem))
+    rotate(calc((var(--tag-lane) - 4) * 1.4deg));
+  animation:
+    hydro-tag-chip-in 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    hydro-tag-float calc(7s + var(--tag-lane) * 0.65s) ease-in-out calc(var(--tag-order) * -0.31s) infinite;
+  animation-delay: calc(var(--tag-order) * 24ms);
+  transition:
+    background 0.28s ease,
+    border-color 0.28s ease,
+    color 0.28s ease,
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.hydro-tag-chip:hover,
+.hydro-tag-chip:focus-visible {
+  z-index: 2;
+  border-color: rgb(var(--hydro-ink-rgb) / 18%);
+  background: rgb(var(--hydro-paper-rgb) / 86%);
+  color: var(--hydro-solid);
+  box-shadow:
+    0 22px 54px rgb(var(--hydro-shadow-rgb) / 10%),
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 90%);
+  animation: none;
+  transform: translateY(-0.45rem) scale(1.05) rotate(0deg);
+}
+
+.hydro-tag-chip__hash {
+  color: var(--hydro-coral);
+}
+
+.hydro-tag-chip:hover .hydro-tag-chip__hash,
+.hydro-tag-chip:focus-visible .hydro-tag-chip__hash {
+  color: currentColor;
+}
+
+.hydro-tag-chip__name {
+  overflow-wrap: anywhere;
+}
+
+.hydro-tag-chip sup {
+  color: rgb(var(--hydro-ink-rgb) / 42%);
+  font-size: 0.68em;
+  line-height: 1;
+}
+
+.hydro-tag-chip:hover sup,
+.hydro-tag-chip:focus-visible sup {
+  color: rgb(var(--hydro-ink-rgb) / 42%);
+}
+
 .hydro-tag-cloud {
   display: flex;
   flex-wrap: wrap;
@@ -2285,6 +2496,27 @@ input {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes hydro-tag-chip-in {
+  to {
+    opacity: 1;
+    transform: translate(calc((var(--tag-drift) - 3) * 0.18rem), calc((var(--tag-lane) - 4) * 0.12rem))
+      rotate(calc((var(--tag-lane) - 4) * 0.8deg));
+  }
+}
+
+@keyframes hydro-tag-float {
+  0%,
+  100% {
+    transform: translate(calc((var(--tag-drift) - 3) * 0.18rem), calc((var(--tag-lane) - 4) * 0.12rem))
+      rotate(calc((var(--tag-lane) - 4) * 0.8deg));
+  }
+
+  50% {
+    transform: translate(calc((var(--tag-drift) - 3) * 0.18rem), calc((var(--tag-lane) - 4) * 0.12rem - 0.45rem))
+      rotate(calc((4 - var(--tag-lane)) * 0.65deg));
   }
 }
 
@@ -4323,21 +4555,47 @@ html.lenis body {
     padding: calc(6.75rem + env(safe-area-inset-top)) 0 4.5rem;
   }
 
+  .hydro-tags-page {
+    padding: calc(6.75rem + env(safe-area-inset-top)) 0 4.5rem;
+  }
+
   .hydro-categories-hero {
     grid-template-columns: 1fr;
   }
 
+  .hydro-tags-hero,
   .hydro-categories-hero {
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     padding-bottom: 2rem;
   }
 
+  .hydro-tags-hero h1,
   .hydro-categories-hero h1 {
     font-size: clamp(3.2rem, 19vw, 5.4rem);
   }
 
+  .hydro-tags-hero__meta,
   .hydro-categories-hero__meta {
     width: 100%;
+  }
+
+  .hydro-tags-cloud-board {
+    margin-top: 2.25rem;
+  }
+
+  .hydro-tags-cloud {
+    gap: 0.3rem 0.45rem;
+    min-height: 22rem;
+    padding: 1.35rem 0.65rem;
+    border-radius: 46% 54% 48% 52% / 50% 45% 55% 50%;
+  }
+
+  .hydro-tag-chip {
+    min-height: 2.35rem;
+    margin: calc((var(--tag-lane) - 4) * 0.08rem) calc((var(--tag-drift) - 3) * 0.08rem) 0;
+    padding: 0.52rem 0.68rem;
+    font-size: clamp(0.78rem, calc(0.78rem + min(var(--tag-weight), 10) * 0.025rem), 1rem);
   }
 
   .hydro-category-index {
@@ -5069,6 +5327,10 @@ html.lenis body {
     padding-bottom: clamp(6rem, 9vw, 9rem);
   }
 
+  .hydro-tags-page {
+    padding: clamp(10rem, 13vw, 13rem) 0 clamp(6rem, 9vw, 9rem);
+  }
+
   .hydro-categories-page {
     padding: clamp(10rem, 13vw, 13rem) 0 clamp(6rem, 9vw, 9rem);
   }
@@ -5321,6 +5583,10 @@ html.lenis body {
     grid-template-columns: 1fr;
   }
 
+  .hydro-tags-cloud-board {
+    margin-top: clamp(2.5rem, 4vw, 4rem);
+  }
+
   .hydro-archive-hero,
   .hydro-archive__year {
     grid-template-columns: 1fr;
@@ -5350,7 +5616,9 @@ html.lenis body {
   .hydro-category-row::before,
   .hydro-category-row__top strong,
   .hydro-category-row__arrow,
+  .hydro-tag-chip,
   .hydro-pill-link {
+    animation: none;
     transition: none;
   }
 
