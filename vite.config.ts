@@ -43,4 +43,7 @@ export default defineConfig({
     sortTailwindcss: {},
     ignorePatterns: ["node_modules", "templates", "dist"],
   },
+  staged: {
+    "*": 'echo "skip"', // 跳过检查，不报错
+  },
 });

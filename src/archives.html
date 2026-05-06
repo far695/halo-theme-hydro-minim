@@ -3,27 +3,80 @@
     <title th:text="|归档 - ${site.title}|">归档</title>
   </template>
 
-  <th:block
-    th:with="eyebrow='Hydro-Minim', title='归档', description='按时间回看所有文章。'"
-    th:replace="~{modules/list-hero}"
-  />
-
-  <section class="hydro-list-section">
+  <section class="hydro-archive-page">
     <div class="hydro-container">
+      <header class="hydro-archive-hero">
+        <div class="hydro-archive-hero__copy">
+          <p class="hydro-archive-hero__kicker">Hydro-Minim / Archives</p>
+          <h1>归档</h1>
+          <span>文章按发布时间归入年份和月份，方便回看往期内容。</span>
+        </div>
+        <dl class="hydro-archive-hero__meta" th:if="${archives.total gt 0}">
+          <div>
+            <dt>Articles</dt>
+            <dd th:text="${archives.total}">0</dd>
+          </div>
+          <div>
+            <dt>Page</dt>
+            <dd th:text="|${archives.page}/${archives.totalPages}|">1/1</dd>
+          </div>
+        </dl>
+      </header>
+
       <div class="hydro-archive" th:if="${archives.total gt 0}">
         <th:block th:each="archive : ${archives.items}">
-          <th:block th:each="month : ${archive.months}">
-            <section class="hydro-archive__group">
-              <h2 th:text="|${archive.year}.${#numbers.formatInteger(month.month, 2)}|">2026.04</h2>
-              <div>
-                <a th:each="post : ${month.posts}" class="hydro-archive__item" th:href="@{${post.status.permalink}}">
-                  <strong th:text="${post.spec.title}">文章标题</strong>
-                  <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2026.04.26</time>
-                  <span th:text="${post.status.excerpt}">文章摘要</span>
-                </a>
-              </div>
-            </section>
-          </th:block>
+          <section class="hydro-archive__year">
+            <div class="hydro-archive__year-head">
+              <p>Year</p>
+              <h2 th:text="${archive.year}">2026</h2>
+              <span th:text="|${#lists.size(archive.months)} 个月份|">3 个月份</span>
+            </div>
+
+            <div class="hydro-archive__months">
+              <section class="hydro-archive__month" th:each="month : ${archive.months}">
+                <div class="hydro-archive__month-head">
+                  <h3 th:text="|${#numbers.formatInteger(month.month, 2)} 月|">04 月</h3>
+                  <span th:text="|${#lists.size(month.posts)} 篇|">4 篇</span>
+                </div>
+
+                <div class="hydro-archive__items">
+                  <a th:each="post : ${month.posts}" class="hydro-archive__item" th:href="@{${post.status.permalink}}">
+                    <time
+                      class="hydro-archive__item-date"
+                      th:datetime="${#dates.format(post.spec.publishTime, 'yyyy-MM-dd')}"
+                      th:text="${#dates.format(post.spec.publishTime, 'MM.dd')}"
+                    >
+                      04.26
+                    </time>
+                    <span class="hydro-archive__item-main">
+                      <strong th:text="${post.spec.title}">文章标题</strong>
+                      <span th:if="${not #strings.isEmpty(post.status.excerpt)}" th:text="${post.status.excerpt}">
+                        文章摘要
+                      </span>
+                      <em
+                        th:if="${not #lists.isEmpty(post.categories)}"
+                        th:text="${post.categories[0].spec.displayName}"
+                      >
+                        分类
+                      </em>
+                    </span>
+                    <span
+                      th:if="${not #strings.isEmpty(post.spec.cover)}"
+                      class="hydro-archive__item-cover"
+                      aria-hidden="true"
+                    >
+                      <img th:src="${thumbnail.gen(post.spec.cover, 's')}" th:alt="${post.spec.title}" loading="lazy" />
+                    </span>
+                    <span class="hydro-archive__item-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M7 17 17 7M9 7h8v8"></path>
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </section>
+            </div>
+          </section>
         </th:block>
       </div>
       <div th:if="${archives.total == 0}" class="hydro-empty">还没有归档文章。</div>

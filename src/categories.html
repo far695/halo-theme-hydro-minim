@@ -3,19 +3,61 @@
     <title th:text="|分类 - ${site.title}|">分类</title>
   </template>
 
-  <th:block
-    th:with="eyebrow='Hydro-Minim', title='分类', description='按主题浏览所有内容。'"
-    th:replace="~{modules/list-hero}"
-  />
-
-  <section class="hydro-list-section" th:with="categories = ${categoryFinder.listAsTree()}">
+  <section class="hydro-categories-page" th:with="categories = ${categoryFinder.listAsTree()}">
     <div class="hydro-container">
-      <div class="hydro-taxonomy-grid" th:if="${not #lists.isEmpty(categories)}">
-        <a th:each="category : ${categories}" th:href="@{${category.status.permalink}}" class="hydro-taxonomy-card">
-          <span th:text="|${category.postCount ?: 0} 篇文章|">0 篇文章</span>
-          <strong th:text="${category.spec.displayName}">分类</strong>
-          <p th:text="${category.spec.description ?: '继续探索这个分类下的内容'}">分类描述</p>
-        </a>
+      <header class="hydro-categories-hero">
+        <div class="hydro-categories-hero__copy">
+          <p>Hydro-Minim / Categories</p>
+          <h1>分类</h1>
+          <span>按主题收束文章，从一个分类进入一组连续的阅读线索。</span>
+        </div>
+        <dl class="hydro-categories-hero__meta" th:if="${not #lists.isEmpty(categories)}">
+          <div>
+            <dt>Groups</dt>
+            <dd th:text="${#lists.size(categories)}">0</dd>
+          </div>
+          <div>
+            <dt>Mode</dt>
+            <dd>Index</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div class="hydro-category-index" th:if="${not #lists.isEmpty(categories)}">
+        <div class="hydro-category-directory">
+          <a
+            th:each="category,stat : ${categories}"
+            th:href="@{${category.status.permalink}}"
+            th:style="|--category-order: ${stat.index};|"
+            class="hydro-category-row"
+          >
+            <span class="hydro-category-row__index" th:text="${#numbers.formatInteger(stat.count, 2)}">01</span>
+            <span class="hydro-category-row__body">
+              <span class="hydro-category-row__top">
+                <strong th:text="${category.spec.displayName}">分类</strong>
+              </span>
+              <span
+                class="hydro-category-row__desc"
+                th:text="${category.spec.description ?: '这个分类下收纳了一组相近主题的文章。'}"
+              >
+                分类描述
+              </span>
+              <span class="hydro-category-row__children" th:if="${not #lists.isEmpty(category.children)}">
+                <b>Sub</b>
+                <span th:each="child : ${category.children}" th:text="${child.spec.displayName}">子分类</span>
+              </span>
+            </span>
+            <span class="hydro-category-row__count">
+              <strong th:text="${category.postCount ?: 0}">0</strong>
+              <em>篇</em>
+            </span>
+            <span class="hydro-category-row__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 17 17 7M9 7h8v8"></path>
+              </svg>
+            </span>
+          </a>
+        </div>
       </div>
       <div th:if="${#lists.isEmpty(categories)}" class="hydro-empty">还没有创建分类。</div>
     </div>
