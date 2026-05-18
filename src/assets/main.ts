@@ -433,19 +433,21 @@ function initNavigation() {
   const updateVelocity = () => {
     const currentTime = performance.now();
     const currentScrollY = window.scrollY;
-    const deltaTime = currentTime - lastTime;
+    // 使用 Math.max 避免极罕见情况下 deltaTime 为 0 导致除以 0 的问题
+    const deltaTime = Math.max(1, currentTime - lastTime);
     const deltaY = Math.abs(currentScrollY - lastScrollY);
 
     if (deltaTime > 50) {
-      // 重置以前的滚动速度，避免携带旧的快速/慢速状态
-      scrollVelocity = 0;
-      // 假设第一次滚动的标准帧为 16ms
-      const instantVelocity = deltaY / 16;
-      scrollVelocity = instantVelocity * 0.4;
-    } else if (deltaTime > 0) {
-      // 像素/毫秒，然后平滑处理
+      // 距离上次滚动较久，视为新的滚动动作的起点
+      // 单格鼠标滚轮大概产生 100px 位移，为了让单格滚动被识别为“慢”，
+      // 我们用 500 作为除数，这样 100/500 = 0.2（极慢速）
+      const instantVelocity = deltaY / 500;
+      scrollVelocity = instantVelocity;
+    } else {
+      // 连续滚动，计算真实即时速度（像素/毫秒）
       const instantVelocity = deltaY / deltaTime;
-      scrollVelocity = scrollVelocity * 0.6 + instantVelocity * 0.4;
+      // 采用更平滑的加权计算，但保持较高的瞬时灵敏度
+      scrollVelocity = scrollVelocity * 0.7 + instantVelocity * 0.3;
     }
 
     lastScrollY = currentScrollY;
@@ -459,27 +461,64 @@ function initNavigation() {
 
     const shouldBePill = window.scrollY > 100;
 
-    const speedMultiplier = Math.max(0.75, Math.min(1.1, 1.1 - scrollVelocity * 0.16));
+    // 重新构建极端的倍率映射规则以实现明显的"快慢差"：
+    // scrollVelocity (像素/毫秒) 的区间映射：
+    // < 0.1 (极慢滑动) -> 倍率 4.0 (极慢动画)
+    // = 0.5 (普通滑动) -> 倍率 1.0 (正常动画)
+    // > 2.0 (极快滑动) -> 倍率 0.25 (极速闪切)
+    let speedMultiplier = 1;
+    if (scrollVelocity <= 0.1) {
+      speedMultiplier = 4.0;
+    } else if (scrollVelocity <= 0.5) {
+      // 0.1 -> 0.5 映射到 4.0 -> 1.0
+      speedMultiplier = 4.0 - ((scrollVelocity - 0.1) / 0.4) * 3.0;
+    } else if (scrollVelocity <= 2.0) {
+      // 0.5 -> 2.0 映射到 1.0 -> 0.25
+      speedMultiplier = 1.0 - ((scrollVelocity - 0.5) / 1.5) * 0.75;
+    } else {
+      speedMultiplier = 0.25;
+    }
+
+    // 当倍率较大（动画较慢）时，换用平滑的 ease-out 曲线
+    // 否则极端的 cubic-bezier(0.16, 1, 0.3, 1) 会让动画在前半段瞬间完成，失去慢速效果
+    const easing = speedMultiplier > 1.2 ? "ease-out" : "cubic-bezier(0.16, 1, 0.3, 1)";
 
     if (shouldBePill && navMode !== "pill") {
       clearNavTimers();
       resetNavTransitionClasses();
       navMode = "pill";
-      nav.classList.add("is-scrolled");
 
       if (!animateNav) {
+        nav.classList.add("is-scrolled");
         return;
       }
 
-      const enterDuration = Math.round(600 * speedMultiplier);
+      // 阶段1：旧状态退场 (顶部菜单消失)
+      // 基础退场时间 150ms
+      const exitDuration = Math.round(150 * speedMultiplier);
+      nav.style.setProperty("--nav-exit-duration", `${exitDuration}ms`);
+      nav.classList.add("is-nav-transitioning", "is-exiting-top");
 
-      nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
-
-      nav.classList.add("is-nav-transitioning", "is-entering-pill");
       navTimers.push(
         window.setTimeout(() => {
-          nav.classList.remove("is-entering-pill", "is-nav-transitioning");
-        }, enterDuration),
+          nav.classList.remove("is-exiting-top");
+          
+          // 在旧状态退场后，赋予新状态的布局，并开始入场动画
+          nav.classList.add("is-scrolled");
+
+          // 阶段2：新状态入场 (胶囊菜单滑入)
+          // 基础时间 500ms
+          const enterDuration = Math.round(500 * speedMultiplier);
+          nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
+          nav.style.setProperty("--nav-enter-ease", easing);
+          nav.classList.add("is-entering-pill");
+
+          navTimers.push(
+            window.setTimeout(() => {
+              nav.classList.remove("is-entering-pill", "is-nav-transitioning");
+            }, enterDuration),
+          );
+        }, exitDuration),
       );
       return;
     }
@@ -488,21 +527,35 @@ function initNavigation() {
       clearNavTimers();
       resetNavTransitionClasses();
       navMode = "top";
-      nav.classList.remove("is-scrolled");
 
       if (!animateNav) {
+        nav.classList.remove("is-scrolled");
         return;
       }
 
-      const enterDuration = Math.round(100 * speedMultiplier);
+      // 阶段1：旧状态退场 (胶囊菜单消失)
+      // 基础退场时间 200ms
+      const exitDuration = Math.round(200 * speedMultiplier);
+      nav.style.setProperty("--nav-exit-duration", `${exitDuration}ms`);
+      nav.classList.add("is-nav-transitioning", "is-leaving-pill");
 
-      nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
-
-      nav.classList.add("is-nav-transitioning", "is-entering-top");
       navTimers.push(
         window.setTimeout(() => {
-          nav.classList.remove("is-entering-top", "is-nav-transitioning");
-        }, enterDuration),
+          nav.classList.remove("is-leaving-pill", "is-scrolled"); // 移除胶囊布局
+          
+          // 阶段2：新状态入场 (顶部菜单滑入)
+          // 基础时间 400ms
+          const enterDuration = Math.round(400 * speedMultiplier);
+          nav.style.setProperty("--nav-enter-duration", `${enterDuration}ms`);
+          nav.style.setProperty("--nav-enter-ease", easing);
+          nav.classList.add("is-entering-top");
+
+          navTimers.push(
+            window.setTimeout(() => {
+              nav.classList.remove("is-entering-top", "is-nav-transitioning");
+            }, enterDuration),
+          );
+        }, exitDuration),
       );
     }
   };

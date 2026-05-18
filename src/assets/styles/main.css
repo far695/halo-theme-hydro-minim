@@ -230,7 +230,7 @@ input {
 }
 
 .hydro-nav.is-entering-pill {
-  animation: hydro-pill-enter var(--nav-enter-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hydro-pill-enter var(--nav-enter-duration) var(--nav-enter-ease, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 
 .hydro-nav.is-leaving-pill {
@@ -238,7 +238,7 @@ input {
 }
 
 .hydro-nav.is-entering-top {
-  animation: hydro-top-enter var(--nav-enter-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hydro-top-enter var(--nav-enter-duration) var(--nav-enter-ease, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 
 .hydro-nav__inner {
