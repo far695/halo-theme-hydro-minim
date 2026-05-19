@@ -454,8 +454,10 @@ function initNavigation() {
   const logo = nav?.querySelector<HTMLElement>(".hydro-logo") ?? null;
   const logoText = nav?.querySelector<HTMLElement>(".hydro-logo__text") ?? null;
   const actions = nav?.querySelector<HTMLElement>(".hydro-nav__actions") ?? null;
-  const firstIcon = nav?.querySelector<HTMLElement>(".hydro-icon-button") ?? null;
-  const firstIconSvg = firstIcon?.querySelector<SVGElement>("svg") ?? null;
+  const getMeasuredIcon = () =>
+    Array.from(nav?.querySelectorAll<HTMLElement>(".hydro-icon-button") ?? []).find(
+      (icon) => icon.getClientRects().length > 0,
+    ) ?? null;
 
   let navMode: NavMode = window.scrollY >= NAV_MORPH_DISTANCE ? "pill" : "top";
   let navTopSnapshot: NavSnapshot | null = null;
@@ -668,8 +670,10 @@ function initNavigation() {
     const textStyles = logoText ? window.getComputedStyle(logoText) : null;
     const textRect = logoText?.getBoundingClientRect();
     const actionsStyles = actions ? window.getComputedStyle(actions) : null;
-    const iconRect = firstIcon?.getBoundingClientRect();
-    const iconSvgStyles = firstIconSvg ? window.getComputedStyle(firstIconSvg) : null;
+    const measuredIcon = getMeasuredIcon();
+    const measuredIconSvg = measuredIcon?.querySelector<SVGElement>("svg") ?? null;
+    const iconRect = measuredIcon?.getBoundingClientRect();
+    const iconSvgStyles = measuredIconSvg ? window.getComputedStyle(measuredIconSvg) : null;
     const visual = getNavVisual(mode);
 
     return {
@@ -936,19 +940,44 @@ function initNavigation() {
     ?.setAttribute("aria-expanded", "true");
 
   const currentUrl = new URL(window.location.href);
-  const currentMobileLink = Array.from(
-    mobileMenu?.querySelectorAll<HTMLAnchorElement>(".hydro-mobile-menu__link") ?? [],
-  ).find((link) => {
+  const scoreMobileMenuLink = (link: HTMLAnchorElement) => {
     try {
       const linkUrl = new URL(link.href, window.location.origin);
-      return linkUrl.pathname === currentUrl.pathname && linkUrl.search === currentUrl.search;
+      if (linkUrl.pathname !== currentUrl.pathname || linkUrl.search !== currentUrl.search) {
+        return -1;
+      }
+
+      const rawHref = link.getAttribute("href")?.trim() ?? "";
+      const isPlaceholderHref = rawHref === "#" || rawHref.endsWith("#") || rawHref.startsWith("javascript:");
+      const level = link.classList.contains("hydro-mobile-menu__link--level-3")
+        ? 3
+        : link.classList.contains("hydro-mobile-menu__link--level-2")
+          ? 2
+          : 1;
+
+      return level * 10 - (isPlaceholderHref ? 40 : 0);
     } catch {
-      return false;
+      return -1;
     }
-  });
+  };
+  const currentMobileLink = Array.from(
+    mobileMenu?.querySelectorAll<HTMLAnchorElement>(".hydro-mobile-menu__link") ?? [],
+  )
+    .map((link) => ({ link, score: scoreMobileMenuLink(link) }))
+    .filter(({ score }) => score >= 0)
+    .sort((a, b) => b.score - a.score)[0]?.link;
   currentMobileLink?.closest<HTMLElement>(".hydro-mobile-menu__item")?.classList.add("is-current");
   currentMobileLink?.closest<HTMLElement>(".hydro-mobile-menu__item--branch")?.classList.add("is-expanded");
   currentMobileLink
+    ?.closest<HTMLElement>(".hydro-mobile-menu__children")
+    ?.closest<HTMLElement>(".hydro-mobile-menu__item--branch")
+    ?.classList.add("is-current-parent", "is-expanded");
+  currentMobileLink
+    ?.closest<HTMLElement>(".hydro-mobile-menu__item--branch")
+    ?.querySelector<HTMLButtonElement>(":scope > .hydro-mobile-menu__row [data-hydro-mobile-submenu-toggle]")
+    ?.setAttribute("aria-expanded", "true");
+  currentMobileLink
+    ?.closest<HTMLElement>(".hydro-mobile-menu__children")
     ?.closest<HTMLElement>(".hydro-mobile-menu__item--branch")
     ?.querySelector<HTMLButtonElement>(":scope > .hydro-mobile-menu__row [data-hydro-mobile-submenu-toggle]")
     ?.setAttribute("aria-expanded", "true");

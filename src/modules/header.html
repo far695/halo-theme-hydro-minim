@@ -133,7 +133,7 @@
       </button>
       <button
         th:if="${allowColorSwitch}"
-        class="hydro-icon-button hydro-theme-toggle"
+        class="hydro-icon-button hydro-theme-toggle hydro-nav__theme-toggle"
         type="button"
         data-hydro-theme-toggle
         aria-label="切换深浅色"
@@ -148,6 +148,93 @@
           <path d="M20.99 12.37A8 8 0 1 1 11.63 3.01 6.5 6.5 0 0 0 20.99 12.37z"></path>
         </svg>
       </button>
+
+      <!-- User Section -->
+      <div class="hydro-dropdown hydro-user-dropdown hydro-nav__user-dropdown" data-hydro-dropdown>
+        <a
+          sec:authorize="isAuthenticated()"
+          href="javascript:void(0);"
+          class="hydro-icon-button hydro-user-btn"
+          aria-label="User Menu"
+          th:with="currentUser = ${contributorFinder.getContributor(#authentication.name)}"
+        >
+          <img th:src="${currentUser?.avatar}" class="hydro-user-avatar" alt="Avatar" />
+        </a>
+        <a sec:authorize="!isAuthenticated()" href="/login" class="hydro-icon-button hydro-user-btn" aria-label="Login">
+          <svg
+            class="hydro-user-avatar hydro-user-avatar--default"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="8" r="3.5" fill="currentColor" fill-opacity="0.6" />
+            <path
+              d="M19.3276 19C18.0664 16.6438 15.2287 15 12 15C8.77134 15 5.93361 16.6438 4.67242 19"
+              stroke="currentColor"
+              stroke-opacity="0.6"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </a>
+        <ul class="hydro-dropdown__menu hydro-user-menu" sec:authorize="isAuthenticated()">
+          <li>
+            <a th:href="@{/console}">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              进入控制台
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/console/profile}">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              个人中心
+            </a>
+          </li>
+          <li class="hydro-user-menu__divider"></li>
+          <li>
+            <a href="/logout" class="hydro-user-menu__logout">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              退出登录
+            </a>
+          </li>
+        </ul>
+      </div>
+
       <button
         class="hydro-icon-button hydro-menu-button"
         type="button"
@@ -187,21 +274,31 @@
   th:with="
     menu = ${menuFinder.getPrimary()},
     mobileMenuLabel = ${theme.config.navigation?.mobile_menu_label ?: '菜单'},
-    mobileMenuBrand = ${#strings.isEmpty(site.title) ? 'Hydro-Minim' : site.title}
+    mobileMenuBrand = ${#strings.isEmpty(site.title) ? 'Hydro-Minim' : site.title},
+    markLogoSrc = ${theme.config.site == null || #strings.isEmpty(theme.config.site.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.site.logo},
+    darkMarkLogoSrc = ${theme.config.site == null || #strings.isEmpty(theme.config.site.dark_logo) ? markLogoSrc : theme.config.site.dark_logo},
+    allowColorSwitch = ${theme.config.navigation == null or theme.config.navigation.allow_color_switch != false}
   "
 >
   <nav aria-label="Mobile" data-lenis-prevent>
     <div class="hydro-mobile-menu__sheet-head">
       <span class="hydro-mobile-menu__handle" aria-hidden="true"></span>
       <div class="hydro-mobile-menu__identity">
+        <span class="hydro-mobile-menu__mark" aria-hidden="true">
+          <img
+            class="hydro-mobile-menu__mark-image hydro-mobile-menu__mark-image--light"
+            th:src="${markLogoSrc}"
+            alt=""
+          />
+          <img
+            class="hydro-mobile-menu__mark-image hydro-mobile-menu__mark-image--dark"
+            th:src="${darkMarkLogoSrc}"
+            alt=""
+          />
+        </span>
         <span class="hydro-mobile-menu__brand" th:text="${mobileMenuBrand}">Hydro-Minim</span>
         <span class="hydro-mobile-menu__title" th:text="${mobileMenuLabel}">菜单</span>
       </div>
-      <span class="hydro-mobile-menu__signal" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
     </div>
 
     <div class="hydro-mobile-menu__body">
@@ -332,6 +429,74 @@
           </li>
         </ol>
       </th:block>
+    </div>
+
+    <div class="hydro-mobile-menu__utility" aria-label="快捷操作">
+      <div class="hydro-mobile-menu__utility-head">
+        <span>快捷操作</span>
+      </div>
+      <div class="hydro-mobile-menu__actions">
+        <a sec:authorize="!isAuthenticated()" href="/login" class="hydro-mobile-menu__action">
+          <span class="hydro-mobile-menu__action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <span class="hydro-mobile-menu__action-label">登录</span>
+        </a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/console}" class="hydro-mobile-menu__action">
+          <span class="hydro-mobile-menu__action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M8 21h8M12 17v4"></path>
+            </svg>
+          </span>
+          <span class="hydro-mobile-menu__action-label">控制台</span>
+        </a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/console/profile}" class="hydro-mobile-menu__action">
+          <span class="hydro-mobile-menu__action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <span class="hydro-mobile-menu__action-label">个人</span>
+        </a>
+        <button
+          th:if="${allowColorSwitch}"
+          class="hydro-mobile-menu__action hydro-mobile-menu__action--button hydro-theme-toggle"
+          type="button"
+          data-hydro-theme-toggle
+          aria-label="切换深浅色"
+        >
+          <span class="hydro-mobile-menu__action-icon" aria-hidden="true">
+            <svg class="hydro-theme-sun" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              ></path>
+            </svg>
+            <svg class="hydro-theme-moon" viewBox="0 0 24 24">
+              <path d="M20.99 12.37A8 8 0 1 1 11.63 3.01 6.5 6.5 0 0 0 20.99 12.37z"></path>
+            </svg>
+          </span>
+          <span class="hydro-mobile-menu__action-label">深浅色</span>
+        </button>
+        <a
+          sec:authorize="isAuthenticated()"
+          href="/logout"
+          class="hydro-mobile-menu__action hydro-mobile-menu__action--danger"
+        >
+          <span class="hydro-mobile-menu__action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <path d="M16 17l5-5-5-5M21 12H9"></path>
+            </svg>
+          </span>
+          <span class="hydro-mobile-menu__action-label">退出</span>
+        </a>
+      </div>
     </div>
   </nav>
 </div>
