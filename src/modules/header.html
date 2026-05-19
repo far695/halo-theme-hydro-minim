@@ -181,134 +181,157 @@
   </div>
 </header>
 
-<div class="hydro-mobile-menu" data-hydro-mobile-menu th:with="menu = ${menuFinder.getPrimary()}">
-  <nav aria-label="Mobile">
-    <th:block th:if="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
-      <ol class="hydro-mobile-menu__tree">
-        <li
-          th:each="item, itemStat : ${menu.menuItems}"
-          class="hydro-mobile-menu__item"
-          th:classappend="${#lists.isEmpty(item.children)} ? '' : ' hydro-mobile-menu__item--branch'"
-        >
-          <div class="hydro-mobile-menu__row">
-            <a
-              class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1"
-              th:href="@{${item.status.href}}"
-              th:target="${item.spec.target?.value}"
-            >
-              <span class="hydro-mobile-menu__label" th:text="${item.status.displayName}"></span>
-            </a>
-            <button
-              th:if="${not #lists.isEmpty(item.children)}"
-              class="hydro-mobile-menu__toggle"
-              type="button"
-              data-hydro-mobile-submenu-toggle
-              aria-expanded="false"
-              th:attr="aria-label=|展开 ${item.status.displayName}|"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m6 9 6 6 6-6"></path>
-              </svg>
-            </button>
-          </div>
+<div
+  class="hydro-mobile-menu"
+  data-hydro-mobile-menu
+  th:with="
+    menu = ${menuFinder.getPrimary()},
+    mobileMenuLabel = ${theme.config.navigation?.mobile_menu_label ?: '菜单'},
+    mobileMenuBrand = ${#strings.isEmpty(site.title) ? 'Hydro-Minim' : site.title}
+  "
+>
+  <nav aria-label="Mobile" data-lenis-prevent>
+    <div class="hydro-mobile-menu__sheet-head">
+      <span class="hydro-mobile-menu__handle" aria-hidden="true"></span>
+      <div class="hydro-mobile-menu__identity">
+        <span class="hydro-mobile-menu__brand" th:text="${mobileMenuBrand}">Hydro-Minim</span>
+        <span class="hydro-mobile-menu__title" th:text="${mobileMenuLabel}">菜单</span>
+      </div>
+      <span class="hydro-mobile-menu__signal" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
 
-          <ol
-            class="hydro-mobile-menu__children hydro-mobile-menu__children--level-2"
-            th:if="${not #lists.isEmpty(item.children)}"
+    <div class="hydro-mobile-menu__body">
+      <th:block th:if="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+        <ol class="hydro-mobile-menu__tree">
+          <li
+            th:each="item, itemStat : ${menu.menuItems}"
+            class="hydro-mobile-menu__item"
+            th:classappend="${#lists.isEmpty(item.children)} ? '' : ' hydro-mobile-menu__item--branch'"
           >
-            <li
-              th:each="child : ${item.children}"
-              class="hydro-mobile-menu__item hydro-mobile-menu__item--child"
-              th:classappend="${#lists.isEmpty(child.children)} ? '' : ' hydro-mobile-menu__item--branch'"
-            >
-              <div class="hydro-mobile-menu__row hydro-mobile-menu__row--child">
-                <a
-                  class="hydro-mobile-menu__link hydro-mobile-menu__link--level-2"
-                  th:href="@{${child.status.href}}"
-                  th:target="${child.spec.target?.value}"
-                >
-                  <span class="hydro-mobile-menu__label" th:text="${child.status.displayName}"></span>
-                </a>
-                <button
-                  th:if="${not #lists.isEmpty(child.children)}"
-                  class="hydro-mobile-menu__toggle hydro-mobile-menu__toggle--child"
-                  type="button"
-                  data-hydro-mobile-submenu-toggle
-                  aria-expanded="false"
-                  th:attr="aria-label=|展开 ${child.status.displayName}|"
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-              </div>
-
-              <ol
-                class="hydro-mobile-menu__children hydro-mobile-menu__children--level-3"
-                th:if="${not #lists.isEmpty(child.children)}"
-              >
-                <li
-                  th:each="grandchild : ${child.children}"
-                  class="hydro-mobile-menu__item hydro-mobile-menu__item--child"
-                >
-                  <a
-                    class="hydro-mobile-menu__link hydro-mobile-menu__link--level-3"
-                    th:href="@{${grandchild.status.href}}"
-                    th:target="${grandchild.spec.target?.value}"
-                  >
-                    <span class="hydro-mobile-menu__label" th:text="${grandchild.status.displayName}"></span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </th:block>
-    <th:block th:unless="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
-      <ol class="hydro-mobile-menu__tree">
-        <th:block
-          th:if="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
-        >
-          <li class="hydro-mobile-menu__item" th:each="item : ${theme.config.navigation.fallback_links}">
             <div class="hydro-mobile-menu__row">
-              <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" th:href="${item.url}">
-                <span class="hydro-mobile-menu__label" th:text="${item.label}">导航</span>
+              <a
+                class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1"
+                th:href="@{${item.status.href}}"
+                th:target="${item.spec.target?.value}"
+              >
+                <span class="hydro-mobile-menu__label" th:text="${item.status.displayName}"></span>
+              </a>
+              <button
+                th:if="${not #lists.isEmpty(item.children)}"
+                class="hydro-mobile-menu__toggle"
+                type="button"
+                data-hydro-mobile-submenu-toggle
+                aria-expanded="false"
+                th:attr="aria-label=|展开 ${item.status.displayName}|"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </button>
+            </div>
+
+            <ol
+              class="hydro-mobile-menu__children hydro-mobile-menu__children--level-2"
+              th:if="${not #lists.isEmpty(item.children)}"
+            >
+              <li
+                th:each="child : ${item.children}"
+                class="hydro-mobile-menu__item hydro-mobile-menu__item--child"
+                th:classappend="${#lists.isEmpty(child.children)} ? '' : ' hydro-mobile-menu__item--branch'"
+              >
+                <div class="hydro-mobile-menu__row hydro-mobile-menu__row--child">
+                  <a
+                    class="hydro-mobile-menu__link hydro-mobile-menu__link--level-2"
+                    th:href="@{${child.status.href}}"
+                    th:target="${child.spec.target?.value}"
+                  >
+                    <span class="hydro-mobile-menu__label" th:text="${child.status.displayName}"></span>
+                  </a>
+                  <button
+                    th:if="${not #lists.isEmpty(child.children)}"
+                    class="hydro-mobile-menu__toggle hydro-mobile-menu__toggle--child"
+                    type="button"
+                    data-hydro-mobile-submenu-toggle
+                    aria-expanded="false"
+                    th:attr="aria-label=|展开 ${child.status.displayName}|"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <ol
+                  class="hydro-mobile-menu__children hydro-mobile-menu__children--level-3"
+                  th:if="${not #lists.isEmpty(child.children)}"
+                >
+                  <li
+                    th:each="grandchild : ${child.children}"
+                    class="hydro-mobile-menu__item hydro-mobile-menu__item--child"
+                  >
+                    <a
+                      class="hydro-mobile-menu__link hydro-mobile-menu__link--level-3"
+                      th:href="@{${grandchild.status.href}}"
+                      th:target="${grandchild.spec.target?.value}"
+                    >
+                      <span class="hydro-mobile-menu__label" th:text="${grandchild.status.displayName}"></span>
+                    </a>
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </th:block>
+      <th:block th:unless="${menu != null} and ${not #lists.isEmpty(menu.menuItems)}">
+        <ol class="hydro-mobile-menu__tree">
+          <th:block
+            th:if="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
+          >
+            <li class="hydro-mobile-menu__item" th:each="item : ${theme.config.navigation.fallback_links}">
+              <div class="hydro-mobile-menu__row">
+                <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" th:href="${item.url}">
+                  <span class="hydro-mobile-menu__label" th:text="${item.label}">导航</span>
+                </a>
+              </div>
+            </li>
+          </th:block>
+          <li
+            class="hydro-mobile-menu__item"
+            th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
+          >
+            <div class="hydro-mobile-menu__row">
+              <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#articles">
+                <span class="hydro-mobile-menu__label">文章</span>
               </a>
             </div>
           </li>
-        </th:block>
-        <li
-          class="hydro-mobile-menu__item"
-          th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
-        >
-          <div class="hydro-mobile-menu__row">
-            <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#articles">
-              <span class="hydro-mobile-menu__label">文章</span>
-            </a>
-          </div>
-        </li>
-        <li
-          class="hydro-mobile-menu__item"
-          th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
-        >
-          <div class="hydro-mobile-menu__row">
-            <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#categories">
-              <span class="hydro-mobile-menu__label">分类</span>
-            </a>
-          </div>
-        </li>
-        <li
-          class="hydro-mobile-menu__item"
-          th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
-        >
-          <div class="hydro-mobile-menu__row">
-            <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#about">
-              <span class="hydro-mobile-menu__label">关于</span>
-            </a>
-          </div>
-        </li>
-      </ol>
-    </th:block>
+          <li
+            class="hydro-mobile-menu__item"
+            th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
+          >
+            <div class="hydro-mobile-menu__row">
+              <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#categories">
+                <span class="hydro-mobile-menu__label">分类</span>
+              </a>
+            </div>
+          </li>
+          <li
+            class="hydro-mobile-menu__item"
+            th:unless="${theme.config.navigation?.fallback_links != null and not #lists.isEmpty(theme.config.navigation.fallback_links)}"
+          >
+            <div class="hydro-mobile-menu__row">
+              <a class="hydro-mobile-menu__link hydro-mobile-menu__link--level-1" href="#about">
+                <span class="hydro-mobile-menu__label">关于</span>
+              </a>
+            </div>
+          </li>
+        </ol>
+      </th:block>
+    </div>
   </nav>
 </div>
