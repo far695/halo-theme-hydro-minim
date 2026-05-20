@@ -2,6 +2,8 @@ import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { runHydroFabAction, type HydroFabActionDependencies } from "./fab-actions";
+
 import "./styles/main.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -227,6 +229,14 @@ function scrollToPosition(top: number) {
 function scrollToElement(element: HTMLElement, offset = -92) {
   const top = window.scrollY + element.getBoundingClientRect().top + offset;
   scrollToPosition(top);
+}
+
+async function copyTextToClipboard(text: string, promptTitle = "复制链接") {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    window.prompt(promptTitle, text);
+  }
 }
 
 function escapeHtml(value: string) {
@@ -2925,11 +2935,25 @@ function initFab() {
     trigger.setAttribute("aria-expanded", "true");
   };
 
+  const close = () => {
+    window.clearTimeout(closeTimer);
+    menu.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
   const scheduleClose = () => {
     closeTimer = window.setTimeout(() => {
-      menu.classList.remove("is-open");
-      trigger.setAttribute("aria-expanded", "false");
+      close();
     }, 300);
+  };
+
+  const fabActionDependencies: HydroFabActionDependencies = {
+    copyText: (text) => copyTextToClipboard(text),
+    getWindow: () => window,
+    root: document,
+    scrollToElement,
+    scrollToPosition,
+    warn: (message) => console.warn(message),
   };
 
   if (canHover) {
@@ -2944,13 +2968,17 @@ function initFab() {
     });
   }
 
+  items.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      void runHydroFabAction(item, event, fabActionDependencies, close);
+    });
+  });
+
   // 移动端点击
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     if (menu.classList.contains("is-open")) {
-      window.clearTimeout(closeTimer);
-      menu.classList.remove("is-open");
-      trigger.setAttribute("aria-expanded", "false");
+      close();
       return;
     }
     open();
@@ -2958,9 +2986,7 @@ function initFab() {
 
   document.addEventListener("click", (e) => {
     if (!menu.contains(e.target as Node) && e.target !== trigger) {
-      window.clearTimeout(closeTimer);
-      menu.classList.remove("is-open");
-      trigger.setAttribute("aria-expanded", "false");
+      close();
     }
   });
 }

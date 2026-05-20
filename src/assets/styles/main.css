@@ -6272,6 +6272,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   position: absolute;
   bottom: 0;
   right: 0;
+  padding: 0;
   opacity: 0;
   pointer-events: none;
   transform: translate(0, 0) scale(0.6);
@@ -6280,6 +6281,10 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
     opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.2s ease;
+}
+
+.hydro-fab-item.is-copied {
+  background: rgb(var(--hydro-coral-rgb) / 16%);
 }
 
 .hydro-fab-menu.is-open .hydro-fab-item {

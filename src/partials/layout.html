@@ -61,72 +61,7 @@
     <th:block th:replace="~{modules/footer}" />
 
     <!-- FAB + 返回顶部 -->
-    <div class="hydro-fab-group" th:attr="aria-label=${theme.config.navigation?.fab_label ?: '快捷操作'}">
-      <!-- FAB 快捷项（仅在启用时渲染） -->
-      <div
-        th:if="${theme.config.navigation != null and theme.config.navigation.fab_enabled == true}"
-        class="hydro-fab-menu"
-        data-hydro-fab
-      >
-        <div class="hydro-fab-items">
-          <th:block th:each="item : ${theme.config.navigation.fab_items}">
-            <a
-              class="hydro-fab-item"
-              th:href="${item.url}"
-              th:target="${item.new_tab == true ? '_blank' : '_self'}"
-              th:attr="aria-label=${item.label},title=${item.label}"
-              rel="noopener noreferrer"
-            >
-              <th:block th:utext="${item.icon}" />
-            </a>
-          </th:block>
-        </div>
-        <button
-          class="hydro-fab-trigger"
-          data-hydro-fab-trigger
-          th:attr="aria-label=${theme.config.navigation?.fab_label ?: '快捷操作'}"
-          aria-expanded="false"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </button>
-      </div>
-      <!-- 返回顶部 -->
-      <button
-        th:if="${theme.config.navigation == null or theme.config.navigation.show_back_to_top != false}"
-        class="hydro-back-to-top"
-        data-hydro-back-to-top
-        th:attr="aria-label=${theme.config.navigation?.back_to_top_label ?: '返回顶部'},title=${theme.config.navigation?.back_to_top_label ?: '返回顶部'}"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <polyline points="18 15 12 9 6 15" />
-        </svg>
-      </button>
-    </div>
+    <th:block th:replace="~{modules/fab}" />
 
     <halo:footer />
     <th:block

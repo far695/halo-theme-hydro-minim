@@ -6,12 +6,12 @@ spec:
   displayName: 氢·简
   author:
     name: Lywq
-    website: https://github.com/halo-dev
+    website: https://blog.muyin.site
   description: Hydro-Minim，氢系列首款极简 Halo 主题，以轻快、留白和流畅动效呈现内容。
   logo: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-mark.svg
-  homepage: https://github.com/halo-dev
-  repo: https://github.com/halo-dev
-  issues: https://github.com/halo-dev
+  homepage: https://blog.muyin.site
+  repo: https://github.com/liuyiwuqing/halo-theme-hydro-minim
+  issues: https://github.com/liuyiwuqing/halo-theme-hydro-minim/issues
   settingName: "halo-theme-hydro-minim-setting"
   configMapName: "halo-theme-hydro-minim-configMap"
   version: 1.0.0-alpha1

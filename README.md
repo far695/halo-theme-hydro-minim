@@ -26,6 +26,40 @@ pnpm run build
 dist/halo-theme-hydro-minim-1.0.0.zip
 ```
 
+## 快捷操作按钮
+
+主题设置中的“全局组件 / 快捷项”支持两层配置：
+
+- `全局默认快捷项`：所有页面都没有命中专属规则时使用。
+- `页面快捷配置`：按永久链接或模板 ID 命中后覆盖全局默认配置，永久链接规则优先于模板 ID 规则，`所有页面` 规则作为兜底；永久链接支持 `/about`、`/about/` 或完整 URL，并兼容当前请求路径；如果命中的页面配置是空的，会回退到全局默认快捷项。
+
+每个快捷项支持三类动作：
+
+- `跳转链接`：保持原有链接跳转能力，可配置是否新标签打开。
+- `主题内置动作`：支持打开搜索、切换深浅色、返回顶部、复制当前链接、打印页面、打开移动菜单、滚动到评论区。
+- `自定义函数`：在“高级 / 自定义 JavaScript”中注册 `window.HydroMinimActions`，快捷项填写函数名和 JSON 参数。
+
+页面规则示例：
+
+```text
+模板 ID: page_about
+永久链接: /about
+模板 ID: docs
+永久链接: /docs
+```
+
+自定义函数示例：
+
+```js
+window.HydroMinimActions = {
+  ...(window.HydroMinimActions || {}),
+  openSponsorModal({ payload }) {
+    const modal = document.querySelector(`[data-modal="${payload.modal}"]`);
+    modal?.classList.add("is-open");
+  },
+};
+```
+
 ## 目录说明
 
 - `src/*.html`: Halo 页面模板源文件，包括首页、文章、页面、分类、标签、归档、作者和错误页。

@@ -264,7 +264,7 @@ spec:
           if: $get(navigation_fab_enabled).value === true
           key: navigation_fab_items
           name: fab_items
-          label: 快捷项
+          label: 全局默认快捷项
           value: []
           min: 0
           max: 5
@@ -282,14 +282,180 @@ spec:
               name: label
               label: 提示文字
               value: ""
+            - $formkit: select
+              name: type
+              label: 动作类型
+              value: link
+              options:
+                - label: 跳转链接
+                  value: link
+                - label: 主题内置动作
+                  value: builtin
+                - label: 自定义函数
+                  value: custom
             - $formkit: text
+              if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
+              key: navigation_fab_item_url
               name: url
               label: 链接地址
               value: ""
             - $formkit: switch
+              if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
+              key: navigation_fab_item_new_tab
               name: new_tab
               label: 新标签打开
               value: true
+            - $formkit: select
+              if: "$value.type === 'builtin'"
+              key: navigation_fab_item_builtin_action
+              name: builtin_action
+              label: 内置动作
+              value: search
+              options:
+                - label: 打开搜索
+                  value: search
+                - label: 切换深浅色
+                  value: theme-toggle
+                - label: 返回顶部
+                  value: back-to-top
+                - label: 复制当前链接
+                  value: copy-current-url
+                - label: 打印页面
+                  value: print
+                - label: 打开移动菜单
+                  value: open-menu
+                - label: 滚动到评论区
+                  value: scroll-comment
+            - $formkit: text
+              if: "$value.type === 'custom'"
+              key: navigation_fab_item_custom_handler
+              name: custom_handler
+              label: 自定义函数名
+              value: ""
+              help: 在高级设置的自定义 JavaScript 中注册 window.HydroMinimActions 后填写函数名。
+            - $formkit: code
+              if: "$value.type === 'custom'"
+              key: navigation_fab_item_payload
+              name: payload
+              label: 自定义函数参数
+              language: json
+              value: ""
+              help: 推荐填写 JSON，例如 {"modal":"sponsor"}；解析失败时会按原始文本传入。
+        - $formkit: array
+          if: $get(navigation_fab_enabled).value === true
+          key: navigation_fab_profiles
+          name: fab_profiles
+          label: 页面快捷配置
+          value: []
+          min: 0
+          max: 10
+          addLabel: 添加页面配置
+          itemLabels:
+            - type: text
+              label: $value.label
+          help: 永久链接规则优先于模板 ID 规则，路径命中后会覆盖全局默认快捷项；支持 /about、/about/ 或完整 URL，并兼容当前请求路径；如果页面配置没有快捷项，会回退全局默认快捷项；所有页面规则可作为兜底。
+          children:
+            - $formkit: text
+              name: label
+              label: 配置名称
+              value: ""
+            - $formkit: select
+              name: match_type
+              label: 匹配方式
+              value: template
+              options:
+                - label: 所有页面
+                  value: all
+                - label: 模板 ID
+                  value: template
+                - label: 永久链接
+                  value: permalink
+            - $formkit: text
+              if: "$value.match_type !== 'all'"
+              key: navigation_fab_profile_match_value
+              name: match_value
+              label: 匹配值
+              value: ""
+              help: 模板 ID 示例：index、post、page_about、docs。永久链接建议填 /about、/docs 这类路径，也兼容尾斜杠和完整 URL。
+            - $formkit: array
+              name: items
+              label: 快捷项
+              value: []
+              min: 0
+              max: 5
+              addLabel: 添加快捷项
+              itemLabels:
+                - type: text
+                  label: $value.label
+              children:
+                - $formkit: iconify
+                  name: icon
+                  label: 图标
+                  format: svg
+                  value-only: true
+                - $formkit: text
+                  name: label
+                  label: 提示文字
+                  value: ""
+                - $formkit: select
+                  name: type
+                  label: 动作类型
+                  value: link
+                  options:
+                    - label: 跳转链接
+                      value: link
+                    - label: 主题内置动作
+                      value: builtin
+                    - label: 自定义函数
+                      value: custom
+                - $formkit: text
+                  if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
+                  key: navigation_fab_profile_item_url
+                  name: url
+                  label: 链接地址
+                  value: ""
+                - $formkit: switch
+                  if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
+                  key: navigation_fab_profile_item_new_tab
+                  name: new_tab
+                  label: 新标签打开
+                  value: true
+                - $formkit: select
+                  if: "$value.type === 'builtin'"
+                  key: navigation_fab_profile_item_builtin_action
+                  name: builtin_action
+                  label: 内置动作
+                  value: search
+                  options:
+                    - label: 打开搜索
+                      value: search
+                    - label: 切换深浅色
+                      value: theme-toggle
+                    - label: 返回顶部
+                      value: back-to-top
+                    - label: 复制当前链接
+                      value: copy-current-url
+                    - label: 打印页面
+                      value: print
+                    - label: 打开移动菜单
+                      value: open-menu
+                    - label: 滚动到评论区
+                      value: scroll-comment
+                - $formkit: text
+                  if: "$value.type === 'custom'"
+                  key: navigation_fab_profile_item_custom_handler
+                  name: custom_handler
+                  label: 自定义函数名
+                  value: ""
+                  help: 在高级设置的自定义 JavaScript 中注册 window.HydroMinimActions 后填写函数名。
+                - $formkit: code
+                  if: "$value.type === 'custom'"
+                  key: navigation_fab_profile_item_payload
+                  name: payload
+                  label: 自定义函数参数
+                  language: json
+                  value: ""
+                  help: 推荐填写 JSON，例如 {"modal":"sponsor"}；解析失败时会按原始文本传入。
     - group: footer
       label: 页脚
       formSchema:
