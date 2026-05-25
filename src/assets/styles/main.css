@@ -1753,6 +1753,10 @@ input {
   padding: clamp(5rem, 8vw, 7rem) 0;
 }
 
+.hydro-home--without-hero > .hydro-section:first-child {
+  padding-top: clamp(7.75rem, 10vw, 9.25rem);
+}
+
 .hydro-latest {
   position: relative;
   isolation: isolate;
@@ -3671,6 +3675,10 @@ html.lenis body {
     padding: 6.5rem 0;
   }
 
+  .hydro-home--without-hero > .hydro-section:first-child {
+    padding-top: 7.5rem;
+  }
+
   /* 移动端卡片触控反馈 */
   .hydro-card:active,
   .hydro-album-card:active {
@@ -3847,6 +3855,10 @@ html.lenis body {
 
   .hydro-section {
     padding: 4.5rem 0;
+  }
+
+  .hydro-home--without-hero > .hydro-section:first-child {
+    padding-top: 6.75rem;
   }
 
   .hydro-list-hero {
@@ -6334,6 +6346,10 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
     padding: 3.75rem 0;
   }
 
+  .hydro-home--without-hero > .hydro-section:first-child {
+    padding-top: 6.25rem;
+  }
+
   .hydro-section-title {
     max-width: 100%;
     margin-bottom: 1.35rem;
@@ -7578,6 +7594,10 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 
   .hydro-section {
     padding: clamp(5rem, 7vw, 7.25rem) 0;
+  }
+
+  .hydro-home--without-hero > .hydro-section:first-child {
+    padding-top: clamp(7.75rem, 8vw, 9rem);
   }
 
   .hydro-categories {

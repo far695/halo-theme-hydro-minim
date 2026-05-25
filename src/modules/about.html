@@ -37,7 +37,7 @@
 
         <div
           class="hydro-socials about-text-line"
-          th:if="${theme.config.home == null or theme.config.home.about_show_socials != false}"
+          th:if="${theme.config.home == null or (theme.config.home.about_show_socials != false and theme.config.home.about_show_socials != 'false')}"
         >
           <a
             th:each="item : ${theme.config.site?.social_links}"

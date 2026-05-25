@@ -2,7 +2,9 @@
   class="hydro-hero"
   th:with="
     heroCover = ${#strings.isEmpty(theme.config.home?.hero_cover) ? #theme.assets('/images/hero-featured.jpg') : theme.config.home.hero_cover},
-    heroFeaturedSize = ${theme.config.home?.hero_featured_size == null or theme.config.home.hero_featured_size < 1 ? 4 : theme.config.home.hero_featured_size}
+    heroFeaturedSize = ${theme.config.home?.hero_featured_size == null or theme.config.home.hero_featured_size < 1 ? 4 : theme.config.home.hero_featured_size},
+    heroFeaturedPosts = ${theme.config.home?.hero_featured_posts},
+    hasHeroFeaturedPosts = ${heroFeaturedPosts != null and not #lists.isEmpty(heroFeaturedPosts)}
   "
   data-hydro-hero
 >
@@ -32,7 +34,29 @@
 
         <div>
           <ul class="hydro-hero-list">
-            <li class="hydro-list-item" th:each="post,stat : ${posts.items}" th:if="${stat.index < heroFeaturedSize}">
+            <th:block th:if="${hasHeroFeaturedPosts}" th:each="postName,stat : ${heroFeaturedPosts}">
+              <th:block
+                th:if="${stat.index < heroFeaturedSize and not #strings.isEmpty(postName)}"
+                th:with="post=${postFinder.getByName(postName)}"
+              >
+                <li class="hydro-list-item" th:if="${post != null}">
+                  <a th:href="@{${post.status.permalink}}">
+                    <span th:text="${#numbers.formatInteger(stat.index + 1, 2)}">01</span>
+                    <strong th:text="${post.spec.title}">数字设计的未来</strong>
+                    <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12h14M13 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </li>
+              </th:block>
+            </th:block>
+            <li
+              class="hydro-list-item"
+              th:unless="${hasHeroFeaturedPosts}"
+              th:each="post,stat : ${posts.items}"
+              th:if="${stat.index < heroFeaturedSize}"
+            >
               <a th:href="@{${post.status.permalink}}">
                 <span th:text="${#numbers.formatInteger(stat.index + 1, 2)}">01</span>
                 <strong th:text="${post.spec.title}">数字设计的未来</strong>
@@ -44,7 +68,7 @@
             </li>
           </ul>
           <div
-            th:if="${posts.total == 0}"
+            th:if="${not hasHeroFeaturedPosts and posts.total == 0}"
             class="hydro-empty"
             th:text="${theme.config.home?.hero_empty_text ?: '还没有发布文章。'}"
           >

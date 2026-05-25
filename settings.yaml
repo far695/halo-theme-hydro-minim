@@ -522,49 +522,69 @@ spec:
       label: 首页
       formSchema:
         - $formkit: switch
+          id: home_show_hero
+          key: home_show_hero
           name: show_hero
           label: 显示首屏 Hero
           value: true
         - $formkit: text
+          if: $get(home_show_hero).value === true
           name: hero_label
           label: Hero 标签
           value: 氢视窗
         - $formkit: text
+          if: $get(home_show_hero).value === true
           name: hero_title
           label: Hero 标题
           value: 探索
         - $formkit: textarea
+          if: $get(home_show_hero).value === true
           name: hero_description
           label: Hero 描述
           value: 精选的想法、故事和创意，全部汇集于此。如氢气般轻快、简洁、流畅的体验。
         - $formkit: attachment
+          if: $get(home_show_hero).value === true
           name: hero_cover
           label: Hero 封面
           value: /themes/halo-theme-hydro-minim/assets/images/hero-featured.jpg
         - $formkit: text
+          if: $get(home_show_hero).value === true
           name: hero_scroll_hint
           label: Hero 滚动提示
           value: 向下滚动
         - $formkit: number
+          if: $get(home_show_hero).value === true
           name: hero_featured_size
           label: Hero 右侧文章数量
           value: 4
           min: 1
           max: 8
           step: 1
+        - $formkit: postSelect
+          if: $get(home_show_hero).value === true
+          name: hero_featured_posts
+          label: Hero 右侧指定文章
+          multiple: true
+          value: []
+          help: 选择后右侧列表按选择顺序展示指定文章；留空时展示最新文章，数量仍受上方设置限制。
         - $formkit: text
+          if: $get(home_show_hero).value === true
           name: hero_empty_text
           label: Hero 无文章提示
           value: 还没有发布文章。
         - $formkit: switch
+          id: home_show_latest
+          key: home_show_latest
           name: show_latest
           label: 显示最新文章
           value: true
         - $formkit: text
+          if: $get(home_show_latest).value === true
           name: latest_title
           label: 最新文章标题
           value: 最新文章
         - $formkit: number
+          if: $get(home_show_latest).value === true
           name: latest_size
           label: 首页文章展示数量
           value: 3
@@ -572,22 +592,28 @@ spec:
           max: 6
           step: 1
         - $formkit: text
+          if: $get(home_show_latest).value === true
           name: latest_action_label
           label: 最新文章按钮文案
           value: 查看全部文章
         - $formkit: text
+          if: $get(home_show_latest).value === true
           name: latest_empty_text
           label: 无文章提示
           value: 还没有发布文章。
         - $formkit: switch
+          id: home_show_categories
+          key: home_show_categories
           name: show_categories
           label: 显示分类模块
           value: true
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: categories_title
           label: 分类模块标题
           value: 分类
         - $formkit: number
+          if: $get(home_show_categories).value === true
           name: categories_size
           label: 首页分类展示数量
           value: 4
@@ -595,70 +621,88 @@ spec:
           max: 8
           step: 1
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: category_fallback_description
           label: 分类描述兜底
           value: 继续探索这个分类下的内容
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: categories_all_title
           label: 全部分类卡片标题
           value: 全部
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: categories_all_description
           label: 全部分类卡片描述
           value: 浏览所有文章内容
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: categories_cta_label
           label: 分类卡片 CTA
           value: 探索
         - $formkit: text
+          if: $get(home_show_categories).value === true
           name: categories_cursor_text
           label: 分类悬浮 Cursor 文案
           value: 查看
         - $formkit: switch
+          id: home_show_about
+          key: home_show_about
           name: show_about
           label: 显示首页关于模块
           value: true
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_eyebrow
           label: 关于模块标签
           value: About
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_title
           label: 关于标题
           value: 关于
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_subtitle
           label: 关于副标题
           value: 艺术的生活家
         - $formkit: textarea
+          if: $get(home_show_about).value === true
           name: about_paragraph_1
           label: 关于段落一
           value: 氢风格博客诞生于对简约美学的追求。我们相信，好的设计应该像氢气一样——轻快、简洁、流畅，却蕴含着无限的可能。
         - $formkit: textarea
+          if: $get(home_show_about).value === true
           name: about_paragraph_2
           label: 关于段落二
           value: 在这里，我们分享关于设计、科技与生活方式的思考。每一篇文章都是精心策划的创意表达，旨在为读者带来启发与美的享受。
         - $formkit: textarea
+          if: $get(home_show_about).value === true
           name: about_paragraph_3
           label: 关于段落三
           value: 33% 的自由，66% 的内容。这是氢视窗的哲学，也是我们对内容创作的坚持——在结构化的框架中，保留艺术的呼吸空间。
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_articles_label
           label: 文章统计标签
           value: 篇文章
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_categories_label
           label: 分类统计标签
           value: 个分类
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_readers_label
           label: 读者统计标签
           value: 位读者
         - $formkit: text
+          if: $get(home_show_about).value === true
           name: about_readers
           label: 读者展示值
           value: 2.4k
         - $formkit: switch
+          if: $get(home_show_about).value === true
           name: about_show_socials
           label: 首页关于模块显示社交链接
           value: true
