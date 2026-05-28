@@ -236,6 +236,572 @@ input {
   padding-top: calc(8.5rem + env(safe-area-inset-top));
 }
 
+body.hydro-auth-page {
+  min-height: 100vh;
+  background: var(--hydro-bg);
+  color: var(--hydro-text);
+}
+
+body.hydro-auth-page .hydro-auth-main {
+  min-height: 100svh;
+  padding: calc(8.5rem + env(safe-area-inset-top)) 1.5rem 5rem;
+}
+
+body.hydro-auth-page .gateway-wrapper,
+body.hydro-auth-page .gateway-wrapper::before,
+body.hydro-auth-page .gateway-wrapper::after,
+body.hydro-auth-page .gateway-wrapper *,
+body.hydro-auth-page .gateway-wrapper *::before,
+body.hydro-auth-page .gateway-wrapper *::after {
+  box-sizing: border-box;
+}
+
+body.hydro-auth-page .gateway-wrapper {
+  width: min(100%, 24rem);
+  margin: 0 auto;
+  color: var(--hydro-text);
+  font-family: "Space Mono", monospace;
+  line-height: 1.5;
+}
+
+body.hydro-auth-page .signup-page-wrapper {
+  width: min(100%, 38rem);
+}
+
+body.hydro-auth-page .setup-page-wrapper {
+  width: min(100%, 35rem);
+}
+
+body.hydro-auth-page .hydro-auth-brand {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+body.hydro-auth-page .hydro-auth-brand__title {
+  color: var(--hydro-text);
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+body.hydro-auth-page .halo-form-wrapper {
+  width: 100%;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 58%);
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  box-shadow: 0 18px 54px rgb(var(--hydro-shadow-rgb) / 8%);
+  backdrop-filter: blur(22px);
+}
+
+body.hydro-auth-page .form-title {
+  display: block;
+  margin: 0 0 1.35rem;
+  color: var(--hydro-text);
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+}
+
+body.hydro-auth-page .hydro-auth-note {
+  margin: -0.55rem 0 1.35rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1rem;
+  background: rgb(var(--hydro-ink-rgb) / 3%);
+  color: var(--hydro-muted);
+  padding: 0.9rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+body.hydro-auth-page .halo-form .form-item {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+body.hydro-auth-page .halo-form .form-item:last-of-type {
+  margin-bottom: 0;
+}
+
+body.hydro-auth-page .halo-form .form-item-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+body.hydro-auth-page .halo-form .form-item-group .form-item {
+  margin-bottom: 0;
+}
+
+body.hydro-auth-page .halo-form .form-item-group .form-item--full {
+  grid-column: 1 / -1;
+}
+
+body.hydro-auth-page .halo-form .form-label-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+body.hydro-auth-page .halo-form .form-label-group label {
+  margin-bottom: 0;
+}
+
+body.hydro-auth-page .halo-form .form-item label,
+body.hydro-auth-page .halo-form .form-label {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  color: rgb(var(--hydro-ink-rgb) / 70%);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+body.hydro-auth-page .halo-form .form-item-extra-link {
+  color: var(--hydro-coral);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.hydro-auth-page .halo-form .form-item-extra-link:hover {
+  text-decoration: underline;
+}
+
+body.hydro-auth-page .halo-form .form-input {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 3.25rem;
+  align-items: center;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1rem;
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+  color: var(--hydro-text);
+  padding: 0 1.25rem;
+  transition:
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.hydro-auth-page .halo-form .form-input:hover {
+  background: rgb(var(--hydro-ink-rgb) / 6%);
+}
+
+body.hydro-auth-page .halo-form .form-input:focus-within {
+  border-color: var(--hydro-coral);
+  background: var(--hydro-bg);
+  box-shadow: 0 0 0 3px rgb(var(--hydro-coral-rgb) / 15%);
+}
+
+body.hydro-auth-page .halo-form .form-input input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--hydro-text);
+  outline: none;
+  padding: 0;
+}
+
+body.hydro-auth-page .halo-form .form-input input::placeholder {
+  color: var(--hydro-muted);
+}
+
+body.hydro-auth-page .halo-form .form-help {
+  margin: 0.45rem 0 0;
+  color: rgb(var(--hydro-ink-rgb) / 48%);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+body.hydro-auth-page .halo-form .form-input-stack {
+  gap: 0.75rem;
+  padding-right: 0.95rem;
+}
+
+body.hydro-auth-page .halo-form .form-input-stack-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--hydro-muted);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+body.hydro-auth-page .halo-form .form-input-stack-icon:hover {
+  background: rgb(var(--hydro-ink-rgb) / 6%);
+  color: var(--hydro-text);
+}
+
+body.hydro-auth-page .halo-form .form-input-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+body.hydro-auth-page .halo-form .form-input-group button,
+body.hydro-auth-page .halo-form button[type="submit"],
+body.hydro-auth-page .halo-form .cancel-link {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 1.35rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.hydro-auth-page .halo-form .form-input-group button,
+body.hydro-auth-page .halo-form button[type="submit"] {
+  border: 1px solid var(--hydro-text);
+  background: var(--hydro-text);
+  color: var(--hydro-bg);
+}
+
+body.hydro-auth-page .halo-form button[type="submit"] {
+  width: 100%;
+}
+
+body.hydro-auth-page .halo-form .form-input-group button {
+  white-space: nowrap;
+}
+
+body.hydro-auth-page .halo-form .cancel-link {
+  width: 100%;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+  color: var(--hydro-text);
+}
+
+body.hydro-auth-page .halo-form .form-input-group button:hover,
+body.hydro-auth-page .halo-form button[type="submit"]:hover,
+body.hydro-auth-page .halo-form .cancel-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgb(var(--hydro-ink-rgb) / 16%);
+}
+
+body.hydro-auth-page .halo-form .cancel-link:hover {
+  border-color: rgb(var(--hydro-ink-rgb) / 18%);
+  background: rgb(var(--hydro-ink-rgb) / 7%);
+}
+
+body.hydro-auth-page .halo-form .form-input-group button:active,
+body.hydro-auth-page .halo-form button[type="submit"]:active,
+body.hydro-auth-page .halo-form .cancel-link:active {
+  transform: translateY(0);
+}
+
+body.hydro-auth-page .halo-form button[disabled],
+body.hydro-auth-page .halo-form button.disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+  transform: none;
+}
+
+body.hydro-auth-page .halo-form .form-item-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  margin: 0.35rem 0 1.5rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1rem;
+  background: rgb(var(--hydro-ink-rgb) / 3%);
+  color: var(--hydro-muted);
+  padding: 0.75rem 0.95rem;
+  font-size: 0.875rem;
+  transition:
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.hydro-auth-page .halo-form .form-item-compact:hover {
+  border-color: rgb(var(--hydro-ink-rgb) / 14%);
+  background: rgb(var(--hydro-ink-rgb) / 5%);
+}
+
+body.hydro-auth-page .halo-form .form-item-compact label {
+  flex: 1;
+  margin: 0;
+  cursor: pointer;
+  line-height: 1.4;
+  user-select: none;
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"] {
+  position: relative;
+  flex: 0 0 1.15rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 18%);
+  border-radius: 0.4rem;
+  appearance: none;
+  background: rgb(var(--hydro-paper-rgb) / 70%);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"]:checked {
+  border-color: var(--hydro-text);
+  background: var(--hydro-text);
+  box-shadow: 0 8px 18px rgb(var(--hydro-ink-rgb) / 14%);
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"]::after {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.34rem;
+  width: 0.38rem;
+  height: 0.65rem;
+  border: solid var(--hydro-bg);
+  border-width: 0 2px 2px 0;
+  content: "";
+  transform: rotate(45deg) scale(0);
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"]:checked::after {
+  transform: rotate(45deg) scale(1);
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"]:focus-visible,
+body.hydro-auth-page .halo-form button:focus-visible,
+body.hydro-auth-page .halo-form .cancel-link:focus-visible,
+body.hydro-auth-page .language-switcher select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(var(--hydro-coral-rgb) / 18%);
+}
+
+body.hydro-auth-page .halo-form input[type="checkbox"]:active {
+  transform: scale(0.94);
+}
+
+body.hydro-auth-page .divider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  color: var(--hydro-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+body.hydro-auth-page .divider-wrapper hr {
+  flex: 1;
+  border: 0;
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+}
+
+body.hydro-auth-page .pill-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.hydro-auth-page .pill-items li {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1rem;
+  background: transparent;
+  transition:
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.hydro-auth-page .pill-items li:hover {
+  border-color: rgb(var(--hydro-ink-rgb) / 20%);
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+}
+
+body.hydro-auth-page .pill-items li a,
+body.hydro-auth-page .pill-items li button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 0;
+  background: transparent;
+  color: var(--hydro-text);
+  cursor: pointer;
+  padding: 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+body.hydro-auth-page .pill-items li img {
+  width: 1.35rem;
+  height: 1.35rem;
+  object-fit: contain;
+}
+
+body.hydro-auth-page .alert {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 1rem;
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+  color: var(--hydro-muted);
+  padding: 0.875rem 1rem;
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+body.hydro-auth-page .alert .alert-note {
+  display: block;
+  margin-top: 0.35rem;
+  color: color-mix(in srgb, currentColor 74%, transparent);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+body.hydro-auth-page .alert-error {
+  border-color: rgb(var(--hydro-coral-rgb) / 22%);
+  background: rgb(var(--hydro-coral-rgb) / 8%);
+  color: var(--hydro-coral);
+}
+
+body.hydro-auth-page .halo-form .form-item > .alert-error {
+  margin: 0.65rem 0 0;
+  border-left: 3px solid var(--hydro-coral);
+  font-weight: 600;
+}
+
+body.hydro-auth-page .alert-success {
+  border-color: rgb(var(--hydro-teal-rgb) / 24%);
+  background: rgb(var(--hydro-teal-rgb) / 9%);
+  color: var(--hydro-teal);
+}
+
+body.hydro-auth-page .user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 1.25rem;
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+  padding: 1.35rem;
+  text-align: center;
+}
+
+body.hydro-auth-page .user-avatar {
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 2px solid var(--hydro-bg);
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgb(var(--hydro-ink-rgb) / 12%);
+  object-fit: cover;
+}
+
+body.hydro-auth-page .user-details {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--hydro-muted);
+  font-size: 0.82rem;
+}
+
+body.hydro-auth-page .user-name {
+  color: var(--hydro-text);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+body.hydro-auth-page .language-switcher,
+body.hydro-auth-page .signup-notice-content,
+body.hydro-auth-page .login-notice-content,
+body.hydro-auth-page .returntosite-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1rem 0 0;
+  color: var(--hydro-muted);
+  font-size: 0.84rem;
+  text-align: center;
+}
+
+body.hydro-auth-page .language-switcher label {
+  display: inline-flex;
+  color: var(--hydro-muted);
+}
+
+body.hydro-auth-page .language-switcher select {
+  height: 2.25rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, currentColor 50%) calc(100% - 0.95rem) 50% / 0.35rem 0.35rem no-repeat,
+    rgb(var(--hydro-ink-rgb) / 4%);
+  color: var(--hydro-text);
+  padding: 0 1.8rem 0 0.85rem;
+  outline: none;
+}
+
+body.hydro-auth-page .signup-notice-content a,
+body.hydro-auth-page .login-notice-content a,
+body.hydro-auth-page .returntosite-content a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--hydro-coral);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.hydro-auth-page .signup-notice-content a:hover,
+body.hydro-auth-page .login-notice-content a:hover,
+body.hydro-auth-page .returntosite-content a:hover {
+  text-decoration: underline;
+}
+
 .hydro-nav__inner {
   display: flex;
   align-items: center;
@@ -6354,6 +6920,24 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 
   .hydro-login-page {
     padding-top: calc(7.5rem + env(safe-area-inset-top));
+  }
+
+  body.hydro-auth-page .hydro-auth-main {
+    padding: calc(7.5rem + env(safe-area-inset-top)) 1rem 4rem;
+  }
+
+  body.hydro-auth-page .halo-form-wrapper {
+    border-radius: 1.25rem;
+    padding: 1.15rem;
+  }
+
+  body.hydro-auth-page .halo-form .form-item-group,
+  body.hydro-auth-page .halo-form .form-input-group {
+    grid-template-columns: 1fr;
+  }
+
+  body.hydro-auth-page .halo-form .form-input-group button {
+    width: 100%;
   }
 
   .hydro-home--without-hero > .hydro-section:first-child {

@@ -1,0 +1,115 @@
+<th:block th:fragment="basicStaticResources">
+  <th:block th:replace="~{gateway_fragments/common::basicScriptResources}"></th:block>
+</th:block>
+
+<th:block th:fragment="basicScriptResources">
+  <script th:inline="javascript">
+    const i18nResources = {
+      sendVerificationCodeSending: `[(#{js.sendVerificationCode.sending})]`,
+      sendVerificationCodeSuccess: `[(#{js.sendVerificationCode.success})]`,
+      sendVerificationCodeFailed: `[(#{js.sendVerificationCode.failed})]`,
+      passwordConfirmationFailed: `[(#{js.passwordConfirmation.failed})]`,
+    };
+  </script>
+
+  <script src="/js/main.js"></script>
+</th:block>
+
+<th:block th:fragment="basicStyleResources"></th:block>
+
+<div th:remove="tag" th:fragment="languageSwitcher">
+  <div class="language-switcher">
+    <label for="language-select" aria-label="Language">
+      <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="m12.87 15.07l-2.54-2.51l.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5l3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7l1.62-4.33L19.12 17z"
+        ></path>
+      </svg>
+    </label>
+    <select id="language-select" onchange="changeLanguage()">
+      <option value="en" th:selected="${#locale.toLanguageTag} == 'en'">English</option>
+      <option value="es" th:selected="${#locale.toLanguageTag} == 'es'">Español</option>
+      <option value="zh-CN" th:selected="${#locale.toLanguageTag} == 'zh-CN'">简体中文</option>
+      <option value="zh-TW" th:selected="${#locale.toLanguageTag} == 'zh-TW'">繁体中文</option>
+    </select>
+    <script type="text/javascript">
+      function changeLanguage() {
+        const selectedLanguage = document.getElementById("language-select").value;
+        const currentURL = new URL(window.location.href);
+        currentURL.searchParams.set("language", selectedLanguage);
+
+        history.replaceState(null, "", currentURL.toString());
+        window.location.reload();
+      }
+    </script>
+  </div>
+</div>
+
+<div th:remove="tag" th:fragment="haloLogo">
+  <div class="hydro-auth-brand">
+    <span class="hydro-auth-brand__title" th:text="${site.title}">Hydro-Minim</span>
+  </div>
+</div>
+
+<div th:remove="tag" th:fragment="socialAuthProviders">
+  <th:block th:unless="${#lists.isEmpty(socialAuthProviders)}">
+    <div class="divider-wrapper">
+      <hr />
+      <span th:text="#{socialLogin.label}"></span>
+      <hr />
+    </div>
+    <ul class="pill-items">
+      <li th:each="provider : ${socialAuthProviders}">
+        <a th:href="${provider.spec.authenticationUrl}">
+          <img th:src="${provider.spec.logo}" th:alt="|${provider.spec.displayName}'s icon|" />
+          <span th:text="${provider.spec.displayName}"></span>
+        </a>
+      </li>
+    </ul>
+  </th:block>
+</div>
+
+<div th:remove="tag" th:fragment="passwordResetMethods">
+  <th:block th:unless="${#lists.isEmpty(otherMethods)}">
+    <div class="divider-wrapper">
+      <hr />
+      <span th:text="#{passwordResetMethods.label}"></span>
+      <hr />
+    </div>
+    <ul class="pill-items">
+      <li th:each="method : ${otherMethods}">
+        <a th:href="${method.href}">
+          <img th:src="${method.icon}" th:alt="|${method.name}'s icon|" />
+          <span th:text="${#messages.msgOrNull('passwordResetMethods.' + method.name + '.displayName') ?: method.name}">
+          </span>
+        </a>
+      </li>
+    </ul>
+  </th:block>
+</div>
+
+<div th:remove="tag" th:fragment="signupNoticeContent">
+  <div th:if="${globalInfo.allowRegistration}" class="signup-notice-content">
+    <span th:text="#{signupNotice.description}"></span>
+    <a th:href="@{/signup}" th:text="#{signupNotice.link}"></a>
+  </div>
+</div>
+
+<div th:remove="tag" th:fragment="loginNoticeContent">
+  <div th:if="${globalInfo.allowRegistration}" class="login-notice-content">
+    <span th:text="#{loginNotice.description}"></span>
+    <a th:href="@{/login}" th:text="#{loginNotice.link}"></a>
+  </div>
+</div>
+
+<div th:remove="tag" th:fragment="returnToSiteContent">
+  <div class="returntosite-content">
+    <a th:href="@{/}">
+      <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true">
+        <path fill="currentColor" d="M21 11H6.83l3.58-3.59L9 6l-6 6l6 6l1.41-1.42L6.83 13H21z"></path>
+      </svg>
+      <span th:text="#{returnToSite}"></span>
+    </a>
+  </div>
+</div>

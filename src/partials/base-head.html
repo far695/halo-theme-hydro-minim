@@ -12,6 +12,12 @@
   th:content="${theme.config.appearance?.dark_background_color ?: '#101112'}"
 />
 <link
+  rel="icon"
+  type="image/svg+xml"
+  th:with="faviconHref = ${site.favicon ?: (theme.config.site == null || #strings.isEmpty(theme.config.site.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.site.logo)}"
+  th:href="${faviconHref}"
+/>
+<link
   rel="preload"
   th:href="${theme.config.home?.hero_cover ?: #theme.assets('/images/hero-featured.jpg')}"
   as="image"

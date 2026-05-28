@@ -1,0 +1,17 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{gateway_fragments/layout :: layout(title = |#{auth.totp.title} - ${site.title}|, head = null, body = ~{::body})}"
+>
+  <th:block th:fragment="body">
+    <div class="gateway-wrapper totp-page-wrapper">
+      <div th:replace="~{gateway_fragments/common::haloLogo}"></div>
+      <div class="halo-form-wrapper">
+        <h1 class="form-title" th:text="#{auth.totp.title}">两步验证</h1>
+        <p class="hydro-auth-note" th:text="#{auth.totp.description}">请输入认证应用中的 6 位动态验证码。</p>
+        <form th:replace="~{gateway_fragments/totp::form}"></form>
+      </div>
+      <div th:replace="~{gateway_fragments/common::languageSwitcher}"></div>
+    </div>
+  </th:block>
+</html>
