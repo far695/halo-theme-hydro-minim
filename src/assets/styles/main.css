@@ -10,6 +10,7 @@
   --hydro-solid: #000;
   --hydro-solid-contrast: #fff;
   --hydro-text: var(--hydro-solid);
+  --hydro-ink: rgb(var(--hydro-ink-rgb) / 88%);
   --hydro-ink-rgb: 0 0 0;
   --hydro-paper-rgb: 255 255 255;
   --hydro-shadow-rgb: 0 0 0;
@@ -21,6 +22,27 @@
   --hydro-coral-rgb: var(--hydro-coral-light-rgb, 255 107 107);
   --hydro-coral-dark: #ff8a8a;
   --hydro-coral-dark-rgb: 255 138 138;
+  --hydro-accent: var(--hydro-coral);
+  --hydro-accent-rgb: var(--hydro-coral-rgb);
+  --hydro-highlight-bg: rgb(var(--hydro-accent-rgb) / 13%);
+  --hydro-highlight-soft: rgb(var(--hydro-accent-rgb) / 8%);
+  --hydro-highlight-line: rgb(var(--hydro-accent-rgb) / 42%);
+  --hydro-highlight-solid: color-mix(in srgb, var(--hydro-accent) 82%, var(--hydro-solid) 18%);
+  --hydro-highlight-text: rgb(var(--hydro-ink-rgb) / 90%);
+  --hydro-selection-bg: rgb(var(--hydro-accent-rgb) / 22%);
+  --hydro-selection-text: var(--hydro-solid);
+  --hydro-link-text: color-mix(in srgb, var(--hydro-solid) 86%, var(--hydro-accent) 14%);
+  --hydro-link-underline: rgb(var(--hydro-accent-rgb) / 46%);
+  --hydro-link-hover-bg: rgb(var(--hydro-accent-rgb) / 9%);
+  --hydro-link-hover-text: var(--hydro-solid);
+  --hydro-focus-border: rgb(var(--hydro-accent-rgb) / 54%);
+  --hydro-focus-shadow: 0 0 0 1px rgb(var(--hydro-accent-rgb) / 50%), 0 0 0 4px rgb(var(--hydro-accent-rgb) / 13%);
+  --hydro-form-border: rgb(var(--hydro-ink-rgb) / 12%);
+  --hydro-form-border-hover: rgb(var(--hydro-ink-rgb) / 18%);
+  --hydro-form-border-focus: var(--hydro-focus-border);
+  --hydro-form-bg: rgb(var(--hydro-paper-rgb) / 54%);
+  --hydro-form-bg-hover: rgb(var(--hydro-paper-rgb) / 66%);
+  --hydro-form-bg-focus: rgb(var(--hydro-paper-rgb) / 78%);
   --hydro-teal: #4ecdc4;
   --hydro-teal-rgb: 78 205 196;
   --hydro-yellow: #ffe66d;
@@ -33,11 +55,11 @@
   --hydro-theme-transition-x: 50vw;
   --hydro-theme-transition-y: 4rem;
   --hydro-theme-transition-radius: 120vmax;
-  --hydro-search-accent-rgb: var(--hydro-coral-rgb);
-  --hydro-search-selection-bg: rgb(var(--hydro-search-accent-rgb) / 14%);
-  --hydro-search-selection-border: rgb(var(--hydro-search-accent-rgb) / 56%);
-  --hydro-search-highlight-bg: rgb(var(--hydro-search-accent-rgb) / 24%);
-  --hydro-search-highlight-text: rgb(var(--hydro-ink-rgb) / 92%);
+  --hydro-search-accent-rgb: var(--hydro-accent-rgb);
+  --hydro-search-selection-bg: var(--hydro-highlight-soft);
+  --hydro-search-selection-border: var(--hydro-highlight-line);
+  --hydro-search-highlight-bg: var(--hydro-highlight-bg);
+  --hydro-search-highlight-text: var(--hydro-highlight-text);
   --halo-search-widget-primary-color: var(--hydro-coral);
   --halo-search-widget-muted-color: rgb(var(--hydro-ink-rgb) / 52%);
   --halo-search-widget-content-color: rgb(var(--hydro-ink-rgb) / 86%);
@@ -59,22 +81,43 @@
   --hydro-solid: #f5f3ef;
   --hydro-solid-contrast: #101112;
   --hydro-text: var(--hydro-solid);
+  --hydro-ink: rgb(var(--hydro-ink-rgb) / 88%);
   --hydro-coral: var(--hydro-coral-dark, #ff8a8a);
   --hydro-coral-rgb: var(--hydro-coral-dark-rgb, 255 138 138);
+  --hydro-accent: var(--hydro-coral);
+  --hydro-accent-rgb: var(--hydro-coral-rgb);
   --hydro-ink-rgb: 245 243 239;
   --hydro-paper-rgb: 18 19 20;
   --hydro-muted: rgb(var(--hydro-ink-rgb) / 66%);
   --hydro-faint: rgb(var(--hydro-ink-rgb) / 14%);
+  --hydro-highlight-bg: rgb(var(--hydro-accent-rgb) / 17%);
+  --hydro-highlight-soft: rgb(var(--hydro-accent-rgb) / 10%);
+  --hydro-highlight-line: rgb(var(--hydro-accent-rgb) / 50%);
+  --hydro-highlight-solid: color-mix(in srgb, var(--hydro-accent) 74%, var(--hydro-solid) 26%);
+  --hydro-highlight-text: rgb(var(--hydro-ink-rgb) / 94%);
+  --hydro-selection-bg: rgb(var(--hydro-accent-rgb) / 26%);
+  --hydro-selection-text: var(--hydro-solid);
+  --hydro-link-text: color-mix(in srgb, var(--hydro-solid) 84%, var(--hydro-accent) 16%);
+  --hydro-link-underline: rgb(var(--hydro-accent-rgb) / 54%);
+  --hydro-link-hover-bg: rgb(var(--hydro-accent-rgb) / 12%);
+  --hydro-link-hover-text: var(--hydro-solid);
+  --hydro-focus-border: rgb(var(--hydro-accent-rgb) / 60%);
+  --hydro-focus-shadow: 0 0 0 1px rgb(var(--hydro-accent-rgb) / 54%), 0 0 0 4px rgb(var(--hydro-accent-rgb) / 16%);
+  --hydro-form-border: rgb(var(--hydro-ink-rgb) / 14%);
+  --hydro-form-border-hover: rgb(var(--hydro-ink-rgb) / 22%);
+  --hydro-form-bg: rgb(var(--hydro-paper-rgb) / 60%);
+  --hydro-form-bg-hover: rgb(var(--hydro-paper-rgb) / 74%);
+  --hydro-form-bg-focus: rgb(var(--hydro-paper-rgb) / 86%);
   --hydro-teal: #7dded6;
   --hydro-teal-rgb: 125 222 214;
   --hydro-yellow: #fff0a6;
   --hydro-image-shade: rgb(0 0 0 / 52%);
   --hydro-code-bg: rgb(255 255 255 / 8%);
   --hydro-code-text: var(--hydro-solid);
-  --hydro-search-selection-bg: rgb(var(--hydro-search-accent-rgb) / 18%);
-  --hydro-search-selection-border: rgb(var(--hydro-search-accent-rgb) / 64%);
-  --hydro-search-highlight-bg: rgb(var(--hydro-search-accent-rgb) / 28%);
-  --hydro-search-highlight-text: rgb(var(--hydro-ink-rgb) / 94%);
+  --hydro-search-selection-bg: var(--hydro-highlight-soft);
+  --hydro-search-selection-border: var(--hydro-highlight-line);
+  --hydro-search-highlight-bg: var(--hydro-highlight-bg);
+  --hydro-search-highlight-text: var(--hydro-highlight-text);
   --halo-search-widget-primary-color: var(--hydro-coral);
   --halo-search-widget-muted-color: rgb(var(--hydro-ink-rgb) / 58%);
   --halo-search-widget-content-color: rgb(var(--hydro-ink-rgb) / 88%);
@@ -174,13 +217,30 @@ img {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
 ::selection {
-  background: var(--hydro-coral);
-  color: var(--hydro-solid-contrast);
+  background: var(--hydro-selection-bg);
+  color: var(--hydro-selection-text);
+  text-shadow: none;
+}
+
+:where(input, textarea, [contenteditable="true"]) {
+  caret-color: var(--hydro-highlight-solid);
+}
+
+:where(input[type="checkbox"], input[type="radio"], progress) {
+  accent-color: var(--hydro-highlight-solid);
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 1px solid var(--hydro-focus-border);
+  outline-offset: 3px;
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 .hydro-container {
@@ -399,14 +459,21 @@ body.hydro-auth-page .halo-form .form-label {
 }
 
 body.hydro-auth-page .halo-form .form-item-extra-link {
-  color: var(--hydro-coral);
+  border-bottom: 1px solid var(--hydro-link-underline);
+  color: var(--hydro-link-text);
   font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 body.hydro-auth-page .halo-form .form-item-extra-link:hover {
-  text-decoration: underline;
+  border-bottom-color: var(--hydro-highlight-line);
+  background: var(--hydro-link-hover-bg);
+  color: var(--hydro-link-hover-text);
 }
 
 body.hydro-auth-page .halo-form .form-input {
@@ -416,9 +483,9 @@ body.hydro-auth-page .halo-form .form-input {
   min-width: 0;
   height: 3.25rem;
   align-items: center;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border: 1px solid var(--hydro-form-border);
   border-radius: 1rem;
-  background: rgb(var(--hydro-ink-rgb) / 4%);
+  background: var(--hydro-form-bg);
   color: var(--hydro-text);
   padding: 0 1.25rem;
   transition:
@@ -428,13 +495,14 @@ body.hydro-auth-page .halo-form .form-input {
 }
 
 body.hydro-auth-page .halo-form .form-input:hover {
-  background: rgb(var(--hydro-ink-rgb) / 6%);
+  border-color: var(--hydro-form-border-hover);
+  background: var(--hydro-form-bg-hover);
 }
 
 body.hydro-auth-page .halo-form .form-input:focus-within {
-  border-color: var(--hydro-coral);
-  background: var(--hydro-bg);
-  box-shadow: 0 0 0 3px rgb(var(--hydro-coral-rgb) / 15%);
+  border-color: var(--hydro-form-border-focus);
+  background: var(--hydro-form-bg-focus);
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 body.hydro-auth-page .halo-form .form-input input {
@@ -610,9 +678,9 @@ body.hydro-auth-page .halo-form input[type="checkbox"] {
 }
 
 body.hydro-auth-page .halo-form input[type="checkbox"]:checked {
-  border-color: var(--hydro-text);
-  background: var(--hydro-text);
-  box-shadow: 0 8px 18px rgb(var(--hydro-ink-rgb) / 14%);
+  border-color: var(--hydro-highlight-solid);
+  background: var(--hydro-highlight-solid);
+  box-shadow: 0 8px 18px rgb(var(--hydro-accent-rgb) / 18%);
 }
 
 body.hydro-auth-page .halo-form input[type="checkbox"]::after {
@@ -638,7 +706,7 @@ body.hydro-auth-page .halo-form button:focus-visible,
 body.hydro-auth-page .halo-form .cancel-link:focus-visible,
 body.hydro-auth-page .language-switcher select:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgb(var(--hydro-coral-rgb) / 18%);
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 body.hydro-auth-page .halo-form input[type="checkbox"]:active {
@@ -753,7 +821,8 @@ body.hydro-auth-page .alert-error {
 
 body.hydro-auth-page .halo-form .form-item > .alert-error {
   margin: 0.65rem 0 0;
-  border-left: 3px solid var(--hydro-coral);
+  border-color: rgb(var(--hydro-accent-rgb) / 28%);
+  box-shadow: inset 0 0 0 1px var(--hydro-highlight-soft);
   font-weight: 600;
 }
 
@@ -836,15 +905,22 @@ body.hydro-auth-page .returntosite-content a {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: var(--hydro-coral);
+  border-bottom: 1px solid var(--hydro-link-underline);
+  color: var(--hydro-link-text);
   font-weight: 600;
   text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 body.hydro-auth-page .signup-notice-content a:hover,
 body.hydro-auth-page .login-notice-content a:hover,
 body.hydro-auth-page .returntosite-content a:hover {
-  text-decoration: underline;
+  border-bottom-color: var(--hydro-highlight-line);
+  background: var(--hydro-link-hover-bg);
+  color: var(--hydro-link-hover-text);
 }
 
 .hydro-nav__inner {
@@ -1146,10 +1222,20 @@ body.hydro-auth-page .returntosite-content a:hover {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.75rem;
   margin: clamp(1.8rem, 4vw, 2.7rem) 0;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 13%);
+  border: 1px solid var(--hydro-form-border);
   border-radius: 0.72rem;
   padding: 0.72rem;
   background: rgb(var(--hydro-paper-rgb) / 34%);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hydro-search-form:focus-within {
+  border-color: var(--hydro-form-border-focus);
+  background: rgb(var(--hydro-paper-rgb) / 46%);
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 .hydro-search-form label {
@@ -1169,10 +1255,10 @@ body.hydro-auth-page .returntosite-content a:hover {
   width: 100%;
   min-width: 0;
   min-height: 3.35rem;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border: 1px solid var(--hydro-form-border);
   border-radius: 0.5rem;
   outline: none;
-  background: rgb(var(--hydro-paper-rgb) / 42%);
+  background: var(--hydro-form-bg);
   color: rgb(var(--hydro-ink-rgb) / 88%);
   font-size: clamp(1.08rem, 2vw, 1.45rem);
   padding: 0.85rem 1rem;
@@ -1183,9 +1269,9 @@ body.hydro-auth-page .returntosite-content a:hover {
 }
 
 .hydro-search-form input[type="search"]:focus {
-  border-color: rgb(var(--hydro-ink-rgb) / 28%);
-  background: rgb(var(--hydro-paper-rgb) / 58%);
-  box-shadow: 0 0 0 2px rgb(var(--hydro-ink-rgb) / 4%);
+  border-color: var(--hydro-form-border-focus);
+  background: var(--hydro-form-bg-focus);
+  box-shadow: none;
 }
 
 .hydro-search-form input[type="search"]::placeholder {
@@ -1216,6 +1302,7 @@ body.hydro-auth-page .returntosite-content a:hover {
 .hydro-search-form button:hover,
 .hydro-search-form button:focus-visible {
   opacity: 0.88;
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 .hydro-search-form button:active {
@@ -3806,7 +3893,29 @@ html[data-hydro-motion="off"] .hydro-card:hover .hydro-card__arrow {
 }
 
 .hydro-prose a {
-  border-bottom: 1px solid currentColor;
+  border-bottom: 1px solid var(--hydro-link-underline);
+  color: var(--hydro-link-text);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.hydro-prose a:hover,
+.hydro-prose a:focus-visible {
+  border-bottom-color: var(--hydro-highlight-line);
+  background: var(--hydro-link-hover-bg);
+  color: var(--hydro-link-hover-text);
+}
+
+.hydro-prose mark {
+  border-radius: 0.2rem;
+  background: var(--hydro-highlight-bg);
+  box-shadow: 0 0 0 1px rgb(var(--hydro-accent-rgb) / 16%) inset;
+  color: var(--hydro-highlight-text);
+  padding: 0.02em 0.16em;
 }
 
 .hydro-prose pre {
@@ -3874,10 +3983,10 @@ html[data-hydro-motion="off"] .hydro-card:hover .hydro-card__arrow {
   --hydro-comment-surface: rgb(var(--hydro-paper-rgb) / 30%);
   --hydro-comment-surface-soft: rgb(var(--hydro-paper-rgb) / 22%);
   --hydro-comment-reply-surface: rgb(var(--hydro-ink-rgb) / 2.5%);
-  --hydro-comment-accent: rgb(var(--hydro-ink-rgb) / 42%);
+  --hydro-comment-accent: var(--hydro-highlight-line);
   --halo-cw-primary-1-color: var(--hydro-solid);
-  --halo-cw-primary-2-color: rgb(var(--hydro-ink-rgb) / 82%);
-  --halo-cw-primary-3-color: rgb(var(--hydro-ink-rgb) / 12%);
+  --halo-cw-primary-2-color: var(--hydro-link-text);
+  --halo-cw-primary-3-color: var(--hydro-highlight-bg);
   --halo-cw-text-1-color: rgb(var(--hydro-ink-rgb) / 88%);
   --halo-cw-text-2-color: rgb(var(--hydro-ink-rgb) / 66%);
   --halo-cw-text-3-color: rgb(var(--hydro-ink-rgb) / 46%);
@@ -5313,7 +5422,7 @@ html.lenis body {
   height: 1rem;
   margin-top: 0.1rem;
   fill: none;
-  stroke: var(--hydro-coral);
+  stroke: var(--hydro-highlight-solid);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
@@ -5437,7 +5546,7 @@ html.lenis body {
 }
 
 .hydro-link-submit-form__group label span {
-  color: var(--hydro-coral);
+  color: var(--hydro-highlight-solid);
 }
 
 .hydro-link-submit-form__group input,
@@ -5446,11 +5555,23 @@ html.lenis body {
   width: 100%;
   min-height: 2.3rem;
   padding: 0.5rem 0.65rem;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border: 1px solid var(--hydro-form-border);
   border-radius: 0.45rem;
-  background: rgb(var(--hydro-paper-rgb) / 68%);
+  background: var(--hydro-form-bg);
   color: var(--hydro-ink);
   font-size: 0.8125rem;
+  outline: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hydro-link-submit-form__group input:hover,
+.hydro-link-submit-form__group textarea:hover,
+.hydro-link-submit-form__group select:hover {
+  border-color: var(--hydro-form-border-hover);
+  background: var(--hydro-form-bg-hover);
 }
 
 .hydro-link-submit-form__group textarea {
@@ -5461,8 +5582,9 @@ html.lenis body {
 .hydro-link-submit-form__group input:focus,
 .hydro-link-submit-form__group textarea:focus,
 .hydro-link-submit-form__group select:focus {
-  border-color: var(--hydro-solid);
-  outline: none;
+  border-color: var(--hydro-form-border-focus);
+  background: var(--hydro-form-bg-focus);
+  box-shadow: var(--hydro-focus-shadow);
 }
 
 .hydro-link-submit-form__inline {
@@ -9271,7 +9393,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   width: 4px;
   height: 1em;
   border-radius: 99px;
-  background: rgb(var(--hydro-ink-rgb) / 30%);
+  background: var(--hydro-highlight-line);
 }
 
 .hydro-post-prose h1 + p,
@@ -9290,8 +9412,11 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-post-prose mark {
-  background: rgb(var(--hydro-ink-rgb) / 12%);
-  color: inherit;
+  border-radius: 0.2rem;
+  background: var(--hydro-highlight-bg);
+  box-shadow: 0 0 0 1px rgb(var(--hydro-accent-rgb) / 16%) inset;
+  color: var(--hydro-highlight-text);
+  padding: 0.02em 0.16em;
 }
 
 .hydro-post-prose small {
@@ -9309,10 +9434,10 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 .hydro-post-prose blockquote {
   margin: 0;
   border: 1px solid var(--hydro-post-border);
-  border-left: 3px solid rgb(var(--hydro-ink-rgb) / 26%);
   border-radius: 0.78rem;
-  padding: 0.86rem 1rem 0.86rem 1.16rem;
+  padding: 0.86rem 1rem;
   background: rgb(var(--hydro-paper-rgb) / 46%);
+  box-shadow: inset 0 0 0 1px var(--hydro-highlight-soft);
   color: rgb(var(--hydro-ink-rgb) / 70%);
 }
 
@@ -9343,7 +9468,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 
 .hydro-post-prose ul li::marker,
 .hydro-post-prose ol li::marker {
-  color: rgb(var(--hydro-ink-rgb) / 48%);
+  color: var(--hydro-highlight-solid);
 }
 
 .hydro-post-prose ul[data-type="taskList"],
@@ -9369,7 +9494,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 .hydro-post-prose ul.contains-task-list input[type="checkbox"] {
   width: 1.05rem;
   height: 1.05rem;
-  accent-color: var(--hydro-solid);
+  accent-color: var(--hydro-highlight-solid);
 }
 
 .hydro-post-prose ul[data-type="taskList"] > li > div > p {
@@ -9383,9 +9508,11 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-post-prose a {
-  border-bottom: 1px solid rgb(var(--hydro-ink-rgb) / 26%);
+  border-bottom: 1px solid var(--hydro-link-underline);
+  color: var(--hydro-link-text);
   text-underline-offset: 0.2em;
   transition:
+    background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease;
 }
@@ -9476,8 +9603,9 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-post-prose a:hover {
-  color: var(--hydro-solid);
-  border-bottom-color: var(--hydro-solid);
+  border-bottom-color: var(--hydro-highlight-line);
+  background: var(--hydro-link-hover-bg);
+  color: var(--hydro-link-hover-text);
 }
 
 .hydro-post-prose hyper-link-card,
@@ -9663,9 +9791,9 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-post-tags a:hover {
-  border-color: var(--hydro-solid);
-  background: var(--hydro-solid);
-  color: var(--hydro-solid-contrast);
+  border-color: var(--hydro-highlight-line);
+  background: var(--hydro-highlight-soft);
+  color: var(--hydro-link-hover-text);
 }
 
 .hydro-post-author {
@@ -10494,9 +10622,9 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-plugin-install-link:hover {
-  border-color: var(--hydro-solid);
-  background: var(--hydro-solid);
-  color: var(--hydro-solid-contrast);
+  border-color: var(--hydro-highlight-line);
+  background: var(--hydro-highlight-soft);
+  color: var(--hydro-link-hover-text);
   transform: translateY(-1px);
 }
 
@@ -10538,9 +10666,9 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 .hydro-plugin-tabs .is-active,
 .hydro-plugin-tabs button.is-active,
 .hydro-steam-pagination button:hover:not(:disabled) {
-  border-color: var(--hydro-solid);
-  background: var(--hydro-solid);
-  color: var(--hydro-solid-contrast);
+  border-color: var(--hydro-highlight-line);
+  background: var(--hydro-highlight-soft);
+  color: var(--hydro-link-hover-text);
   transform: translateY(-1px);
 }
 
@@ -11113,7 +11241,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-doc-tree a.is-active {
-  color: var(--hydro-solid);
+  color: var(--hydro-link-text);
 }
 
 .hydro-doc-tree summary {

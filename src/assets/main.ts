@@ -214,7 +214,6 @@ function initAppearanceState() {
   root.style.setProperty("--hydro-coral-dark", darkAccent);
   if (lightRgb) {
     root.style.setProperty("--hydro-coral-light-rgb", lightRgb);
-    root.style.setProperty("--hydro-coral-rgb", lightRgb);
   }
   if (darkRgb) {
     root.style.setProperty("--hydro-coral-dark-rgb", darkRgb);
@@ -332,9 +331,11 @@ function initColorScheme() {
       cssColorToRgb(activeAccent);
     if (activeAccent) {
       root.style.setProperty("--hydro-coral", activeAccent);
+      root.style.setProperty("--hydro-accent", activeAccent);
     }
     if (activeAccentRgb) {
       root.style.setProperty("--hydro-coral-rgb", activeAccentRgb);
+      root.style.setProperty("--hydro-accent-rgb", activeAccentRgb);
     }
 
     toggles.forEach((toggle) => {

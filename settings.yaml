@@ -128,10 +128,12 @@ spec:
         - $formkit: color
           name: accent_color
           label: 浅色强调色
+          help: 用于文字选中、正文链接、输入焦点、光标、搜索命中和轻量高亮，请保持低饱和以维持氢·简风格。
           value: "#FF6B6B"
         - $formkit: color
           name: dark_accent_color
           label: 深色强调色
+          help: 深色模式下的同一套高亮体系，建议比浅色略亮但不要改成高对比霓虹。
           value: "#FF8A8A"
         - $formkit: switch
           name: show_grain
