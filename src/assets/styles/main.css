@@ -6810,10 +6810,9 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   background: rgb(var(--hydro-ink-rgb) / 5%);
 }
 
-/* SVG 图标继承颜色 */
+/* 内置 FAB 控制图标使用主题线性描边 */
 .hydro-back-to-top svg,
-.hydro-fab-trigger svg,
-.hydro-fab-item svg {
+.hydro-fab-trigger svg {
   width: 1.125rem;
   height: 1.125rem;
   flex-shrink: 0;
@@ -6822,6 +6821,15 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* 后台 Iconify 图标保留自身 fill/stroke，避免实心图标被二次描边变粗发糊 */
+.hydro-fab-item svg {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  color: currentColor;
 }
 
 /* 返回顶部：向下滚动时显示 */
