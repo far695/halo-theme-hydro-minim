@@ -56,7 +56,7 @@
         >
       </div>
 
-      <div th:if="${hasDocsCompatible and hasDocsProjects}" class="hydro-docs-grid">
+      <div th:if="${hasDocsCompatible and hasDocsProjects}" class="hydro-docs-grid hydro-docs-grid--projects">
         <a
           class="hydro-docs-card"
           th:each="project,projectStat : ${docsProjects}"

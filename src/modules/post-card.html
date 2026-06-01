@@ -8,7 +8,7 @@
 >
   <a th:href="@{${post.status.permalink}}">
     <div class="hydro-list-card__media">
-      <img th:src="${cover}" th:alt="${post.spec.title}" />
+      <img th:src="${cover}" th:alt="${post.spec.title}" loading="lazy" />
     </div>
     <div class="hydro-list-card__body">
       <div class="hydro-list-card__meta">

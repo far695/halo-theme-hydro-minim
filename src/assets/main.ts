@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { initCommentWidgetSkin } from "./comment-widget-skin";
 import { runHydroFabAction, type HydroFabActionDependencies } from "./fab-actions";
 import { initSearchWidgetSkin } from "./search-widget-skin";
+import { initHydroTagCloud } from "./tag-cloud";
 
 import "./styles/main.css";
 
@@ -2316,6 +2317,7 @@ initPostUpvote();
 initPostShare();
 initPostReadingProgress();
 initPostRelatedCards();
+initHydroTagCloud();
 initCommentWidgetSkin();
 initSearchWidgetSkin();
 

@@ -111,6 +111,22 @@
 
 这类模板必须先判断插件是否可用，再读取插件 Finder 或路由注入变量；未安装插件时显示安装提示，不要直接访问 `moments.items`、`photos.items`、`groups`、`projects` 等可能不存在的变量。
 
+### 非首页内容页 UI 规范
+
+非首页内容页统一走 `Hydro Content Surface` 视觉系统，覆盖范围包括：
+
+- 自定义模板：`page_about.html`、`bangumis.html`、`docs.html`、`equipments.html`、`friends.html`、`moments.html`、`photos.html`、`steam.html`。
+- 分类与内容索引：`categories.html`、`category.html`、`tags.html`、`tag.html`、`archives.html`、`search.html`。
+- 插件相邻页面：`links.html`、`moment.html`、`doc.html`、`doc-catalog.html`。
+
+设计约束：
+
+1. 首页、文章详情、普通独立页、登录/注册/错误页不属于这一组，除非任务明确要求，不要顺手改。
+2. 共享基座写在 `src/assets/styles/main.css` 的 `Hydro Content Surface` 段，优先使用 `--hydro-surface`、`--hydro-line`、`--hydro-radius-*`、`--hydro-content-ease` 等 token。
+3. 页面必须统一 Hydro 气质，但布局不能全变成同一种卡片网格：分类是目录行，标签是 chip 云，归档是年份时间轴，搜索是结果索引，友链是连接墙，Moment 是时间线，Docsme 是文档壳。
+4. 不新增后台设置项、不改 Finder/API 语义；模板只补必要 wrapper、状态容器和可访问结构。
+5. 动效只使用 `transform`、`opacity` 和必要的 `filter`，继续兼容 `prefers-reduced-motion`、深浅色切换、lightbox、Steam 动态渲染、Moment 点赞/评论和友链提交弹窗。
+
 ## 交付检查
 
 至少执行：

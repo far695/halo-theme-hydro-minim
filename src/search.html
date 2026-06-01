@@ -120,7 +120,7 @@
           <span th:text="${searchConfig?.recommendations_eyebrow ?: 'Recent'}">Recent</span>
           <h2 th:text="${searchConfig?.recommendations_title ?: '最近更新'}">最近更新</h2>
         </div>
-        <div class="hydro-list-grid">
+        <div class="hydro-list-grid hydro-search-recommendations__grid">
           <th:block th:each="post,stat : ${recommendedPosts}">
             <th:block th:replace="~{modules/post-card :: post-card(${post},${stat.index})}" />
           </th:block>

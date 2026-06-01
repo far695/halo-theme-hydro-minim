@@ -8,9 +8,9 @@
     th:replace="~{modules/list-hero}"
   />
 
-  <section class="hydro-list-section">
+  <section class="hydro-list-section hydro-taxonomy-detail-page">
     <div class="hydro-container">
-      <div class="hydro-list-grid" th:if="${posts.total gt 0}">
+      <div class="hydro-list-grid hydro-taxonomy-detail-grid" th:if="${posts.total gt 0}">
         <th:block th:each="post,stat : ${posts.items}">
           <th:block th:replace="~{modules/post-card :: post-card(${post},${stat.index})}" />
         </th:block>
