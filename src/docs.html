@@ -16,12 +16,26 @@
   <section
     class="hydro-plugin-page hydro-docs-page"
     th:with="
-      docsProjects=${projects != null ? projects : null},
       hasDocsPlugin=${pluginFinder.available('plugin-docsme')},
       hasDocsCompatible=${pluginFinder.available('plugin-docsme', '>=1.4.0')},
-      hasDocsProjects=${docsProjects != null and not #lists.isEmpty(docsProjects)}"
+      docsProjects=${hasDocsCompatible ? (projects != null ? projects : docsmeProjectsFinder.listAll()) : null},
+      hasDocsProjects=${docsProjects != null and not #lists.isEmpty(docsProjects)},
+      docsProjectTotal=${hasDocsProjects ? #aggregates.sum(docsProjects.![status.totalDocs ?: 0]) : 0}"
   >
     <div class="hydro-container">
+      <div th:if="${hasDocsCompatible and hasDocsProjects}" class="hydro-docs-overview">
+        <div>
+          <span th:text="${theme.config.docs?.overview_label ?: 'Knowledge base'}">Knowledge base</span>
+          <strong th:text="${#lists.size(docsProjects)}">3</strong>
+          <em th:text="${theme.config.docs?.project_count_suffix ?: '个项目'}">个项目</em>
+        </div>
+        <div>
+          <span th:text="${theme.config.docs?.doc_count_label ?: 'Published'}">Published</span>
+          <strong th:text="${docsProjectTotal}">24</strong>
+          <em th:text="${theme.config.docs?.doc_count_suffix ?: '篇文档'}">篇文档</em>
+        </div>
+      </div>
+
       <div class="hydro-plugin-notice" th:if="${not hasDocsPlugin}">
         <strong th:text="${theme.config.docs?.install_title ?: '需要安装 Docsme 插件'}">需要安装 Docsme 插件</strong>
         <span
@@ -71,13 +85,22 @@
             />
             <b th:if="${#strings.isEmpty(project.spec.icon)}">DOC</b>
           </span>
+          <span
+            class="hydro-docs-card__lock"
+            th:if="${project.spec.authorizeRequired}"
+            th:text="${theme.config.docs?.private_label ?: 'Private'}"
+            >Private</span
+          >
           <strong th:text="${project.spec.displayName}">文档项目</strong>
           <p th:if="${not #strings.isEmpty(project.spec.description)}" th:text="${project.spec.description}">
             文档说明
           </p>
-          <em th:text="|${project.status.totalDocs ?: 0} ${theme.config.docs?.doc_count_suffix ?: '篇文档'}|">
-            0 篇文档
-          </em>
+          <span class="hydro-docs-card__meta">
+            <em th:text="|${project.status.totalDocs ?: 0} ${theme.config.docs?.doc_count_suffix ?: '篇文档'}|">
+              0 篇文档
+            </em>
+            <em th:text="${project.spec.preferredLanguage ?: project.spec.slug}">default</em>
+          </span>
         </a>
       </div>
 

@@ -55,6 +55,17 @@
             plugin-docsme 已可用。在 Docsme 中添加子文档后，这里会显示目录入口。
           </p>
         </div>
+
+        <nav class="hydro-doc-nav" th:if="${linkNavigation}">
+          <a th:if="${linkNavigation.hasPrevious}" th:href="${linkNavigation.previous.link}">
+            <span th:text="${theme.config.docs?.previous_label ?: '上一篇'}">上一篇</span>
+            <strong th:text="${linkNavigation.previous.title}">上一篇</strong>
+          </a>
+          <a th:if="${linkNavigation.hasNext}" th:href="${linkNavigation.next.link}">
+            <span th:text="${theme.config.docs?.next_label ?: '下一篇'}">下一篇</span>
+            <strong th:text="${linkNavigation.next.title}">下一篇</strong>
+          </a>
+        </nav>
       </article>
     </th:block>
 
@@ -126,4 +137,11 @@
       </div>
     </article>
   </section>
+
+  <th:block th:if="${pluginFinder.available('plugin-docsme', '>=1.4.0')}">
+    <script>
+      window.docsme = { disableThemeFunction: true };
+    </script>
+    <th:block th:replace="~{plugin:plugin-docsme:modules/plugin-scripts}" />
+  </th:block>
 </include>

@@ -1757,35 +1757,7 @@ function initPostContentEnhancements() {
     return;
   }
 
-  content.querySelectorAll<HTMLPreElement>("pre").forEach((pre) => {
-    const code = pre.querySelector<HTMLElement>("code");
-    const languageClass = Array.from(code?.classList ?? []).find((className) => className.startsWith("language-"));
-    const language = pre.dataset.language || languageClass?.replace("language-", "");
-    if (language && !pre.dataset.language) {
-      pre.dataset.language = language;
-    }
-    pre.setAttribute("tabindex", "0");
-  });
-
-  content.querySelectorAll<HTMLTableElement>("table").forEach((table) => {
-    if (table.parentElement?.classList.contains("hydro-post-table-wrap")) {
-      return;
-    }
-    const wrapper = document.createElement("div");
-    wrapper.className = "hydro-post-table-wrap";
-    table.parentNode?.insertBefore(wrapper, table);
-    wrapper.append(table);
-  });
-
-  content.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
-    const href = link.getAttribute("href") || "";
-    const isExternal =
-      /^https?:\/\//i.test(href) && new URL(href, window.location.href).origin !== window.location.origin;
-    if (isExternal) {
-      link.target = link.target || "_blank";
-      link.rel = link.rel || "noopener noreferrer";
-    }
-  });
+  enhanceContentBasics(content);
 
   if (!readBooleanData(page.dataset.postEnableLightbox, lightboxEnabled)) {
     return;
@@ -1812,6 +1784,44 @@ function initPostContentEnhancements() {
         image.click();
       }
     });
+  });
+}
+
+function enhanceContentBasics(content: HTMLElement, tableWrapClass = "hydro-post-table-wrap") {
+  content.querySelectorAll<HTMLPreElement>("pre").forEach((pre) => {
+    const code = pre.querySelector<HTMLElement>("code");
+    const languageClass = Array.from(code?.classList ?? []).find((className) => className.startsWith("language-"));
+    const language = pre.dataset.language || languageClass?.replace("language-", "");
+    if (language && !pre.dataset.language) {
+      pre.dataset.language = language;
+    }
+    pre.setAttribute("tabindex", "0");
+  });
+
+  content.querySelectorAll<HTMLTableElement>("table").forEach((table) => {
+    if (table.parentElement?.classList.contains("hydro-post-table-wrap")) {
+      return;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.className = tableWrapClass;
+    table.parentNode?.insertBefore(wrapper, table);
+    wrapper.append(table);
+  });
+
+  content.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
+    const href = link.getAttribute("href") || "";
+    const isExternal =
+      /^https?:\/\//i.test(href) && new URL(href, window.location.href).origin !== window.location.origin;
+    if (isExternal) {
+      link.target = link.target || "_blank";
+      link.rel = link.rel || "noopener noreferrer";
+    }
+  });
+}
+
+function initHydroDocContentEnhancements() {
+  document.querySelectorAll<HTMLElement>("[data-hydro-doc-content]").forEach((content) => {
+    enhanceContentBasics(content, "hydro-post-table-wrap hydro-doc-table-wrap");
   });
 }
 
@@ -3934,24 +3944,91 @@ function initHydroPluginFilters() {
 }
 
 function initHydroDocsToc() {
-  const content = document.querySelector<HTMLElement>("#hydro-doc-content");
+  const content =
+    document.querySelector<HTMLElement>("[data-hydro-doc-content]") ||
+    document.querySelector<HTMLElement>("[data-toc-content]") ||
+    document.querySelector<HTMLElement>("#content");
   const toc = document.querySelector<HTMLElement>("[data-hydro-doc-toc]");
   if (!content || !toc) {
     return;
   }
+  const tocPanel = toc.closest<HTMLElement>(".hydro-doc-toc");
 
-  const headings = Array.from(content.querySelectorAll<HTMLElement>("h2, h3, h4")).filter((heading) => {
+  const getOrCreateMeta = () => {
+    if (!tocPanel) {
+      return null;
+    }
+    let meta = tocPanel.querySelector<HTMLElement>(".hydro-doc-toc__meta");
+    if (!meta) {
+      meta = document.createElement("div");
+      meta.className = "hydro-doc-toc__meta";
+      tocPanel.insertBefore(meta, toc);
+    }
+    return meta;
+  };
+
+  const updateMeta = (count: number, activeNumber = "0", activeTitle = "") => {
+    const meta = getOrCreateMeta();
+    if (!meta) {
+      return;
+    }
+
+    meta.innerHTML = "";
+
+    const summary = document.createElement("span");
+    summary.className = "hydro-doc-toc__meta-summary";
+    summary.textContent = count > 0 ? `${activeNumber} / ${String(count).padStart(2, "0")}` : "0 / 00";
+
+    const current = document.createElement("strong");
+    current.className = "hydro-doc-toc__meta-current";
+    current.textContent = activeTitle || "暂无章节";
+
+    meta.append(summary, current);
+  };
+
+  const headings = Array.from(content.querySelectorAll<HTMLElement>("h1, h2, h3, h4, h5")).filter((heading) => {
     return (heading.textContent || "").trim().length > 0;
   });
+  tocPanel?.style.setProperty("--hydro-doc-toc-progress", "0%");
+  tocPanel?.setAttribute("data-toc-count", String(headings.length));
   if (headings.length === 0) {
+    updateMeta(0);
     toc.innerHTML = `<span class="hydro-doc-toc__empty">${escapeHtml(document.body.dataset.docTocEmptyText || "无目录")}</span>`;
     return;
   }
 
   const usedIds = new Set<string>();
   toc.innerHTML = "";
+  const links: HTMLAnchorElement[] = [];
+  const headingDepths = headings.map((heading) => {
+    return Number.parseInt(heading.tagName.replace("H", ""), 10) || 1;
+  });
+  const baseDepth = Math.min(...headingDepths);
+  const maxDepth = Math.max(...headingDepths);
+  const headingCounters = Array.from({ length: 7 }, () => 0);
+  const headingNumbers: string[] = [];
+
+  tocPanel?.setAttribute("data-toc-depth-min", String(baseDepth));
+  tocPanel?.setAttribute("data-toc-depth-max", String(maxDepth));
+
+  const getHeadingNumber = (depth: number) => {
+    const normalizedDepth = Math.min(5, Math.max(baseDepth, depth));
+    for (let level = baseDepth; level < normalizedDepth; level += 1) {
+      if (headingCounters[level] === 0) {
+        headingCounters[level] = 1;
+      }
+    }
+    headingCounters[normalizedDepth] += 1;
+    for (let level = normalizedDepth + 1; level < headingCounters.length; level += 1) {
+      headingCounters[level] = 0;
+    }
+    return headingCounters.slice(baseDepth, normalizedDepth + 1).join(".");
+  };
 
   headings.forEach((heading, index) => {
+    const depth = headingDepths[index] || baseDepth;
+    const headingNumber = getHeadingNumber(depth);
+    const rank = Math.min(5, Math.max(1, depth - baseDepth + 1));
     const fallbackId = slugifyHeading(heading.textContent || "", index).replace(/^post-/, "doc-");
     let id = heading.id || fallbackId;
     let suffix = 2;
@@ -3964,13 +4041,98 @@ function initHydroDocsToc() {
 
     const link = document.createElement("a");
     link.href = `#${id}`;
-    link.dataset.depth = heading.tagName.replace("H", "");
-    link.textContent = (heading.textContent || "").trim();
+    link.dataset.depth = String(depth);
+    link.dataset.rank = String(rank);
+    link.dataset.number = headingNumber;
+    link.dataset.index = String(index + 1).padStart(2, "0");
+
+    const indexNode = document.createElement("span");
+    indexNode.className = "hydro-doc-toc__link-index";
+    indexNode.textContent = headingNumber;
+
+    const labelNode = document.createElement("span");
+    labelNode.className = "hydro-doc-toc__link-label";
+    labelNode.textContent = (heading.textContent || "").trim();
+
+    link.append(indexNode, labelNode);
     link.addEventListener("click", (event) => {
       event.preventDefault();
+      links.forEach((item) => item.classList.toggle("is-active", item === link));
+      updateMeta(headings.length, headingNumber, labelNode.textContent || "");
       scrollToElement(heading);
     });
     toc.append(link);
+    links.push(link);
+    headingNumbers.push(headingNumber);
+  });
+
+  let activeLinkIndex = -1;
+  let updateScheduled = false;
+
+  const syncTocScroll = (link: HTMLAnchorElement) => {
+    const tocRect = toc.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    if (linkRect.top < tocRect.top + 12 || linkRect.bottom > tocRect.bottom - 12) {
+      link.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+  };
+
+  const setActiveLink = () => {
+    const viewportAnchor = window.scrollY + Math.round(window.innerHeight * 0.24);
+    const activeIndex = headings.reduce((current, heading, index) => {
+      return heading.offsetTop <= viewportAnchor ? index : current;
+    }, 0);
+
+    const firstHeadingTop = headings[0]?.offsetTop ?? 0;
+    const lastHeadingTop = headings[headings.length - 1]?.offsetTop ?? firstHeadingTop;
+    const progressRange = Math.max(1, lastHeadingTop - firstHeadingTop);
+    const progress = Math.min(1, Math.max(0, (viewportAnchor - firstHeadingTop) / progressRange));
+    tocPanel?.style.setProperty("--hydro-doc-toc-progress", `${Math.round(progress * 100)}%`);
+
+    links.forEach((link, index) => link.classList.toggle("is-active", index === activeIndex));
+    if (activeLinkIndex !== activeIndex) {
+      activeLinkIndex = activeIndex;
+      const activeLink = links[activeIndex];
+      const activeTitle = headings[activeIndex]?.textContent?.trim() || "";
+      updateMeta(headings.length, headingNumbers[activeIndex] || "0", activeTitle);
+      if (activeLink) {
+        syncTocScroll(activeLink);
+      }
+    }
+  };
+
+  const scheduleActiveLinkUpdate = () => {
+    if (updateScheduled) {
+      return;
+    }
+    updateScheduled = true;
+    window.requestAnimationFrame(() => {
+      updateScheduled = false;
+      setActiveLink();
+    });
+  };
+
+  setActiveLink();
+  window.addEventListener("scroll", scheduleActiveLinkUpdate, { passive: true });
+  window.addEventListener("resize", scheduleActiveLinkUpdate);
+}
+
+function initHydroDocTreeLevels() {
+  document.querySelectorAll<HTMLElement>(".hydro-doc-tree li").forEach((item) => {
+    const link = item.querySelector<HTMLAnchorElement>(":scope > a, :scope > details > summary > a");
+    if (!link) {
+      return;
+    }
+
+    let depth = 0;
+    let currentList = link.closest("ul");
+    while (currentList?.parentElement?.closest(".hydro-doc-tree ul")) {
+      depth += 1;
+      currentList = currentList.parentElement.closest(".hydro-doc-tree ul");
+    }
+
+    link.dataset.docNodeType = item.querySelector(":scope > details") ? "tree" : "doc";
+    link.dataset.docTreeDepth = String(depth);
   });
 }
 
@@ -4200,6 +4362,8 @@ initMomentsReveal();
 initLightbox();
 initPosterShare();
 initHydroPluginFilters();
+initHydroDocTreeLevels();
+initHydroDocContentEnhancements();
 initHydroDocsToc();
 initHydroSteamPage();
 

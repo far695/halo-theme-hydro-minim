@@ -39,9 +39,15 @@
           <h1 th:text="${docTree.spec.title}">文档标题</h1>
         </header>
 
-        <div id="hydro-doc-content" class="hydro-prose hydro-doc-content" th:utext="${docInfo.content.content}">
+        <article
+          id="content"
+          class="hydro-post-prose hydro-doc-content prose-content line-numbers"
+          data-hydro-doc-content
+          data-toc-content
+          th:utext="${docInfo.content.content}"
+        >
           文档内容
-        </div>
+        </article>
 
         <nav class="hydro-doc-nav" th:if="${linkNavigation}">
           <a th:if="${linkNavigation.hasPrevious}" th:href="${linkNavigation.previous.link}">
@@ -55,11 +61,12 @@
         </nav>
 
         <section
+          id="comment"
           class="hydro-comments"
-          th:if="${(theme.config.docs == null or theme.config.docs.enable_comment != false) and project?.spec?.enableComment == true}"
+          th:if="${(theme.config.docs == null or theme.config.docs.enable_comment != false) and haloCommentEnabled and project?.spec?.enableComment == true}"
         >
           <h2 th:text="${theme.config.docs?.comments_title ?: '评论'}">评论</h2>
-          <halo:comment group="run.halo.docsme" kind="Doc" th:attr="name=${docInfo.doc.metadata.name}" />
+          <halo:comment group="doc.halo.run" kind="DocTree" th:attr="name=${docTree.metadata.name}" />
         </section>
       </article>
 
