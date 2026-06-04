@@ -28,101 +28,148 @@
       </header>
 
       <div class="hydro-moment-detail-shell">
-        <article class="hydro-moment hydro-moment--detail is-visible" data-moment>
-          <aside class="hydro-moment__rail" aria-hidden="true">
-            <time th:text="${#dates.format(moment.spec.releaseTime, 'MM.dd')}">05.12</time>
-            <span></span>
-          </aside>
-
-          <div class="hydro-moment__card">
-            <header class="hydro-moment__header">
-              <div class="hydro-moment__author" th:if="${moment.owner != null}">
-                <img
-                  th:if="${moment.owner.avatar != null}"
-                  th:src="${moment.owner.avatar}"
-                  th:alt="${moment.owner.displayName}"
-                  loading="lazy"
-                />
-                <span th:text="${moment.owner.displayName}">Hydro</span>
-              </div>
-              <time
-                th:datetime="${moment.spec.releaseTime}"
-                th:text="${#dates.format(moment.spec.releaseTime, 'yyyy.MM.dd HH:mm')}"
-              >
-                2026.05.12 12:00
-              </time>
-            </header>
-
+        <article class="hydro-moment hydro-moment--detail hydro-moment-detail-layout is-visible" data-moment>
+          <main
+            class="hydro-moment-detail-story"
+            th:with="hasMomentMedia=${content != null and not #lists.isEmpty(content.medium)},
+              hasMomentCopy=${(content != null and not #strings.isEmpty(content.html)) or not #lists.isEmpty(moment.spec.tags)}"
+          >
             <div
-              class="hydro-moment__content hydro-prose"
-              th:if="${not #strings.isEmpty(content.html)}"
-              th:utext="${content.html}"
-            ></div>
-
-            <div class="hydro-moment__media" th:if="${not #lists.isEmpty(content.medium)}">
-              <div
-                class="hydro-moment__photos"
-                th:classappend="${#lists.size(content.medium) == 1 ? 'is-single' : (
-                  #lists.size(content.medium) == 2 ? 'is-double' : '')}"
-              >
-                <button
-                  class="hydro-moment__photo"
-                  th:each="media : ${content.medium}"
-                  th:if="${media.type.name == 'PHOTO'}"
-                  th:attr="data-src=${media.url},data-alt='瞬间图片'"
-                  data-lightbox-trigger
+              class="hydro-moment__card hydro-moment-detail-card"
+              th:classappend="${hasMomentMedia ? (hasMomentCopy ? ' hydro-moment-detail-card--media' : ' hydro-moment-detail-card--media hydro-moment-detail-card--media-only') : ' hydro-moment-detail-card--text'}"
+            >
+              <div class="hydro-moment__media hydro-moment-detail-media" th:if="${hasMomentMedia}">
+                <div
+                  class="hydro-moment__photos"
+                  th:classappend="${#lists.size(content.medium) == 1 ? 'is-single' : (
+                    #lists.size(content.medium) == 2 ? 'is-double' : '')}"
                 >
-                  <img th:src="${media.url}" alt="瞬间图片" loading="lazy" />
-                </button>
+                  <button
+                    class="hydro-moment__photo"
+                    th:each="media : ${content.medium}"
+                    th:if="${media.type.name == 'PHOTO'}"
+                    th:attr="data-src=${media.url},data-alt='瞬间图片'"
+                    data-lightbox-trigger
+                  >
+                    <img th:src="${media.url}" alt="瞬间图片" loading="lazy" />
+                  </button>
+                </div>
+
+                <div class="hydro-moment__attachments">
+                  <figure
+                    class="hydro-moment__video"
+                    th:each="media : ${content.medium}"
+                    th:if="${media.type.name == 'VIDEO'}"
+                  >
+                    <video th:src="${media.url}" controls preload="metadata"></video>
+                    <figcaption>Video</figcaption>
+                  </figure>
+
+                  <figure
+                    class="hydro-moment__audio"
+                    th:each="media : ${content.medium}"
+                    th:if="${media.type.name == 'AUDIO'}"
+                  >
+                    <span aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 18V5l10-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="16" cy="16" r="3"></circle>
+                      </svg>
+                    </span>
+                    <figcaption>Audio</figcaption>
+                    <audio th:src="${media.url}" controls></audio>
+                  </figure>
+                </div>
               </div>
 
-              <div class="hydro-moment__attachments">
-                <figure
-                  class="hydro-moment__video"
-                  th:each="media : ${content.medium}"
-                  th:if="${media.type.name == 'VIDEO'}"
+              <div class="hydro-moment-detail-copy" th:if="${hasMomentCopy}">
+                <div
+                  class="hydro-moment-detail-card__body"
+                  th:if="${content != null and not #strings.isEmpty(content.html)}"
                 >
-                  <video th:src="${media.url}" controls preload="metadata"></video>
-                  <figcaption>Video</figcaption>
-                </figure>
+                  <div class="hydro-moment__content hydro-prose" th:utext="${content.html}"></div>
+                </div>
 
-                <figure
-                  class="hydro-moment__audio"
-                  th:each="media : ${content.medium}"
-                  th:if="${media.type.name == 'AUDIO'}"
+                <footer
+                  class="hydro-moment__footer hydro-moment-detail-footer"
+                  th:if="${not #lists.isEmpty(moment.spec.tags)}"
                 >
-                  <span aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M9 18V5l10-2v13"></path>
-                      <circle cx="6" cy="18" r="3"></circle>
-                      <circle cx="16" cy="16" r="3"></circle>
-                    </svg>
-                  </span>
-                  <figcaption>Audio</figcaption>
-                  <audio th:src="${media.url}" controls></audio>
-                </figure>
+                  <div class="hydro-moment__tags">
+                    <a th:each="tag : ${moment.spec.tags}" th:href="|/moments?tag=${tag}|">
+                      <span>#</span>
+                      <b th:text="${tag}">tag</b>
+                    </a>
+                  </div>
+                </footer>
               </div>
             </div>
+          </main>
 
-            <footer class="hydro-moment__footer">
-              <div class="hydro-moment__tags" th:if="${not #lists.isEmpty(moment.spec.tags)}">
-                <a th:each="tag : ${moment.spec.tags}" th:href="|/moments?tag=${tag}|">
-                  <span>#</span>
-                  <b th:text="${tag}">tag</b>
-                </a>
+          <aside class="hydro-moment-detail-aside" aria-label="瞬间信息">
+            <section
+              class="hydro-moment-detail-panel hydro-moment-detail-panel--author"
+              th:if="${moment.owner != null}"
+              th:with="ownerName=${not #strings.isEmpty(moment.owner.displayName) ? moment.owner.displayName : 'Hydro'},
+                ownerInitial=${not #strings.isEmpty(ownerName) ? #strings.substring(ownerName, 0, 1) : 'H'}"
+            >
+              <p>Author</p>
+              <div class="hydro-moment-detail-author">
+                <div class="hydro-moment-detail-author__avatar" aria-hidden="true">
+                  <img
+                    th:if="${not #strings.isEmpty(moment.owner.avatar)}"
+                    th:src="${moment.owner.avatar}"
+                    th:alt="${ownerName}"
+                    loading="lazy"
+                  />
+                  <span th:if="${#strings.isEmpty(moment.owner.avatar)}" th:text="${ownerInitial}">H</span>
+                </div>
+                <div class="hydro-moment-detail-author__body">
+                  <strong th:text="${ownerName}">Hydro</strong>
+                  <span class="hydro-moment-detail-author__profile">瞬间发布者</span>
+                  <p th:text="|${ownerName} 发布了这条瞬间|">Hydro 发布了这条瞬间</p>
+                </div>
               </div>
-              <div class="hydro-moment__actions">
+            </section>
+
+            <section class="hydro-moment-detail-panel">
+              <p>Moment Info</p>
+              <dl class="hydro-moment-detail-info">
+                <div>
+                  <dt th:text="${theme.config.moments?.detail_release_label ?: 'Release'}">Release</dt>
+                  <dd th:text="${#dates.format(moment.spec.releaseTime, 'yyyy.MM.dd HH:mm')}">2026.05.12 12:00</dd>
+                </div>
+                <div>
+                  <dt>Likes</dt>
+                  <dd th:text="${moment.stats.upvote ?: 0}">0</dd>
+                </div>
+                <div th:if="${theme.config.moments == null or theme.config.moments.enable_comment != false}">
+                  <dt>Comments</dt>
+                  <dd th:text="${moment.stats.approvedComment ?: 0}">0</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section
+              class="hydro-moment-detail-panel hydro-moment-detail-panel--actions"
+              th:if="${theme.config.moments == null or theme.config.moments.enable_upvote != false or theme.config.moments.enable_comment != false or theme.config.moments.enable_share_poster != false}"
+            >
+              <p>Actions</p>
+              <div class="hydro-moment__actions hydro-moment-detail-actions">
                 <button
                   th:if="${theme.config.moments == null or theme.config.moments.enable_upvote != false}"
                   class="hydro-moment__action hydro-moment__upvote"
                   type="button"
                   th:attr="data-moment-upvote=${moment.metadata.name},aria-label=|点赞 ${moment.metadata.name}|"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"
-                    ></path>
-                  </svg>
+                  <span class="hydro-moment-detail-action-label">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"
+                      ></path>
+                    </svg>
+                    <b>喜欢</b>
+                  </span>
                   <span th:attr="data-upvote-moment-name=${moment.metadata.name}" th:text="${moment.stats.upvote ?: 0}"
                     >0</span
                   >
@@ -132,9 +179,12 @@
                   class="hydro-moment__action"
                   href="#comment"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
-                  </svg>
+                  <span class="hydro-moment-detail-action-label">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
+                    </svg>
+                    <b>评论</b>
+                  </span>
                   <span th:text="${moment.stats.approvedComment ?: 0}">0</span>
                 </a>
                 <button
@@ -146,23 +196,84 @@
                   aria-controls="hydro-moment-poster"
                   aria-expanded="false"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7 17 17 7M9 7h8v8"></path>
-                  </svg>
-                  <span th:text="${theme.config.moments?.share_poster_label ?: '分享海报'}">分享海报</span>
+                  <span class="hydro-moment-detail-action-label">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M7 17 17 7M9 7h8v8"></path>
+                    </svg>
+                    <b th:text="${theme.config.moments?.share_poster_label ?: '分享海报'}">分享海报</b>
+                  </span>
+                  <span>生成</span>
                 </button>
               </div>
-            </footer>
-
-            <section
-              id="comment"
-              class="hydro-moment__comment hydro-moment__comment--detail"
-              th:if="${theme.config.moments == null or theme.config.moments.enable_comment != false}"
-            >
-              <h2 th:text="${theme.config.moments?.comments_title ?: '评论'}">评论</h2>
-              <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
             </section>
-          </div>
+
+            <section class="hydro-moment-detail-panel hydro-moment-detail-panel--navigation">
+              <p>Navigation</p>
+              <nav
+                class="hydro-moment-detail-navlist"
+                aria-label="瞬间详情导航"
+                th:with="momentCursor=${momentFinder.list(1, 100).items}, momentCursorCount=${#lists.size(momentCursor)}"
+              >
+                <th:block th:each="candidate, candidateStat : ${momentCursor}">
+                  <a
+                    class="hydro-moment-detail-navitem hydro-moment-detail-navitem--previous"
+                    th:if="${candidate.metadata.name == moment.metadata.name and candidateStat.index > 0}"
+                    th:with="targetMoment=${momentCursor.get(candidateStat.index - 1)}"
+                    th:href="|/moments/${targetMoment.metadata.name}|"
+                    th:attr="aria-label=|查看上一条瞬间：${#dates.format(targetMoment.spec.releaseTime, 'yyyy.MM.dd HH:mm')}|"
+                  >
+                    <span class="hydro-moment-detail-navitem__mark" aria-hidden="true">↑</span>
+                    <small>查看上一条</small>
+                    <b th:text="${#dates.format(targetMoment.spec.releaseTime, 'MM.dd HH:mm')}">05.04 18:42</b>
+                  </a>
+                  <a
+                    class="hydro-moment-detail-navitem hydro-moment-detail-navitem--next"
+                    th:if="${candidate.metadata.name == moment.metadata.name and candidateStat.index + 1 < momentCursorCount}"
+                    th:with="targetMoment=${momentCursor.get(candidateStat.index + 1)}"
+                    th:href="|/moments/${targetMoment.metadata.name}|"
+                    th:attr="aria-label=|查看下一条瞬间：${#dates.format(targetMoment.spec.releaseTime, 'yyyy.MM.dd HH:mm')}|"
+                  >
+                    <span class="hydro-moment-detail-navitem__mark" aria-hidden="true">↓</span>
+                    <small>查看下一条</small>
+                    <b th:text="${#dates.format(targetMoment.spec.releaseTime, 'MM.dd HH:mm')}">05.01 09:30</b>
+                  </a>
+                </th:block>
+                <span
+                  class="hydro-moment-detail-navitem hydro-moment-detail-navitem--previous is-disabled"
+                  th:if="${momentCursorCount == 0 or momentCursor.get(0).metadata.name == moment.metadata.name}"
+                >
+                  <span class="hydro-moment-detail-navitem__mark" aria-hidden="true">↑</span>
+                  <small>查看上一条</small>
+                  <b>已经是最新</b>
+                </span>
+                <span
+                  class="hydro-moment-detail-navitem hydro-moment-detail-navitem--next is-disabled"
+                  th:if="${momentCursorCount == 0 or momentCursor.get(momentCursorCount - 1).metadata.name == moment.metadata.name}"
+                >
+                  <span class="hydro-moment-detail-navitem__mark" aria-hidden="true">↓</span>
+                  <small>查看下一条</small>
+                  <b>已经到底</b>
+                </span>
+                <a class="hydro-moment-detail-navitem hydro-moment-detail-navitem--list" th:href="@{/moments}">
+                  <span class="hydro-moment-detail-navitem__mark" aria-hidden="true">↩</span>
+                  <small>全部瞬间</small>
+                  <b>返回列表</b>
+                </a>
+              </nav>
+            </section>
+          </aside>
+
+          <section
+            id="comment"
+            class="hydro-moment__comment hydro-moment__comment--detail hydro-moment-detail-comments"
+            th:if="${theme.config.moments == null or theme.config.moments.enable_comment != false}"
+          >
+            <div class="hydro-moment-detail-comments__head">
+              <p>Comment</p>
+              <h2 th:text="${theme.config.moments?.comments_title ?: '评论'}">评论</h2>
+            </div>
+            <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
+          </section>
         </article>
 
         <section

@@ -3,96 +3,196 @@
     <title th:text="|${author.spec.displayName} - ${site.title}|">作者</title>
   </template>
 
-  <section class="hydro-author-page">
-    <div class="hydro-container">
-      <header class="hydro-author-hero">
-        <div class="hydro-author-hero__copy">
-          <p th:text="${theme.config.page?.author_eyebrow ?: 'Hydro-Minim / Author'}">Hydro-Minim / Author</p>
-          <h1 th:text="${author.spec.displayName}">作者名</h1>
-        </div>
-      </header>
+  <section
+    class="hydro-author-page"
+    th:with="
+      authorName=${author.spec.displayName},
+      authorBio=${#strings.isEmpty(author.spec.bio) ? (site.subtitle ?: '记录思考、设计、开发与生活里值得停下来的片刻。') : author.spec.bio},
+      authorInitial=${#strings.isEmpty(author.spec.displayName) ? 'H' : #strings.substring(author.spec.displayName, 0, 1)},
+      firstPost=${posts.total gt 0 ? posts.items[0] : null}
+    "
+  >
+    <div class="hydro-author-shell">
+      <section class="hydro-author-spotlight" aria-labelledby="hydro-author-title">
+        <div class="hydro-author-spotlight__copy">
+          <h1 id="hydro-author-title">
+            <strong th:text="${authorName}">作者名</strong>
+          </h1>
 
-      <div class="hydro-author-layout">
-        <!-- 侧边栏：作者信息卡片 -->
-        <aside class="hydro-author-sidebar">
-          <div class="hydro-author-card">
-            <div class="hydro-author-card__header">
-              <div class="hydro-author-card__avatar">
-                <img
-                  th:if="${not #strings.isEmpty(author.spec.avatar)}"
-                  th:src="${author.spec.avatar}"
-                  th:alt="${author.spec.displayName}"
-                  loading="lazy"
-                />
-                <span
-                  th:if="${#strings.isEmpty(author.spec.avatar)}"
-                  th:text="${#strings.substring(author.spec.displayName, 0, 1)}"
-                  >A</span
-                >
-              </div>
-              <div class="hydro-author-card__name">
-                <a th:href="@{${author.status.permalink}}" th:text="${author.spec.displayName}">作者名</a>
-                <p th:if="${not #strings.isEmpty(author.spec.bio)}" th:text="${author.spec.bio}">个人简介</p>
-              </div>
-            </div>
-            <div class="hydro-author-card__stats">
-              <div>
-                <strong th:text="${posts.total}">0</strong>
-                <span th:text="${theme.config.page?.author_articles_label ?: '文章'}">文章</span>
-              </div>
-              <div>
-                <strong th:text="${#dates.format(author.metadata.creationTimestamp, 'yyyy')}">2024</strong>
-                <span th:text="${theme.config.page?.author_joined_label ?: '加入'}">加入</span>
-              </div>
-            </div>
+          <div class="hydro-author-bio-panel">
+            <span>Profile</span>
+            <p th:text="${authorBio}">记录思考、设计、开发与生活里值得停下来的片刻。</p>
           </div>
-        </aside>
 
-        <!-- 主内容：文章列表 -->
-        <div class="hydro-author-main">
-          <div class="hydro-author-articles__head">
-            <h2 th:text="${theme.config.page?.author_articles_label ?: '文章'}">文章</h2>
-            <span
-              th:text="|${theme.config.page?.author_count_prefix ?: '共'} ${posts.total} ${theme.config.page?.author_count_suffix ?: '篇'}|"
-              >共 0 篇</span
-            >
-          </div>
-          <div class="hydro-author-articles__list" th:if="${posts.total gt 0}">
-            <a
-              th:each="post,stat : ${posts.items}"
-              th:href="@{${post.status.permalink}}"
-              th:style="|--article-order: ${stat.index};|"
-              class="hydro-author-article-row"
-            >
-              <span class="hydro-author-article-row__index" th:text="${#numbers.formatInteger(stat.count, 2)}">01</span>
-              <span class="hydro-author-article-row__date">
-                <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
-              </span>
-              <span class="hydro-author-article-row__body">
-                <strong th:text="${post.spec.title}">文章标题</strong>
-                <em th:if="${not #lists.isEmpty(post.categories)}" th:text="${post.categories[0].spec.displayName}"
-                  >分类</em
-                >
-              </span>
-              <span class="hydro-author-article-row__arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M7 17 17 7M9 7h8v8"></path>
-                </svg>
-              </span>
+          <div class="hydro-author-spotlight__actions">
+            <a class="hydro-author-primary-link" href="#author-articles">
+              <span th:text="${theme.config.page?.author_articles_label ?: '文章'}">文章</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M6 13l6 6 6-6"></path>
+              </svg>
+            </a>
+            <a class="hydro-author-ghost-link" th:href="@{${author.status.permalink}}">
+              <span>主页</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7M9 7h8v8"></path>
+              </svg>
             </a>
           </div>
-          <div
-            th:if="${posts.total == 0}"
-            class="hydro-empty"
-            th:text="${theme.config.page?.author_empty_text ?: '这位作者还没有文章。'}"
-          >
-            这位作者还没有文章。
-          </div>
-          <th:block
-            th:replace="~{modules/pagination :: pagination(${posts.prevUrl},${posts.nextUrl},${posts.totalPages},${posts.page},${posts.hasPrevious()},${posts.hasNext()})}"
-          />
         </div>
-      </div>
+
+        <div class="hydro-author-spotlight__visual" aria-hidden="true">
+          <div class="hydro-author-orbit"></div>
+          <div class="hydro-author-portrait">
+            <img
+              th:if="${not #strings.isEmpty(author.spec.avatar)}"
+              th:src="${author.spec.avatar}"
+              th:alt="${authorName}"
+              loading="eager"
+            />
+            <span th:if="${#strings.isEmpty(author.spec.avatar)}" th:text="${authorInitial}">H</span>
+          </div>
+        </div>
+      </section>
+
+      <nav class="hydro-author-links" aria-label="作者页面快捷入口">
+        <a class="hydro-author-link-card" href="#author-articles">
+          <span class="hydro-author-link-card__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 4h12M6 8h12M6 12h8M6 16h10M6 20h6"></path>
+            </svg>
+          </span>
+          <span class="hydro-author-link-card__body">
+            <strong>Blog</strong>
+            <em>记录想法、技术和日常。</em>
+          </span>
+          <span class="hydro-author-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="hydro-author-link-card" th:href="@{/archives}">
+          <span class="hydro-author-link-card__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h10"></path>
+              <path d="M8 3v6M16 3v6"></path>
+            </svg>
+          </span>
+          <span class="hydro-author-link-card__body">
+            <strong>Archive</strong>
+            <em>按时间回看所有内容。</em>
+          </span>
+          <span class="hydro-author-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="hydro-author-link-card" th:href="@{/links}">
+          <span class="hydro-author-link-card__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"></path>
+              <path d="M14 11a5 5 0 0 0-7.07 0L4.81 13.12a5 5 0 0 0 7.07 7.07L13 19.07"></path>
+            </svg>
+          </span>
+          <span class="hydro-author-link-card__body">
+            <strong>Links</strong>
+            <em>发现常看的站点与朋友。</em>
+          </span>
+          <span class="hydro-author-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a
+          class="hydro-author-link-card"
+          th:href="${firstPost != null ? firstPost.status.permalink : author.status.permalink}"
+        >
+          <span class="hydro-author-link-card__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg>
+          </span>
+          <span class="hydro-author-link-card__body">
+            <strong>Latest</strong>
+            <em th:text="${firstPost != null ? firstPost.spec.title : '等待第一篇新文章。'}">最新文章</em>
+          </span>
+          <span class="hydro-author-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <section id="author-articles" class="hydro-author-articles" aria-labelledby="hydro-author-articles-title">
+        <div class="hydro-author-articles__head">
+          <div>
+            <p>Recently Published</p>
+            <h2 id="hydro-author-articles-title" th:text="${theme.config.page?.author_articles_label ?: '文章'}">
+              文章
+            </h2>
+          </div>
+          <span
+            th:text="|${theme.config.page?.author_count_prefix ?: '共'} ${posts.total} ${theme.config.page?.author_count_suffix ?: '篇'}|"
+            >共 0 篇</span
+          >
+        </div>
+
+        <div class="hydro-author-featured" th:if="${posts.total gt 0}">
+          <article
+            th:each="post,stat : ${posts.items}"
+            th:if="${stat.index lt 3}"
+            class="hydro-author-featured-card"
+            th:classappend="${stat.index == 0} ? ' hydro-author-featured-card--lead' : ''"
+            th:with="
+              fallbackCover=${stat.index % 3 == 0 ? theme.config.site?.article_cover_1 : (stat.index % 3 == 1 ? theme.config.site?.article_cover_2 : theme.config.site?.article_cover_3)},
+              cover=${#strings.isEmpty(post.spec.cover) ? fallbackCover : post.spec.cover}
+            "
+          >
+            <a th:href="@{${post.status.permalink}}">
+              <span class="hydro-author-featured-card__media">
+                <img th:src="${cover}" th:alt="${post.spec.title}" loading="lazy" />
+              </span>
+              <span class="hydro-author-featured-card__body">
+                <span class="hydro-author-featured-card__meta">
+                  <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+                  <em th:if="${not #lists.isEmpty(post.categories)}" th:text="${post.categories[0].spec.displayName}">
+                    分类
+                  </em>
+                </span>
+                <strong th:text="${post.spec.title}">文章标题</strong>
+                <span th:text="${post.status.excerpt}">文章摘要</span>
+              </span>
+            </a>
+          </article>
+        </div>
+
+        <div class="hydro-author-articles__list" th:if="${posts.total gt 0}">
+          <a
+            th:each="post,stat : ${posts.items}"
+            th:href="@{${post.status.permalink}}"
+            th:style="|--article-order: ${stat.index};|"
+            class="hydro-author-article-row"
+          >
+            <span class="hydro-author-article-row__index" th:text="${#numbers.formatInteger(stat.count, 2)}">01</span>
+            <span class="hydro-author-article-row__date">
+              <time th:text="${#dates.format(post.spec.publishTime, 'yyyy.MM.dd')}">2024.01.15</time>
+            </span>
+            <span class="hydro-author-article-row__body">
+              <strong th:text="${post.spec.title}">文章标题</strong>
+              <em th:if="${not #lists.isEmpty(post.categories)}" th:text="${post.categories[0].spec.displayName}"
+                >分类</em
+              >
+            </span>
+            <span class="hydro-author-article-row__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 17 17 7M9 7h8v8"></path>
+              </svg>
+            </span>
+          </a>
+        </div>
+
+        <div
+          th:if="${posts.total == 0}"
+          class="hydro-empty"
+          th:text="${theme.config.page?.author_empty_text ?: '这位作者还没有文章。'}"
+        >
+          这位作者还没有文章。
+        </div>
+
+        <th:block
+          th:replace="~{modules/pagination :: pagination(${posts.prevUrl},${posts.nextUrl},${posts.totalPages},${posts.page},${posts.hasPrevious()},${posts.hasNext()})}"
+        />
+      </section>
     </div>
   </section>
 </include>
