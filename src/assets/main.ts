@@ -2079,6 +2079,12 @@ function initPosterDialogs() {
     return;
   }
 
+  dialogs.forEach((dialog) => {
+    if (dialog.parentElement !== document.body) {
+      document.body.append(dialog);
+    }
+  });
+
   const focusableSelector = [
     "a[href]",
     "button:not([disabled])",

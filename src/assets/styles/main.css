@@ -6346,7 +6346,8 @@ html.lenis body {
 .hydro-moment-poster {
   position: fixed;
   inset: 0;
-  z-index: 130;
+  z-index: 320;
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6370,6 +6371,7 @@ html.lenis body {
 .hydro-moment-poster__overlay {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   border: 0;
@@ -6382,6 +6384,7 @@ html.lenis body {
 
 .hydro-moment-poster__dialog {
   position: relative;
+  z-index: 1;
   display: grid;
   width: min(31rem, 100%);
   place-items: center;
