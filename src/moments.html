@@ -57,24 +57,30 @@
         >
       </div>
 
-      <nav
-        class="hydro-moments-tags"
+      <section
+        class="hydro-moments-tag-rail"
         th:if="${momentTags != null and not #lists.isEmpty(momentTags)}"
-        aria-label="瞬间标签"
+        aria-labelledby="hydro-moments-tag-rail-title"
       >
-        <a th:href="@{${pageBaseUrl}}" th:classappend="${#lists.isEmpty(param.tag)} ? 'is-active' : ''">
-          <span th:text="${theme.config.moments?.all_tag_label ?: '全部'}">全部</span>
-          <sup th:text="${allMomentTotal}">0</sup>
-        </a>
-        <a
-          th:each="tag : ${momentTags}"
-          th:href="@{${pageBaseUrl}(tag=${tag.name})}"
-          th:classappend="${#lists.contains(param.tag, tag.name)} ? 'is-active' : ''"
-        >
-          <span th:text="${tag.name}">标签</span>
-          <sup th:text="${tag.momentCount ?: 0}">0</sup>
-        </a>
-      </nav>
+        <div class="hydro-moments-tag-rail__head">
+          <p id="hydro-moments-tag-rail-title">Moment tags</p>
+        </div>
+
+        <nav class="hydro-moments-tags" aria-label="瞬间标签">
+          <a th:href="@{${pageBaseUrl}}" th:classappend="${#lists.isEmpty(param.tag)} ? 'is-active' : ''">
+            <span th:text="${theme.config.moments?.all_tag_label ?: '全部'}">全部</span>
+            <sup th:text="${allMomentTotal}">0</sup>
+          </a>
+          <a
+            th:each="tag : ${momentTags}"
+            th:href="@{${pageBaseUrl}(tag=${tag.name})}"
+            th:classappend="${#lists.contains(param.tag, tag.name)} ? 'is-active' : ''"
+          >
+            <span th:text="${tag.name}">标签</span>
+            <sup th:text="${tag.momentCount ?: 0}">0</sup>
+          </a>
+        </nav>
+      </section>
 
       <div class="hydro-moments-feed" th:if="${hasMomentsData}">
         <article
