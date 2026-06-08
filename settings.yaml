@@ -1290,6 +1290,14 @@ spec:
           label: 链接标签
           value: 链接
         - $formkit: text
+          name: site_logo_label
+          label: Logo 标签
+          value: Logo
+        - $formkit: text
+          name: site_description_label
+          label: 站点描述标签
+          value: 描述
+        - $formkit: text
           name: copy_site_name_label
           label: 复制站名提示
           value: 复制站名
@@ -1297,6 +1305,14 @@ spec:
           name: copy_site_url_label
           label: 复制链接提示
           value: 复制链接
+        - $formkit: text
+          name: copy_site_logo_label
+          label: 复制 Logo 提示
+          value: 复制 Logo
+        - $formkit: text
+          name: copy_site_description_label
+          label: 复制描述提示
+          value: 复制描述
         - $formkit: text
           name: apply_title
           label: 申请区标题

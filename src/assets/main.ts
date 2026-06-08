@@ -2362,12 +2362,15 @@ function initPostRelatedCards() {
 }
 
 function initLinksPage() {
+  const linksPage = document.querySelector<HTMLElement>(".hydro-site-info, .hydro-links-section");
   const linksSection = document.querySelector<HTMLElement>(".hydro-links-section");
-  if (!linksSection) {
+  if (!linksPage) {
     return;
   }
 
-  const copyHandlers = linksSection.querySelectorAll<HTMLButtonElement>("[data-copy]");
+  const copyHandlers = document.querySelectorAll<HTMLButtonElement>(
+    ".hydro-site-info [data-copy], .hydro-links-section [data-copy]",
+  );
   copyHandlers.forEach((button) => {
     button.addEventListener("click", async (event) => {
       event.preventDefault();
@@ -2389,7 +2392,7 @@ function initLinksPage() {
     });
   });
 
-  linksSection.querySelectorAll<HTMLButtonElement>("[data-random-link]").forEach((button) => {
+  linksSection?.querySelectorAll<HTMLButtonElement>("[data-random-link]").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();

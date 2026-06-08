@@ -5813,18 +5813,30 @@ html.lenis body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1rem;
 }
 
-.hydro-site-info__header svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  fill: none;
-  stroke: var(--hydro-coral);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
+.hydro-site-info__identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.95rem;
+}
+
+.hydro-site-info__logo {
   flex-shrink: 0;
+  width: 3.35rem;
+  height: 3.35rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  padding: 0.45rem;
+  background: rgb(var(--hydro-paper-rgb) / 58%);
+  object-fit: contain;
+  box-shadow: 0 0.9rem 2rem rgb(var(--hydro-shadow-rgb) / 5%);
+}
+
+.hydro-site-info__title {
+  min-width: 0;
 }
 
 .hydro-site-info__header h2 {
@@ -5876,6 +5888,15 @@ html.lenis body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.hydro-site-info__row--description {
+  align-items: flex-start;
+}
+
+.hydro-site-info__row--description .hydro-site-info__value {
+  line-height: 1.65;
+  white-space: normal;
 }
 
 .hydro-site-info__value--mono {

@@ -14,20 +14,25 @@
   </section>
 
   <!-- 站点信息 + 友链申请 -->
-  <section class="hydro-site-info">
+  <section
+    class="hydro-site-info"
+    th:with="
+      siteLogoRaw=${#strings.isEmpty(site.logo) ? (theme.config.site == null || #strings.isEmpty(theme.config.site.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.site.logo) : site.logo},
+      siteBaseUrl=${#strings.isEmpty(site.url) ? '' : (#strings.endsWith(site.url, '/') ? #strings.substring(site.url, 0, #strings.length(site.url) - 1) : site.url)},
+      siteLogo=${#strings.startsWith(siteLogoRaw, 'http://') or #strings.startsWith(siteLogoRaw, 'https://') or #strings.startsWith(siteLogoRaw, '//') ? siteLogoRaw : siteBaseUrl + (#strings.startsWith(siteLogoRaw, '/') ? siteLogoRaw : '/' + siteLogoRaw)},
+      siteDescription=${site.seo != null and not #strings.isEmpty(site.seo.description) ? site.seo.description : (not #strings.isEmpty(site.subtitle) ? site.subtitle : (theme.config.links?.description ?: '与志同道合的创作者相互连接，共同构建开放的网络。'))}"
+  >
     <div class="hydro-container">
       <div class="hydro-links-top">
         <div class="hydro-site-info__card">
           <div class="hydro-site-info__header">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path
-                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-              ></path>
-              <path d="M2 12h20"></path>
-            </svg>
-            <h2 th:text="${theme.config.links?.site_info_title ?: '我的站点信息'}">我的站点信息</h2>
-            <span th:text="${theme.config.links?.site_info_description ?: '方便你回链'}">方便你回链</span>
+            <div class="hydro-site-info__identity">
+              <img class="hydro-site-info__logo" th:src="${siteLogo}" th:alt="|${site.title} logo|" loading="lazy" />
+              <div class="hydro-site-info__title">
+                <h2 th:text="${theme.config.links?.site_info_title ?: '我的站点信息'}">我的站点信息</h2>
+                <span th:text="${theme.config.links?.site_info_description ?: '方便你回链'}">方便你回链</span>
+              </div>
+            </div>
           </div>
           <div class="hydro-site-info__grid">
             <div class="hydro-site-info__row">
@@ -57,6 +62,40 @@
                 data-copy
                 th:data-copy-text="${site.url}"
                 th:attr="aria-label=${theme.config.links?.copy_site_url_label ?: '复制链接'},title=${theme.config.links?.copy_site_url_label ?: '复制链接'}"
+              >
+                <svg viewBox="0 0 24 24">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="hydro-site-info__row">
+              <span class="hydro-site-info__label" th:text="${theme.config.links?.site_logo_label ?: 'Logo'}"
+                >Logo</span
+              >
+              <span class="hydro-site-info__value hydro-site-info__value--mono" th:text="${siteLogo}">Logo URL</span>
+              <button
+                class="hydro-copy-btn"
+                data-copy
+                th:data-copy-text="${siteLogo}"
+                th:attr="aria-label=${theme.config.links?.copy_site_logo_label ?: '复制 Logo'},title=${theme.config.links?.copy_site_logo_label ?: '复制 Logo'}"
+              >
+                <svg viewBox="0 0 24 24">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="hydro-site-info__row hydro-site-info__row--description">
+              <span class="hydro-site-info__label" th:text="${theme.config.links?.site_description_label ?: '描述'}"
+                >描述</span
+              >
+              <span class="hydro-site-info__value" th:text="${siteDescription}">站点描述</span>
+              <button
+                class="hydro-copy-btn"
+                data-copy
+                th:data-copy-text="${siteDescription}"
+                th:attr="aria-label=${theme.config.links?.copy_site_description_label ?: '复制描述'},title=${theme.config.links?.copy_site_description_label ?: '复制描述'}"
               >
                 <svg viewBox="0 0 24 24">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
