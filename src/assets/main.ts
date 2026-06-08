@@ -438,16 +438,11 @@ function initNavigation() {
   type NavMode = "top" | "pill";
   type NavVisual = {
     backgroundAlpha: number;
-    backdropBlur: number;
     borderAlpha: number;
     borderRadius: number;
-    shadowAlpha: number;
-    shadowBlur: number;
-    shadowY: number;
   };
   type NavSnapshot = NavVisual & {
     actionsGap: number;
-    iconBackdropBlur: number;
     iconBackgroundAlpha: number;
     iconBorderAlpha: number;
     iconSize: number;
@@ -603,42 +598,26 @@ function initNavigation() {
       return mobile
         ? {
             backgroundAlpha: 0,
-            backdropBlur: 0,
             borderAlpha: 0,
             borderRadius: 0,
-            shadowAlpha: 0,
-            shadowBlur: 0,
-            shadowY: 0,
           }
         : {
             backgroundAlpha: 34,
-            backdropBlur: 18,
             borderAlpha: 5,
             borderRadius: 999,
-            shadowAlpha: 0,
-            shadowBlur: 0,
-            shadowY: 0,
           };
     }
 
     return mobile
       ? {
           backgroundAlpha: 98,
-          backdropBlur: 0,
           borderAlpha: 8,
           borderRadius: 999,
-          shadowAlpha: 14,
-          shadowBlur: 30,
-          shadowY: 10,
         }
       : {
           backgroundAlpha: 84,
-          backdropBlur: 22,
           borderAlpha: 7,
           borderRadius: 999,
-          shadowAlpha: 9,
-          shadowBlur: 34,
-          shadowY: 12,
         };
   }
 
@@ -658,10 +637,14 @@ function initNavigation() {
       "box-shadow",
       "backdrop-filter",
       "-webkit-backdrop-filter",
+      "transform",
     ].forEach((property) => nav.style.removeProperty(property));
 
     [
       "--hydro-nav-progress",
+      "--hydro-nav-background-alpha",
+      "--hydro-nav-border-alpha",
+      "--hydro-nav-radius",
       "--hydro-nav-inner-padding",
       "--hydro-nav-inner-gap",
       "--hydro-nav-logo-width",
@@ -676,7 +659,6 @@ function initNavigation() {
       "--hydro-nav-icon-size",
       "--hydro-nav-icon-background-alpha",
       "--hydro-nav-icon-border-alpha",
-      "--hydro-nav-icon-backdrop-blur",
       "--hydro-nav-icon-svg-size",
     ].forEach((property) => nav.style.removeProperty(property));
   }
@@ -705,7 +687,6 @@ function initNavigation() {
     return {
       ...visual,
       actionsGap: actionsStyles ? cssNumber(actionsStyles, "gap") : 0,
-      iconBackdropBlur: mode === "top" && viewportIsMobile() ? 18 : 0,
       iconBackgroundAlpha: mode === "top" && viewportIsMobile() ? 58 : 0,
       iconBorderAlpha: mode === "top" && viewportIsMobile() ? 7 : 0,
       iconSize: iconRect?.width ?? 0,
@@ -781,29 +762,15 @@ function initNavigation() {
     const backgroundAlpha = mix(from.backgroundAlpha, to.backgroundAlpha, progress);
     const borderAlpha = mix(from.borderAlpha, to.borderAlpha, progress);
     const borderRadius = mix(from.borderRadius, to.borderRadius, progress);
-    const shadowY = mix(from.shadowY, to.shadowY, progress);
-    const shadowBlur = mix(from.shadowBlur, to.shadowBlur, progress);
-    const shadowAlpha = mix(from.shadowAlpha, to.shadowAlpha, progress);
-    const backdropBlur = mix(from.backdropBlur, to.backdropBlur, progress);
-
     nav.classList.add("is-nav-morphing");
     nav.classList.remove("is-scrolled");
-    nav.style.top = `${top.toFixed(3)}px`;
-    nav.style.left = `${left.toFixed(3)}px`;
-    nav.style.right = "auto";
+    nav.style.transform = `translate3d(${left.toFixed(3)}px, ${top.toFixed(3)}px, 0)`;
     nav.style.width = `${width.toFixed(3)}px`;
-    nav.style.minWidth = "0";
-    nav.style.padding = "0";
-    nav.style.border = `1px solid rgb(var(--hydro-ink-rgb) / ${borderAlpha.toFixed(3)}%)`;
-    nav.style.borderRadius = `${borderRadius.toFixed(3)}px`;
-    nav.style.background = `rgb(var(--hydro-paper-rgb) / ${backgroundAlpha.toFixed(3)}%)`;
-    nav.style.boxShadow = `0 ${shadowY.toFixed(3)}px ${shadowBlur.toFixed(3)}px rgb(var(--hydro-shadow-rgb) / ${shadowAlpha.toFixed(3)}%)`;
-
-    const backdropValue = backdropBlur > 0.01 ? `blur(${backdropBlur.toFixed(3)}px)` : "none";
-    nav.style.backdropFilter = backdropValue;
-    nav.style.setProperty("-webkit-backdrop-filter", backdropValue);
 
     nav.style.setProperty("--hydro-nav-progress", progress.toFixed(4));
+    setNavVar("--hydro-nav-background-alpha", backgroundAlpha, "%");
+    setNavVar("--hydro-nav-border-alpha", borderAlpha, "%");
+    setNavVar("--hydro-nav-radius", borderRadius);
     nav.style.setProperty(
       "--hydro-nav-inner-padding",
       `${mix(from.innerPaddingTop, to.innerPaddingTop, progress).toFixed(3)}px ${mix(
@@ -839,7 +806,6 @@ function initNavigation() {
       "%",
     );
     setNavVar("--hydro-nav-icon-border-alpha", mix(from.iconBorderAlpha, to.iconBorderAlpha, progress), "%");
-    setNavVar("--hydro-nav-icon-backdrop-blur", mix(from.iconBackdropBlur, to.iconBackdropBlur, progress));
     setNavVar("--hydro-nav-icon-svg-size", mix(from.iconSvgSize, to.iconSvgSize, progress));
   }
 
@@ -1142,18 +1108,56 @@ function initHero() {
 
   const motionTarget = imageFrame ?? imageMotion ?? image;
 
-  motionTarget?.addEventListener("mousemove", (event) => {
-    const rect = motionTarget.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-    const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+  let motionRect: DOMRect | null = null;
+  let motionPointerX = 0;
+  let motionPointerY = 0;
+  let motionRaf = 0;
+  const readMotionRect = () => {
+    if (!motionTarget) return null;
+    motionRect = motionTarget.getBoundingClientRect();
+    return motionRect;
+  };
+  const flushMotion = () => {
+    motionRaf = 0;
+    const rect = motionRect ?? readMotionRect();
+    if (!rect || rect.width <= 0 || rect.height <= 0) {
+      return;
+    }
+    const x = Math.max(0, Math.min(1, (motionPointerX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (motionPointerY - rect.top) / rect.height));
     setImageX?.((x - 0.5) * 22);
     setImageY?.((y - 0.5) * 22);
-  });
+  };
+  const scheduleMotion = (event: PointerEvent) => {
+    motionPointerX = event.clientX;
+    motionPointerY = event.clientY;
+    if (motionRaf) {
+      return;
+    }
+    motionRaf = window.requestAnimationFrame(flushMotion);
+  };
 
-  motionTarget?.addEventListener("mouseleave", () => {
+  motionTarget?.addEventListener("pointerenter", () => {
+    readMotionRect();
+  });
+  motionTarget?.addEventListener("pointermove", scheduleMotion, { passive: true });
+
+  motionTarget?.addEventListener("pointerleave", () => {
+    motionRect = null;
+    if (motionRaf) {
+      window.cancelAnimationFrame(motionRaf);
+      motionRaf = 0;
+    }
     setImageX?.(0);
     setImageY?.(0);
   });
+  window.addEventListener(
+    "resize",
+    () => {
+      motionRect = null;
+    },
+    { passive: true },
+  );
 
   window.addEventListener("pagehide", () => ctx.revert(), { once: true });
 }
@@ -1307,49 +1311,115 @@ function initTiltCards() {
     return;
   }
 
-  document.querySelectorAll<HTMLElement>("[data-tilt-card]").forEach((card) => {
-    card.addEventListener("mousemove", (event) => {
-      if (!motionEnabled) {
+  const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-tilt-card]"));
+  if (cards.length === 0) {
+    return;
+  }
+
+  const invalidateCardRects: Array<() => void> = [];
+
+  cards.forEach((card) => {
+    let cardRect: DOMRect | null = null;
+    let pointerX = 0;
+    let pointerY = 0;
+    let tiltRaf = 0;
+    const setRotateX = gsap.quickTo(card, "rotateX", { duration: 0.26, ease: "power2.out" });
+    const setRotateY = gsap.quickTo(card, "rotateY", { duration: 0.26, ease: "power2.out" });
+    const readCardRect = () => {
+      cardRect = card.getBoundingClientRect();
+      return cardRect;
+    };
+    const flushTilt = () => {
+      tiltRaf = 0;
+      const rect = cardRect ?? readCardRect();
+      if (rect.width <= 0 || rect.height <= 0) {
         return;
       }
-      const rect = card.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const x = pointerX - rect.left;
+      const y = pointerY - rect.top;
       const rotateX = (y - rect.height / 2) / 20;
       const rotateY = (rect.width / 2 - x) / 20;
-      gsap.to(card, { duration: 0.3, ease: "power2.out", rotateX, rotateY });
+      setRotateX(rotateX);
+      setRotateY(rotateY);
+    };
+    const scheduleTilt = (event: PointerEvent) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (tiltRaf) {
+        return;
+      }
+      tiltRaf = window.requestAnimationFrame(flushTilt);
+    };
+
+    card.addEventListener("pointerenter", () => {
+      readCardRect();
+    });
+    card.addEventListener("pointermove", scheduleTilt, { passive: true });
+
+    card.addEventListener("pointerleave", () => {
+      cardRect = null;
+      if (tiltRaf) {
+        window.cancelAnimationFrame(tiltRaf);
+        tiltRaf = 0;
+      }
+      setRotateX(0);
+      setRotateY(0);
     });
 
-    card.addEventListener("mouseleave", () => {
-      if (motionEnabled) {
-        gsap.to(card, { duration: 0.5, ease: "expo.out", rotateX: 0, rotateY: 0 });
-      }
+    invalidateCardRects.push(() => {
+      cardRect = null;
     });
   });
+
+  window.addEventListener(
+    "resize",
+    () => {
+      invalidateCardRects.forEach((invalidate) => invalidate());
+    },
+    { passive: true },
+  );
 }
 
 function initCategoryCursor() {
   const section = document.querySelector<HTMLElement>("[data-categories-section]");
   const cursor = document.querySelector<HTMLElement>("[data-hydro-cursor]");
-  if (!section || !cursor) {
+  if (!section || !cursor || !motionEnabled || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
     return;
   }
 
-  const positionCursor = (event: MouseEvent) => {
-    cursor.style.left = `${event.clientX}px`;
-    cursor.style.top = `${event.clientY}px`;
+  let cursorX = 0;
+  let cursorY = 0;
+  let cursorRaf = 0;
+  const flushCursorPosition = () => {
+    cursorRaf = 0;
+    cursor.style.setProperty("--hydro-cursor-x", `${cursorX}px`);
+    cursor.style.setProperty("--hydro-cursor-y", `${cursorY}px`);
+  };
+  const positionCursor = (event: PointerEvent) => {
+    cursorX = event.clientX;
+    cursorY = event.clientY;
+    if (cursorRaf) {
+      return;
+    }
+    cursorRaf = window.requestAnimationFrame(flushCursorPosition);
   };
 
-  section.querySelectorAll(".hydro-category-slice").forEach((slice) => {
-    slice.addEventListener("mouseenter", (event) => {
-      positionCursor(event as MouseEvent);
+  section.querySelectorAll<HTMLElement>(".hydro-category-slice").forEach((slice) => {
+    slice.addEventListener("pointerenter", (event) => {
+      positionCursor(event);
       cursor.classList.add("is-visible");
     });
-    slice.addEventListener("mouseleave", () => cursor.classList.remove("is-visible"));
+    slice.addEventListener("pointerleave", () => cursor.classList.remove("is-visible"));
   });
 
-  section.addEventListener("mousemove", positionCursor);
-  section.addEventListener("mouseleave", () => cursor.classList.remove("is-visible"));
+  section.addEventListener("pointermove", positionCursor, { passive: true });
+  section.addEventListener("pointerleave", () => {
+    cursor.classList.remove("is-visible");
+    if (cursorRaf) {
+      window.cancelAnimationFrame(cursorRaf);
+      cursorRaf = 0;
+    }
+  });
 }
 
 function initScrollTilt() {
@@ -1372,6 +1442,7 @@ function initScrollTilt() {
   let lastScrollY = window.scrollY;
   let settleTimer: number | undefined;
   let ticking = false;
+  let tiltActive = false;
   const setters = tiltTargets.map((target) =>
     gsap.quickTo(target, "rotateX", {
       duration: 0.18,
@@ -1381,6 +1452,13 @@ function initScrollTilt() {
 
   const setTilt = (rotateX: number) => {
     setters.forEach((setter) => setter(rotateX));
+  };
+  const setTiltActive = (active: boolean) => {
+    if (tiltActive === active) {
+      return;
+    }
+    tiltActive = active;
+    tiltTargets.forEach((target) => target.classList.toggle("is-scroll-tilting", active));
   };
 
   window.addEventListener(
@@ -1397,7 +1475,7 @@ function initScrollTilt() {
           return;
         }
         const rotateX = Math.max(-0.8, Math.min(0.8, velocity * 0.018));
-        tiltTargets.forEach((target) => target.classList.add("is-scroll-tilting"));
+        setTiltActive(true);
         setTilt(rotateX);
         if (settleTimer) {
           window.clearTimeout(settleTimer);
@@ -1405,7 +1483,7 @@ function initScrollTilt() {
         settleTimer = window.setTimeout(() => {
           setTilt(0);
           window.setTimeout(() => {
-            tiltTargets.forEach((target) => target.classList.remove("is-scroll-tilting"));
+            setTiltActive(false);
           }, 220);
         }, 140);
         lastScrollY = currentScrollY;
@@ -2932,13 +3010,61 @@ function initLinkCards() {
     });
   });
 
-  document.querySelectorAll<HTMLElement>(".hydro-link-card").forEach((card) => {
-    card.addEventListener("mousemove", (event) => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--hydro-link-glow-x", `${event.clientX - rect.left}px`);
-      card.style.setProperty("--hydro-link-glow-y", `${event.clientY - rect.top}px`);
+  const linkCards = Array.from(document.querySelectorAll<HTMLElement>(".hydro-link-card"));
+  if (linkCards.length === 0) {
+    return;
+  }
+
+  const invalidateGlowRects: Array<() => void> = [];
+
+  linkCards.forEach((card) => {
+    let glowRect: DOMRect | null = null;
+    let glowX = 0;
+    let glowY = 0;
+    let glowRaf = 0;
+    const readGlowRect = () => {
+      glowRect = card.getBoundingClientRect();
+      return glowRect;
+    };
+    const flushGlow = () => {
+      glowRaf = 0;
+      card.style.setProperty("--hydro-link-glow-x", `${glowX}px`);
+      card.style.setProperty("--hydro-link-glow-y", `${glowY}px`);
+    };
+    const scheduleGlow = (event: PointerEvent) => {
+      const rect = glowRect ?? readGlowRect();
+      glowX = event.clientX - rect.left;
+      glowY = event.clientY - rect.top;
+      if (glowRaf) {
+        return;
+      }
+      glowRaf = window.requestAnimationFrame(flushGlow);
+    };
+
+    card.addEventListener("pointerenter", () => {
+      readGlowRect();
+    });
+    card.addEventListener("pointermove", scheduleGlow, { passive: true });
+    card.addEventListener("pointerleave", () => {
+      glowRect = null;
+      if (glowRaf) {
+        window.cancelAnimationFrame(glowRaf);
+        glowRaf = 0;
+      }
+    });
+
+    invalidateGlowRects.push(() => {
+      glowRect = null;
     });
   });
+
+  window.addEventListener(
+    "resize",
+    () => {
+      invalidateGlowRects.forEach((invalidate) => invalidate());
+    },
+    { passive: true },
+  );
 }
 
 function initMomentsReveal() {

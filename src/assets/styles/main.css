@@ -307,9 +307,11 @@ textarea {
   --hydro-nav-text-font-size: clamp(1rem, 1.4vw, 1.35rem);
   --hydro-nav-actions-gap: 1rem;
   --hydro-nav-icon-size: 2rem;
+  --hydro-nav-background-alpha: 0%;
+  --hydro-nav-border-alpha: 0%;
+  --hydro-nav-radius: 0px;
   --hydro-nav-icon-background-alpha: 0%;
   --hydro-nav-icon-border-alpha: 0%;
-  --hydro-nav-icon-backdrop-blur: 0px;
   --hydro-nav-icon-svg-size: 1rem;
   position: fixed;
   top: 0;
@@ -3024,15 +3026,16 @@ html[data-hydro-motion="off"] .hydro-card:hover .hydro-card__arrow {
   font-size: 0.75rem;
   font-weight: 700;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.88);
+  transform: translate3d(var(--hydro-cursor-x, 0px), var(--hydro-cursor-y, 0px), 0) translate(-50%, -50%) scale(0.88);
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
+  will-change: transform, opacity;
 }
 
 .hydro-cursor.is-visible {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate3d(var(--hydro-cursor-x, 0px), var(--hydro-cursor-y, 0px), 0) translate(-50%, -50%) scale(1);
 }
 
 .hydro-about {
@@ -15533,9 +15536,19 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-nav.is-nav-morphing {
-  transform: none;
+  top: 0;
+  right: auto;
+  left: 0;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / var(--hydro-nav-border-alpha));
+  border-radius: var(--hydro-nav-radius);
+  background: rgb(var(--hydro-paper-rgb) / var(--hydro-nav-background-alpha));
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition: none;
-  will-change: top, left, width, background, box-shadow, backdrop-filter;
+  will-change: transform, width;
 }
 
 .hydro-nav.is-nav-morphing .hydro-nav__inner {
@@ -15604,8 +15617,8 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   height: var(--hydro-nav-icon-size);
   border: 1px solid rgb(var(--hydro-ink-rgb) / var(--hydro-nav-icon-border-alpha));
   background: rgb(var(--hydro-paper-rgb) / var(--hydro-nav-icon-background-alpha));
-  backdrop-filter: blur(var(--hydro-nav-icon-backdrop-blur));
-  -webkit-backdrop-filter: blur(var(--hydro-nav-icon-backdrop-blur));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition: none;
 }
 

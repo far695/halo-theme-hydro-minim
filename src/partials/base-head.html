@@ -17,11 +17,6 @@
   th:with="faviconHref = ${site.favicon ?: (theme.config.site == null || #strings.isEmpty(theme.config.site.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.site.logo)}"
   th:href="${faviconHref}"
 />
-<link
-  rel="preload"
-  th:href="${theme.config.home?.hero_cover ?: #theme.assets('/images/hero-featured.jpg')}"
-  as="image"
-/>
 <th:block
   th:if="${not #strings.isEmpty(theme.config.advanced?.head_html)}"
   th:utext="${theme.config.advanced.head_html}"

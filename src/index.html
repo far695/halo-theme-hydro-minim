@@ -1,6 +1,18 @@
 <include src="layout.html">
-  <template name="head">
+  <template
+    name="head"
+    th:with="
+      homeConfig=${theme.config.home},
+      showHero=${homeConfig == null or (homeConfig.show_hero != false and homeConfig.show_hero != 'false')}
+    "
+  >
     <title th:text="|${site.title} - Hydro-Minim|">Hydro-Minim</title>
+    <link
+      th:if="${showHero}"
+      rel="preload"
+      th:href="${theme.config.home?.hero_cover ?: #theme.assets('/images/hero-featured.jpg')}"
+      as="image"
+    />
   </template>
 
   <div
