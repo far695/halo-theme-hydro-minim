@@ -123,6 +123,7 @@ spec:
                   name: url
                   label: 链接
                   value: ""
+                  validation: required
                 - $formkit: iconify
                   name: icon
                   label: 图标（可选）
@@ -396,18 +397,24 @@ spec:
               itemLabels:
                 - type: text
                   label: $value.label
+                - type: text
+                  label: $value.type
               children:
                 - $formkit: iconify
                   name: icon
+                  key: navigation_floating_fab_items_icon
                   label: 图标
                   format: svg
                   value-only: true
+                  validation: required
                 - $formkit: text
                   name: label
+                  key: navigation_floating_fab_items_label
                   label: 提示文字
                   value: ""
                 - $formkit: select
                   name: type
+                  key: navigation_floating_fab_items_type
                   label: 动作类型
                   value: link
                   options:
@@ -420,16 +427,20 @@ spec:
                 - $formkit: url
                   if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                   name: url
+                  key: navigation_floating_fab_items_url
                   label: 链接地址
                   value: ""
+                  validation: required
                 - $formkit: switch
                   if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                   name: new_tab
+                  key: navigation_floating_fab_items_new_tab
                   label: 新标签打开
                   value: true
                 - $formkit: select
                   if: "$value.type === 'builtin'"
                   name: builtin_action
+                  key: navigation_floating_fab_builtin_action
                   label: 内置动作
                   value: search
                   options:
@@ -454,14 +465,18 @@ spec:
                 - $formkit: text
                   if: "$value.type === 'custom'"
                   name: custom_handler
+                  key: navigation_floating_fab_custom_handler
                   label: 自定义函数名
                   value: ""
+                  validation: required
                 - $formkit: code
                   if: "$value.type === 'custom'"
                   name: payload
+                  key: navigation_floating_fab_custom_payload
                   label: 自定义函数参数
                   language: json
                   value: ""
+                  validation: required
             - $formkit: array
               if: $get(navigation_floating_fab_enabled).value === true
               name: fab_profiles
@@ -476,10 +491,12 @@ spec:
               children:
                 - $formkit: text
                   name: label
+                  key: navigation_floating_fab_profiles_label
                   label: 配置名称
                   value: ""
                 - $formkit: select
                   name: match_type
+                  key: navigation_floating_fab_profiles_match_type
                   label: 匹配方式
                   value: template
                   options:
@@ -492,8 +509,10 @@ spec:
                 - $formkit: text
                   if: "$value.match_type !== 'all'"
                   name: match_value
+                  key: navigation_floating_fab_profiles_match_value
                   label: 匹配值
                   value: ""
+                  validation: required
                 - $formkit: array
                   name: items
                   label: 快捷项
@@ -504,18 +523,24 @@ spec:
                   itemLabels:
                     - type: text
                       label: $value.label
+                    - type: text
+                      label: $value.type
                   children:
                     - $formkit: iconify
                       name: icon
+                      key: navigation_floating_fab_items_icon
                       label: 图标
                       format: svg
                       value-only: true
+                      validation: required
                     - $formkit: text
                       name: label
+                      key: navigation_floating_fab_items_label
                       label: 提示文字
                       value: ""
                     - $formkit: select
                       name: type
+                      key: navigation_floating_fab_items_type
                       label: 动作类型
                       value: link
                       options:
@@ -528,16 +553,20 @@ spec:
                     - $formkit: url
                       if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                       name: url
+                      key: navigation_floating_fab_items_url
                       label: 链接地址
                       value: ""
+                      validation: required
                     - $formkit: switch
                       if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                       name: new_tab
+                      key: navigation_floating_fab_items_new_tab
                       label: 新标签打开
                       value: true
                     - $formkit: select
                       if: "$value.type === 'builtin'"
                       name: builtin_action
+                      key: navigation_floating_fab_items_builtin_action
                       label: 内置动作
                       value: search
                       options:
@@ -562,14 +591,18 @@ spec:
                     - $formkit: text
                       if: "$value.type === 'custom'"
                       name: custom_handler
+                      key: navigation_floating_fab_items_custom_handler
                       label: 自定义函数名
                       value: ""
+                      validation: required
                     - $formkit: code
                       if: "$value.type === 'custom'"
                       name: payload
+                      key: navigation_floating_fab_items_custom_payload
                       label: 自定义函数参数
                       language: json
                       value: ""
+                      validation: required
 
     - group: home
       label: 首页
