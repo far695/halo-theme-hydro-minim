@@ -3372,16 +3372,170 @@ html[data-hydro-motion="off"] .hydro-card:hover .hydro-card__arrow {
 }
 
 .hydro-footer__bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 2rem;
+  gap: 1rem 2rem;
+  padding-top: 1.2rem;
   border-top: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
 }
 
-.hydro-footer__bar span {
+.hydro-footer__signature {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+}
+
+.hydro-footer__signature p {
+  max-width: none;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.hydro-footer__signature p + p,
+.hydro-footer__credits {
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.hydro-footer__signature p + p::before,
+.hydro-footer__credits::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.3rem;
+  height: 0.3rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 28%);
+  border-radius: 999px;
+  content: "";
+  transform: translateY(-50%);
+}
+
+.hydro-footer__credits {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hydro-footer__credit {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  padding: 0 0.72rem;
+  background:
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 58%), rgb(var(--hydro-paper-rgb) / 26%)),
+    rgb(var(--hydro-ink-rgb) / 2%);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 62%),
+    0 0.45rem 1.2rem rgb(var(--hydro-shadow-rgb) / 4%);
+  color: rgb(var(--hydro-ink-rgb) / 62%);
+  font-size: 0.72rem;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hydro-footer__credit::before {
+  display: block;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: rgb(var(--hydro-ink-rgb) / 22%);
+  content: "";
+}
+
+.hydro-footer__credit-prefix {
+  color: rgb(var(--hydro-ink-rgb) / 44%);
+  font-weight: 600;
+}
+
+.hydro-footer__credit strong {
+  color: var(--hydro-solid);
+  font-weight: 800;
+}
+
+.hydro-footer__credit--halo {
+  border-color: rgb(var(--hydro-accent-rgb) / 20%);
+  background:
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 62%), rgb(var(--hydro-accent-rgb) / 5%)),
+    rgb(var(--hydro-accent-rgb) / 4%);
+}
+
+.hydro-footer__credit--halo::before {
+  background: rgb(var(--hydro-accent-rgb) / 58%);
+}
+
+.hydro-footer__credit:hover,
+.hydro-footer__credit:focus-visible {
+  border-color: rgb(var(--hydro-accent-rgb) / 34%);
+  background:
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 74%), rgb(var(--hydro-accent-rgb) / 8%)),
+    rgb(var(--hydro-accent-rgb) / 7%);
+  color: var(--hydro-solid);
+  transform: translateY(-1px);
+}
+
+.hydro-footer__legal {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hydro-footer__legal-link {
+  display: inline-flex;
+  max-width: min(100%, 32rem);
+  min-height: 2.2rem;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  padding: 0 0.75rem;
+  background: rgb(var(--hydro-paper-rgb) / 36%);
+  box-shadow: inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 56%);
+  color: rgb(var(--hydro-ink-rgb) / 66%);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hydro-footer__legal-link:hover,
+.hydro-footer__legal-link:focus-visible {
+  border-color: rgb(var(--hydro-accent-rgb) / 34%);
+  background: rgb(var(--hydro-accent-rgb) / 8%);
+  color: var(--hydro-solid);
+  transform: translateY(-1px);
+}
+
+.hydro-footer__legal-kicker {
+  flex: 0 0 auto;
   color: var(--hydro-coral);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.hydro-footer__legal-link span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hydro-list-hero {
@@ -5777,7 +5931,15 @@ html.lenis body {
 
   .hydro-footer__bar {
     align-items: flex-start;
-    flex-direction: column;
+  }
+
+  .hydro-footer__signature,
+  .hydro-footer__legal {
+    justify-content: flex-start;
+  }
+
+  .hydro-footer__legal-link {
+    max-width: 100%;
   }
 
   .hydro-author-article-row {
