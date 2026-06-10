@@ -10385,7 +10385,7 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   }
 
   .hydro-hero__content {
-    padding: clamp(1.5rem, 3vw, 2.75rem) 0 clamp(3.5rem, 5vw, 5rem);
+    padding: clamp(3rem, 5vw, 5rem) 0 clamp(3.5rem, 5vw, 5rem);
   }
 
   .hydro-hero__grid {
