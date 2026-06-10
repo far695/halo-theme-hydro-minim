@@ -12,10 +12,17 @@ export type HydroFabActionDependencies = {
   copyText: (text: string) => Promise<void>;
   getWindow: () => Window;
   navigateTo?: (url: string) => void;
+  notify?: (message: string, options?: HydroFabNoticeOptions) => void;
   root: ParentNode;
   scrollToElement: (element: HTMLElement) => void;
   scrollToPosition: (top: number) => void;
   warn?: (message: string) => void;
+};
+
+type HydroFabNoticeOptions = {
+  id?: string;
+  title?: string;
+  variant?: "info" | "success" | "warning" | "error";
 };
 
 type HydroMemberSignInStatus = {
@@ -185,34 +192,16 @@ function markCopied(element: HTMLElement, win: Window): void {
   }, 1400);
 }
 
-function showFabNotice(win: Window, message: string, type: "success" | "error" = "success"): void {
+function showActionNotice(
+  dependencies: HydroFabActionDependencies,
+  message: string,
+  options: HydroFabNoticeOptions = {},
+): void {
   const text = message.trim();
   if (!text) {
     return;
   }
-
-  let notice = win.document.querySelector<HTMLElement>("[data-hydro-fab-notice]");
-  if (!notice) {
-    notice = win.document.createElement("div");
-    notice.dataset.hydroFabNotice = "";
-    notice.className = "hydro-fab-notice";
-    notice.setAttribute("role", "status");
-    notice.setAttribute("aria-live", "polite");
-    win.document.body.append(notice);
-  }
-
-  notice.textContent = text;
-  notice.className = `hydro-fab-notice is-${type} is-visible`;
-
-  const existingTimer = Number(notice.dataset.hydroFabNoticeTimer || 0);
-  if (existingTimer > 0) {
-    win.clearTimeout(existingTimer);
-  }
-
-  const timer = win.setTimeout(() => {
-    notice?.classList.remove("is-visible");
-  }, 2600);
-  notice.dataset.hydroFabNoticeTimer = String(timer);
+  dependencies.notify?.(text, { id: "hydro-fab-action", title: "快捷操作", variant: "success", ...options });
 }
 
 function navigateTo(url: string | undefined, dependencies: HydroFabActionDependencies, win: Window): void {
@@ -313,7 +302,7 @@ async function runMemberSignInAction(
       return;
     }
     syncSignInElement(element, result);
-    showFabNotice(win, result.message || "签到成功", "success");
+    showActionNotice(dependencies, result.message || "签到成功", { id: "hydro-member-sign-in" });
   } finally {
     markBusy(element, false);
   }
@@ -373,9 +362,12 @@ async function runMemberFavoriteAction(
       return;
     }
     syncFavoriteElement(element, result);
-    showFabNotice(
-      win,
+    showActionNotice(
+      dependencies,
       result.favorited ? `已收藏 · ${Number(result.count || 0)}` : `已取消收藏 · ${Number(result.count || 0)}`,
+      {
+        id: "hydro-member-favorite",
+      },
     );
   } finally {
     markBusy(element, false);
@@ -392,10 +384,12 @@ async function runBuiltinAction(
   switch (action) {
     case "back-to-top":
       dependencies.scrollToPosition(0);
+      showActionNotice(dependencies, "已回到页面顶部", { id: "hydro-back-to-top", variant: "info" });
       return;
     case "copy-current-url":
       await dependencies.copyText(win.location.href);
       markCopied(element, win);
+      showActionNotice(dependencies, "当前链接已复制", { id: "hydro-copy-current-url" });
       return;
     case "member-favorite":
       await runMemberFavoriteAction(element, dependencies, win);
@@ -409,15 +403,23 @@ async function runBuiltinAction(
         return;
       }
       findClickable(dependencies.root, "[data-hydro-mobile-toggle]")?.click();
+      showActionNotice(dependencies, "菜单已打开", { id: "hydro-open-menu", variant: "info" });
       return;
     }
     case "print":
       win.print();
+      showActionNotice(dependencies, "已打开打印面板", { id: "hydro-print", variant: "info" });
       return;
     case "scroll-comment": {
       const comment = dependencies.root.querySelector<HTMLElement>("#comment");
       if (comment) {
         dependencies.scrollToElement(comment);
+        showActionNotice(dependencies, "已定位到评论区", { id: "hydro-scroll-comment", variant: "info" });
+      } else {
+        showActionNotice(dependencies, "当前页面没有可定位的评论区", {
+          id: "hydro-scroll-comment",
+          variant: "warning",
+        });
       }
       return;
     }
@@ -425,11 +427,15 @@ async function runBuiltinAction(
       const searchEntry = findClickable(dependencies.root, "[data-hydro-search-entry]");
       if (searchEntry) {
         searchEntry.click();
+        showActionNotice(dependencies, "搜索已打开", { id: "hydro-search", variant: "info" });
         return;
       }
       if (typeof win.SearchWidget?.open === "function") {
         win.SearchWidget.open();
+        showActionNotice(dependencies, "搜索已打开", { id: "hydro-search", variant: "info" });
+        return;
       }
+      showActionNotice(dependencies, "搜索插件未就绪", { id: "hydro-search", variant: "warning" });
       return;
     }
     case "theme-toggle":

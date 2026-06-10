@@ -390,7 +390,7 @@ spec:
               if: $get(navigation_floating_fab_enabled).value === true
               name: fab_items
               label: 全局默认快捷项
-              value: [ ]
+              value: []
               min: 0
               max: 5
               addLabel: 添加快捷项
@@ -481,7 +481,7 @@ spec:
               if: $get(navigation_floating_fab_enabled).value === true
               name: fab_profiles
               label: 页面快捷配置
-              value: [ ]
+              value: []
               min: 0
               max: 10
               addLabel: 添加页面配置
@@ -516,7 +516,7 @@ spec:
                 - $formkit: array
                   name: items
                   label: 快捷项
-                  value: [ ]
+                  value: []
                   min: 0
                   max: 5
                   addLabel: 添加快捷项
@@ -675,7 +675,7 @@ spec:
               name: featured_posts
               label: Hero 右侧指定文章
               multiple: true
-              value: [ ]
+              value: []
         - $formkit: group
           name: latest
           label: 最新文章

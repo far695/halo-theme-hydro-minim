@@ -24,6 +24,7 @@
 | `src/modules/`               | Header、Hero、文章卡片、列表 Hero、分页、Footer 等可复用片段                        |
 | `src/partials/`              | 基础布局和 head 资源入口                                                            |
 | `src/assets/main.ts`         | Lenis、GSAP、导航切换、Hero motion、主题切换、页面交互                              |
+| `src/assets/hydro-notice.ts` | 全局胶囊提示框运行时服务，暴露 `window.HydroNotice` 给主题和插件扩展                |
 | `src/assets/styles/main.css` | 主视觉系统、响应式、深浅色变量、动画样式                                            |
 | `public/assets/`             | 静态图片、品牌资源和无需经过打包的主题资源                                          |
 | `theme.yaml`                 | Halo 主题元信息与自定义模板声明                                                     |
@@ -90,6 +91,33 @@
 2. 保持 Header 胶囊、主题光幕、Hero motion、滚动倾斜这些状态机彼此独立。
 3. 任何滚动 transform 必须在停止后复位并清理，避免点击命中区域错位。
 4. 运行 `pnpm run check` 和 `pnpm run build`，视觉/交互改动还要做桌面端和移动端浏览器检查。
+
+### 全局提示框扩展
+
+主题内置 `window.HydroNotice`，由 `src/assets/hydro-notice.ts` 初始化，样式写在 `src/assets/styles/main.css` 的 `.hydro-notice-*` 段。它是主题和插件共享的前台反馈接口，不要让插件直接拼接主题内部 DOM。
+
+公开接口保持稳定：
+
+```ts
+window.HydroNotice?.show({
+  id: "plugin-action-status",
+  title: "Plugin",
+  message: "操作完成",
+  variant: "success", // info | success | warning | error
+  duration: 4200,
+  dismissible: true,
+});
+window.HydroNotice?.success("保存成功");
+window.HydroNotice?.clear("plugin-action-status");
+```
+
+扩展约定：
+
+1. 业务状态类提示必须传稳定 `id`，重复调用同一 `id` 会替换旧提示，避免消息堆叠。
+2. `duration: 0` 只用于需要用户明确关闭的状态，例如长任务失败、权限阻断、插件配置缺失。
+3. 提示文案保持短句；胶囊 UI 会单行省略，长说明应该放进页面正文或弹窗。
+4. 插件脚本可能早于主题主脚本执行，调用前必须判空 `window.HydroNotice?.success(...)`，或放到 `DOMContentLoaded` 后执行。
+5. 样式只能使用 Hydro token，例如 `--hydro-ink-rgb`、`--hydro-paper-rgb`、`--hydro-coral-rgb`，不要给不同插件另开一套彩色 toast 体系。
 
 ### 新增页面或插件适配
 

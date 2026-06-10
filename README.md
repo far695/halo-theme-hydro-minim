@@ -64,12 +64,51 @@ window.HydroMinimActions = {
 };
 ```
 
+## 全局提示框
+
+主题内置 `window.HydroNotice` 全局提示 API，视觉为顶部居中的极简胶囊提示，自动适配浅色、深色、强调色和移动端安全区。它适合主题自定义脚本、插件页面和第三方扩展在前台给用户反馈，不需要额外插入 DOM。
+
+基础用法：
+
+```js
+window.HydroNotice?.success("保存成功");
+window.HydroNotice?.error("提交失败，请稍后再试", { title: "Error" });
+```
+
+完整接口：
+
+```js
+const notice = window.HydroNotice?.show({
+  id: "links-submit-status",
+  title: "Links",
+  message: "友链申请已提交",
+  variant: "success", // info | success | warning | error
+  duration: 4200, // 毫秒；0 表示不自动关闭
+  dismissible: true,
+});
+
+notice?.close();
+window.HydroNotice?.clear("links-submit-status");
+window.HydroNotice?.clear();
+```
+
+快捷方法包括 `info(message, options)`、`success(message, options)`、`warning(message, options)`、`error(message, options)`。插件拓展时建议使用稳定 `id` 表示同一业务状态，例如上传进度、提交状态、登录状态；重复使用同一个 `id` 会替换旧提示，避免顶部刷出一长串消息，整得跟日志瀑布似的。
+
+如果插件脚本加载得比主题脚本更早，请在调用前判断 API 是否存在，或在 `DOMContentLoaded` 后再调用：
+
+```js
+document.addEventListener("DOMContentLoaded", () => {
+  window.HydroNotice?.info("插件已就绪", { id: "plugin-ready" });
+});
+```
+
 ## 目录说明
 
 - `src/*.html`: Halo 页面模板源文件，包括首页、文章、页面、分类、标签、归档、作者和错误页。
 - `src/modules/`: 首页与列表页复用模块，例如 Header、Hero、文章卡片、分页、Footer。
 - `src/partials/`: 基础 HTML 布局和 head 资源入口。
 - `src/assets/main.ts`: Lenis、GSAP、导航切换、Hero 鼠标动效等交互逻辑。
+- `src/assets/hydro-notice.ts`: 全局胶囊提示框 API，暴露 `window.HydroNotice` 给主题脚本和插件拓展使用。
 - `src/assets/styles/main.css`: Hydro-Minim 的主要视觉系统和响应式样式。
 - `public/assets/images/`: 默认 Hero 和文章封面图，构建后复制到 `templates/assets/images/`。
 - `theme.yaml`: Halo 主题元信息。

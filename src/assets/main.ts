@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { initAuthAltchaFloatingAnchor } from "./auth-altcha";
 import { initCommentWidgetSkin } from "./comment-widget-skin";
 import { runHydroFabAction, type HydroFabActionDependencies } from "./fab-actions";
+import { initHydroNotice, type HydroNoticeApi } from "./hydro-notice";
 import { createHydroQrSvg, createHydroQrSvgDataUrl } from "./poster-qr";
 import { initSearchWidgetSkin } from "./search-widget-skin";
 import { initHydroTagCloud } from "./tag-cloud";
@@ -120,6 +121,7 @@ declare global {
     SearchWidget?: {
       open?: () => void;
     };
+    HydroNotice?: HydroNoticeApi;
   }
 }
 
@@ -264,6 +266,18 @@ async function copyTextToClipboard(text: string, promptTitle = "复制链接") {
   } catch {
     window.prompt(promptTitle, text);
   }
+}
+
+function showHydroNotice(
+  message: string,
+  options: {
+    duration?: number;
+    id?: string;
+    title?: string;
+    variant?: "info" | "success" | "warning" | "error";
+  } = {},
+) {
+  window.HydroNotice?.show({ message, ...options });
 }
 
 function escapeHtml(value: string) {
@@ -430,6 +444,15 @@ function initColorScheme() {
     runThemeTransition(mode, origin);
   };
 
+  const notifyModeChanged = (mode: ColorSchemeMode) => {
+    const resolvedMode = resolveMode(mode);
+    showHydroNotice(resolvedMode === "dark" ? "已切换为深色模式" : "已切换为浅色模式", {
+      id: "hydro-theme-mode",
+      title: "外观",
+      variant: "success",
+    });
+  };
+
   const getActiveMode = () => readStoredColorScheme() ?? defaultMode;
 
   applyMode(getActiveMode());
@@ -439,6 +462,7 @@ function initColorScheme() {
       const nextMode: ColorSchemeMode = root.dataset.hydroTheme === "dark" ? "light" : "dark";
       writeStoredColorScheme(nextMode);
       transitionToMode(nextMode, toggle, true);
+      notifyModeChanged(nextMode);
     });
   });
 
@@ -2165,6 +2189,7 @@ function initPostShare() {
           originalLabel.textContent = previous;
         }
       }, 1200);
+      showHydroNotice("文章链接已复制", { id: "hydro-post-share", title: "分享", variant: "success" });
     } catch {
       window.prompt(button.querySelector<HTMLElement>("strong")?.dataset.copyPromptTitle || copyPromptTitle, url);
     }
@@ -2410,9 +2435,14 @@ function initPostUpvote() {
           count.textContent = nextCount;
         });
         syncState();
+        showHydroNotice("点赞成功", { id: "hydro-post-upvote", title: "文章", variant: "success" });
       } catch {
         button.disabled = false;
-        window.alert(readPageLabel(page, "postUpvoteErrorText", "点赞失败，请稍后再试"));
+        showHydroNotice(readPageLabel(page, "postUpvoteErrorText", "点赞失败，请稍后再试"), {
+          id: "hydro-post-upvote",
+          title: "文章",
+          variant: "error",
+        });
       }
     });
   });
@@ -2524,6 +2554,20 @@ function initPostFavoriteAction(page: HTMLElement) {
             return;
           }
           syncPostFavoriteButtons(favoriteButtons, result);
+          showHydroNotice(
+            result.favorited ? `已收藏 · ${Number(result.count || 0)}` : `已取消收藏 · ${Number(result.count || 0)}`,
+            {
+              id: "hydro-post-favorite",
+              title: "文章收藏",
+              variant: "success",
+            },
+          );
+        } catch {
+          showHydroNotice("收藏操作失败，请稍后再试", {
+            id: "hydro-post-favorite",
+            title: "文章收藏",
+            variant: "error",
+          });
         } finally {
           button.disabled = false;
         }
@@ -3136,6 +3180,7 @@ function initLinksPage() {
 }
 
 initAppearanceState();
+initHydroNotice();
 initAuthAltchaFloatingAnchor();
 initColorScheme();
 initNavigation();
@@ -3337,9 +3382,10 @@ function initMomentActions() {
 
         const count = document.querySelector<HTMLElement>(`[data-upvote-moment-name="${CSS.escape(name)}"]`);
         if (count) count.textContent = String(Number.parseInt(count.textContent || "0", 10) + 1);
+        showHydroNotice("点赞成功", { id: "hydro-moment-upvote", title: "瞬间", variant: "success" });
       } catch {
         button.disabled = false;
-        window.alert(upvoteErrorText);
+        showHydroNotice(upvoteErrorText, { id: "hydro-moment-upvote", title: "瞬间", variant: "error" });
       }
     });
   });
@@ -4463,7 +4509,11 @@ function initPosterShareScope(scope: HTMLElement) {
         await downloadPosterCard(card, normalizePosterFilename(button.dataset.filename));
       } catch (error) {
         console.warn("[Hydro] Poster PNG export failed.", error);
-        window.alert("海报 PNG 生成失败，请稍后再试。");
+        showHydroNotice("海报 PNG 生成失败，请稍后再试", {
+          id: "hydro-poster-download",
+          title: "分享海报",
+          variant: "error",
+        });
       } finally {
         button.disabled = false;
         button.classList.remove("is-downloading");
@@ -4989,6 +5039,7 @@ function initFab() {
   const fabActionDependencies: HydroFabActionDependencies = {
     copyText: (text) => copyTextToClipboard(text),
     getWindow: () => window,
+    notify: (message, options) => showHydroNotice(message, options),
     root: document,
     scrollToElement,
     scrollToPosition,

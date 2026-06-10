@@ -183,6 +183,147 @@ html[data-hydro-motion="off"] .hydro-theme-wipe {
   display: none !important;
 }
 
+.hydro-notice-region {
+  position: fixed;
+  z-index: 80;
+  top: max(1.1rem, env(safe-area-inset-top));
+  left: 50%;
+  display: grid;
+  width: min(100% - 2rem, 34rem);
+  gap: 0.62rem;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.hydro-notice {
+  --hydro-notice-tint-rgb: var(--hydro-ink-rgb);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.78rem;
+  min-height: 3rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 18%);
+  border-radius: 999px;
+  padding: 0.56rem 0.64rem 0.56rem 0.78rem;
+  background:
+    linear-gradient(135deg, rgb(var(--hydro-paper-rgb) / 90%), rgb(var(--hydro-paper-rgb) / 72%)), var(--hydro-bg);
+  box-shadow:
+    0 1rem 2.2rem rgb(var(--hydro-shadow-rgb) / 12%),
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 54%);
+  color: var(--hydro-solid);
+  pointer-events: auto;
+  backdrop-filter: blur(18px) saturate(1.08);
+  animation: hydro-notice-enter 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hydro-notice.is-leaving {
+  pointer-events: none;
+  animation: hydro-notice-leave 0.18s ease both;
+}
+
+.hydro-notice--success {
+  --hydro-notice-tint-rgb: var(--hydro-teal-rgb);
+}
+
+.hydro-notice--warning {
+  --hydro-notice-tint-rgb: 255 196 87;
+}
+
+.hydro-notice--error {
+  --hydro-notice-tint-rgb: var(--hydro-coral-rgb);
+}
+
+.hydro-notice__marker {
+  width: 0.54rem;
+  height: 0.54rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 38%);
+  border-radius: 999px;
+  background: rgb(var(--hydro-notice-tint-rgb) / 82%);
+  box-shadow: 0 0 0 0.28rem rgb(var(--hydro-notice-tint-rgb) / 12%);
+}
+
+.hydro-notice__content {
+  min-width: 0;
+}
+
+.hydro-notice__title,
+.hydro-notice__message {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hydro-notice__title {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.hydro-notice__message {
+  color: rgb(var(--hydro-ink-rgb) / 76%);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.hydro-notice__close {
+  display: grid;
+  width: 1.72rem;
+  height: 1.72rem;
+  place-items: center;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border-radius: 999px;
+  background: rgb(var(--hydro-paper-rgb) / 46%);
+  color: rgb(var(--hydro-ink-rgb) / 68%);
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hydro-notice__close:hover,
+.hydro-notice__close:focus-visible {
+  border-color: var(--hydro-solid);
+  background: var(--hydro-solid);
+  color: var(--hydro-solid-contrast);
+  transform: scale(1.04);
+}
+
+@keyframes hydro-notice-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-0.7rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hydro-notice-leave {
+  to {
+    opacity: 0;
+    transform: translateY(-0.4rem) scale(0.98);
+  }
+}
+
+@media (max-width: 48rem) {
+  .hydro-notice-region {
+    top: max(0.72rem, env(safe-area-inset-top));
+    width: min(100% - 1rem, 28rem);
+  }
+
+  .hydro-notice {
+    border-radius: 1.45rem;
+    padding-inline: 0.7rem 0.58rem;
+  }
+}
+
 body.hydro-page {
   min-height: 100vh;
   margin: 0;
@@ -8653,40 +8794,6 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 .hydro-fab-item.is-signed {
   background: rgb(var(--hydro-coral-rgb) / 16%);
   color: rgb(var(--hydro-ink-rgb));
-}
-
-.hydro-fab-notice {
-  position: fixed;
-  right: calc(max(1rem, env(safe-area-inset-right)) + clamp(5.75rem, 16vw, 7rem));
-  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 5.85rem);
-  z-index: 90;
-  max-width: min(18rem, calc(100vw - 8rem));
-  padding: 0.72rem 0.9rem;
-  border: 1px solid rgb(var(--hydro-ink-rgb) / 22%);
-  border-radius: 999px;
-  background: rgb(var(--hydro-paper-rgb) / 92%);
-  box-shadow: 0 16px 40px rgb(var(--hydro-ink-rgb) / 10%);
-  color: rgb(var(--hydro-ink-rgb));
-  font-family: var(--hydro-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0;
-  line-height: 1.35;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(0.8rem);
-  transition:
-    opacity 0.22s ease,
-    transform 0.22s ease;
-  backdrop-filter: blur(18px);
-}
-
-.hydro-fab-notice.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hydro-fab-notice.is-success {
-  border-color: rgb(var(--hydro-coral-rgb) / 34%);
 }
 
 .hydro-fab-menu.is-open .hydro-fab-item {
