@@ -986,6 +986,28 @@ spec:
           name: links
           label: 友链
           children:
+            - $formkit: text
+              name: site_name
+              key: plugins_links_site_name
+              label: 我的站点名称
+              help: 留空时使用系统设置中的站点名称
+            - $formkit: url
+              name: site_url
+              key: plugins_links_site_url
+              label: 我的站点链接
+              help: 留空时使用系统设置中的站点链接
+            - $formkit: attachment
+              name: site_logo
+              key: plugins_links_site_logo
+              label: 我的站点 Logo
+              help: 留空时使用系统设置或主题品牌 Logo
+              accepts:
+                - "image/*"
+            - $formkit: textarea
+              name: site_description
+              key: plugins_links_site_description
+              label: 我的站点描述
+              help: 留空时使用系统 SEO 描述或站点副标题
             - $formkit: switch
               name: enable_submit
               id: plugins_links_enable_submit
@@ -1002,6 +1024,7 @@ spec:
             - $formkit: select
               if: $get(plugins_links_enable_submit).value === true
               name: verify_type
+              key: plugins_links_verify_type
               label: 验证方式
               value: email
               options:
@@ -1011,6 +1034,8 @@ spec:
                   value: captcha
             - $formkit: switch
               name: enable_comment
+              id: plugins_links_enable_comment
+              key: plugins_links_enable_comment
               label: 启用评论区
               value: true
         - $formkit: group

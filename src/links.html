@@ -17,17 +17,26 @@
   <section
     class="hydro-site-info"
     th:with="
-      siteLogoRaw=${#strings.isEmpty(site.logo) ? (theme.config.identity?.brand == null || #strings.isEmpty(theme.config.identity.brand.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.identity.brand.logo) : site.logo},
-      siteBaseUrl=${#strings.isEmpty(site.url) ? '' : (#strings.endsWith(site.url, '/') ? #strings.substring(site.url, 0, #strings.length(site.url) - 1) : site.url)},
+      configuredSiteName=${theme.config.plugins?.links?.site_name},
+      configuredSiteUrlRaw=${theme.config.plugins?.links?.site_url},
+      configuredSiteLogoRaw=${theme.config.plugins?.links?.site_logo},
+      configuredSiteDescription=${theme.config.plugins?.links?.site_description},
+      siteName=${#strings.isEmpty(configuredSiteName) ? site.title : configuredSiteName},
+      siteUrlRaw=${#strings.isEmpty(configuredSiteUrlRaw) ? site.url : configuredSiteUrlRaw},
+      siteUrl=${#strings.isEmpty(siteUrlRaw) ? '' : (#strings.endsWith(siteUrlRaw, '/') ? #strings.substring(siteUrlRaw, 0, #strings.length(siteUrlRaw) - 1) : siteUrlRaw)},
+      fallbackSiteLogoRaw=${#strings.isEmpty(site.logo) ? (theme.config.identity?.brand == null || #strings.isEmpty(theme.config.identity.brand.logo) ? #theme.assets('/brand/hydro-minim-mark.svg') : theme.config.identity.brand.logo) : site.logo},
+      siteLogoRaw=${#strings.isEmpty(configuredSiteLogoRaw) ? fallbackSiteLogoRaw : configuredSiteLogoRaw},
+      siteBaseUrl=${#strings.isEmpty(siteUrl) ? '' : siteUrl},
       siteLogo=${#strings.startsWith(siteLogoRaw, 'http://') or #strings.startsWith(siteLogoRaw, 'https://') or #strings.startsWith(siteLogoRaw, '//') ? siteLogoRaw : siteBaseUrl + (#strings.startsWith(siteLogoRaw, '/') ? siteLogoRaw : '/' + siteLogoRaw)},
-      siteDescription=${site.seo != null and not #strings.isEmpty(site.seo.description) ? site.seo.description : (not #strings.isEmpty(site.subtitle) ? site.subtitle : (theme.config.plugins?.links?.description ?: '与志同道合的创作者相互连接，共同构建开放的网络。'))}"
+      fallbackSiteDescription=${site.seo != null and not #strings.isEmpty(site.seo.description) ? site.seo.description : (not #strings.isEmpty(site.subtitle) ? site.subtitle : (theme.config.plugins?.links?.description ?: '与志同道合的创作者相互连接，共同构建开放的网络。'))},
+      siteDescription=${#strings.isEmpty(configuredSiteDescription) ? fallbackSiteDescription : configuredSiteDescription}"
   >
     <div class="hydro-container">
       <div class="hydro-links-top">
         <div class="hydro-site-info__card">
           <div class="hydro-site-info__header">
             <div class="hydro-site-info__identity">
-              <img class="hydro-site-info__logo" th:src="${siteLogo}" th:alt="|${site.title} logo|" loading="lazy" />
+              <img class="hydro-site-info__logo" th:src="${siteLogo}" th:alt="|${siteName} logo|" loading="lazy" />
               <div class="hydro-site-info__title">
                 <h2 th:text="${theme.config.plugins?.links?.site_info_title ?: '我的站点信息'}">我的站点信息</h2>
                 <span th:text="${theme.config.plugins?.links?.site_info_description ?: '方便你回链'}">方便你回链</span>
@@ -39,11 +48,11 @@
               <span class="hydro-site-info__label" th:text="${theme.config.plugins?.links?.site_name_label ?: '站名'}"
                 >站名</span
               >
-              <span class="hydro-site-info__value" th:text="${site.title}">站点名称</span>
+              <span class="hydro-site-info__value" th:text="${siteName}">站点名称</span>
               <button
                 class="hydro-copy-btn"
                 data-copy
-                th:data-copy-text="${site.title}"
+                th:data-copy-text="${siteName}"
                 th:attr="aria-label=${theme.config.plugins?.links?.copy_site_name_label ?: '复制站名'},title=${theme.config.plugins?.links?.copy_site_name_label ?: '复制站名'}"
               >
                 <svg viewBox="0 0 24 24">
@@ -56,13 +65,13 @@
               <span class="hydro-site-info__label" th:text="${theme.config.plugins?.links?.site_url_label ?: '链接'}"
                 >链接</span
               >
-              <span class="hydro-site-info__value hydro-site-info__value--mono" th:text="${site.url}"
+              <span class="hydro-site-info__value hydro-site-info__value--mono" th:text="${siteUrl}"
                 >https://example.com</span
               >
               <button
                 class="hydro-copy-btn"
                 data-copy
-                th:data-copy-text="${site.url}"
+                th:data-copy-text="${siteUrl}"
                 th:attr="aria-label=${theme.config.plugins?.links?.copy_site_url_label ?: '复制链接'},title=${theme.config.plugins?.links?.copy_site_url_label ?: '复制链接'}"
               >
                 <svg viewBox="0 0 24 24">

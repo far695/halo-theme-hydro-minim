@@ -185,7 +185,7 @@ html[data-hydro-motion="off"] .hydro-theme-wipe {
 
 .hydro-notice-region {
   position: fixed;
-  z-index: 80;
+  z-index: 11000;
   top: max(1.1rem, env(safe-area-inset-top));
   left: 50%;
   display: grid;
@@ -6261,10 +6261,13 @@ html.lenis body {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: 1.25rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .hydro-site-info__card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 2rem 2.5rem;
   border: 1px dashed rgb(var(--hydro-ink-rgb) / 15%);
   border-radius: 0.75rem;
@@ -6313,6 +6316,7 @@ html.lenis body {
 }
 
 .hydro-site-info__grid {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -6740,14 +6744,30 @@ html.lenis body {
 }
 
 .hydro-links-apply__inner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: none;
+  min-height: 100%;
   margin: 0;
   padding: 3rem;
   border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
   border-radius: 1rem;
   background: rgb(var(--hydro-paper-rgb) / 60%);
   backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.hydro-links-apply__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hydro-coral), var(--hydro-teal), transparent 76%);
+  opacity: 0.72;
 }
 
 .hydro-links-apply__header {
@@ -6777,6 +6797,7 @@ html.lenis body {
 
 .hydro-links-submit-note {
   margin: 0;
+  max-width: 38rem;
   color: var(--hydro-muted);
   font-size: 0.95rem;
   line-height: 1.75;
@@ -6787,7 +6808,7 @@ html.lenis body {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 1.75rem;
+  margin-top: auto;
   padding-top: 1.5rem;
   border-top: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
 }

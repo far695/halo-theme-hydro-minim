@@ -2711,11 +2711,19 @@ function initLinksPage() {
       try {
         await navigator.clipboard.writeText(text);
         button.classList.add("is-copied");
+        showHydroNotice("已复制到剪贴板", {
+          id: "hydro-links-copy-success",
+          variant: "success",
+        });
         window.setTimeout(() => {
           button.classList.remove("is-copied");
         }, 1500);
       } catch {
-        // Ignore clipboard failures silently.
+        window.prompt(button.getAttribute("title") || "复制内容", text);
+        showHydroNotice("浏览器限制了自动复制，请手动复制弹窗内容", {
+          id: "hydro-links-copy-fallback",
+          variant: "warning",
+        });
       }
     });
   });
@@ -2788,6 +2796,12 @@ function initLinksPage() {
 
   const getLinksSubmitApi = () => window.LinksSubmit;
   const showMessage = (container: HTMLElement | null, message: string, type: "success" | "error") => {
+    const isUpdateMessage = container === updateMessageEl;
+    showHydroNotice(message, {
+      id: `${isUpdateMessage ? "hydro-link-update" : "hydro-link-submit"}-${type}`,
+      title: isUpdateMessage ? "友链修改" : "友链申请",
+      variant: type === "success" ? "success" : "error",
+    });
     if (!container) {
       return;
     }
@@ -2932,6 +2946,11 @@ function initLinksPage() {
       showMessage(messageContainer, "请先输入网站地址。", "error");
       return;
     }
+    showHydroNotice("正在获取站点信息...", {
+      id: `${mode === "update" ? "hydro-link-update" : "hydro-link-submit"}-auto-fetch`,
+      title: mode === "update" ? "友链修改" : "友链申请",
+      variant: "info",
+    });
     setButtonLoading(button, true, "获取中...", "自动填充");
 
     api
@@ -2980,6 +2999,11 @@ function initLinksPage() {
       return;
     }
 
+    showHydroNotice("正在发送验证码...", {
+      id: `${mode === "update" ? "hydro-link-update" : "hydro-link-submit"}-send-code`,
+      title: mode === "update" ? "友链修改" : "友链申请",
+      variant: "info",
+    });
     setButtonLoading(button, true, "发送中...", "发送验证码");
     api
       .sendVerifyCode(email)
@@ -3064,6 +3088,11 @@ function initLinksPage() {
     };
 
     const submitBtn = document.getElementById("hydro-link-submit-btn") as HTMLButtonElement | null;
+    showHydroNotice("正在提交友链申请...", {
+      id: "hydro-link-submit-pending",
+      title: "友链申请",
+      variant: "info",
+    });
     setButtonLoading(submitBtn, true, "提交中...", "提交申请");
 
     api
@@ -3116,6 +3145,11 @@ function initLinksPage() {
     };
 
     const updateSubmitBtn = document.getElementById("hydro-link-update-submit-btn") as HTMLButtonElement | null;
+    showHydroNotice("正在提交友链修改...", {
+      id: "hydro-link-update-pending",
+      title: "友链修改",
+      variant: "info",
+    });
     setButtonLoading(updateSubmitBtn, true, "提交中...", "提交修改");
 
     api
