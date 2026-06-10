@@ -24,6 +24,7 @@ spec:
                   value: name
             - $formkit: attachment
               if: $get(identity_brand_logo_display).value === 'logo'
+              key: identity_brand_logo
               name: logo
               label: 方形标识（胶囊菜单）
               accepts:
@@ -33,6 +34,7 @@ spec:
               value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-mark.svg
             - $formkit: attachment
               if: $get(identity_brand_logo_display).value === 'logo'
+              key: identity_brand_dark_logo
               name: dark_logo
               label: 深色方形标识（胶囊菜单）
               accepts:
@@ -42,6 +44,7 @@ spec:
               value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-mark-dark.svg
             - $formkit: attachment
               if: $get(identity_brand_logo_display).value === 'logo'
+              key: identity_brand_nav_logo
               name: nav_logo
               label: 长方形 Logo（顶部菜单）
               accepts:
@@ -51,6 +54,7 @@ spec:
               value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-lockup.svg
             - $formkit: attachment
               if: $get(identity_brand_logo_display).value === 'logo'
+              key: identity_brand_dark_nav_logo
               name: dark_nav_logo
               label: 深色长方形 Logo（顶部菜单）
               accepts:
@@ -60,6 +64,7 @@ spec:
               value: /themes/halo-theme-hydro-minim/assets/brand/hydro-minim-lockup-dark.svg
             - $formkit: text
               if: $get(identity_brand_logo_display).value === 'logo'
+              key: identity_brand_logo_alt
               name: logo_alt
               label: Logo 替代文本
               value: 氢·简 Hydro-Minim
@@ -145,6 +150,7 @@ spec:
               value: true
             - $formkit: text
               if: $get(identity_footer_show_marquee).value === true
+              key: identity_footer_marquee_text
               name: marquee_text
               label: 滚动字
               value: 氢
@@ -240,31 +246,37 @@ spec:
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_smooth_scroll
               name: smooth_scroll
               label: 启用平滑滚动
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_enable_theme_transition
               name: enable_theme_transition
               label: 启用深浅色光幕过渡
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_enable_hero_motion
               name: enable_hero_motion
               label: 启用 Hero 图片动效
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_enable_card_hover
               name: enable_card_hover
               label: 启用卡片 3D Hover
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_enable_scroll_tilt
               name: enable_scroll_tilt
               label: 启用主内容滚动倾斜
               value: true
             - $formkit: switch
               if: $get(presentation_motion_enable_motion).value === true
+              key: presentation_motion_enable_text_scramble
               name: enable_text_scramble
               label: 启用文字扰动
               value: true
@@ -300,6 +312,7 @@ spec:
               value: true
             - $formkit: radio
               if: $get(navigation_header_show_search).value === true
+              key: navigation_header_search_entry_mode
               name: search_entry_mode
               label: 搜索入口方式
               value: modal
@@ -369,6 +382,7 @@ spec:
               value: true
             - $formkit: number
               if: $get(navigation_floating_show_back_to_top).value === true
+              key: navigation_floating_back_to_top_threshold
               name: back_to_top_threshold
               label: 返回顶部显示阈值
               value: 100
@@ -383,11 +397,13 @@ spec:
               value: true
             - $formkit: text
               if: $get(navigation_floating_fab_enabled).value === true
+              key: navigation_floating_fab_label
               name: fab_label
               label: 快捷操作提示
               value: 快捷操作
             - $formkit: array
               if: $get(navigation_floating_fab_enabled).value === true
+              key: navigation_floating_fab_items
               name: fab_items
               label: 全局默认快捷项
               value: []
@@ -440,7 +456,7 @@ spec:
                 - $formkit: select
                   if: "$value.type === 'builtin'"
                   name: builtin_action
-                  key: navigation_floating_fab_builtin_action
+                  key: navigation_floating_fab_items_builtin_action
                   label: 内置动作
                   value: search
                   options:
@@ -465,20 +481,21 @@ spec:
                 - $formkit: text
                   if: "$value.type === 'custom'"
                   name: custom_handler
-                  key: navigation_floating_fab_custom_handler
+                  key: navigation_floating_fab_items_custom_handler
                   label: 自定义函数名
                   value: ""
                   validation: required
                 - $formkit: code
                   if: "$value.type === 'custom'"
                   name: payload
-                  key: navigation_floating_fab_custom_payload
+                  key: navigation_floating_fab_items_custom_payload
                   label: 自定义函数参数
                   language: json
                   value: ""
                   validation: required
             - $formkit: array
               if: $get(navigation_floating_fab_enabled).value === true
+              key: navigation_floating_fab_profiles
               name: fab_profiles
               label: 页面快捷配置
               value: []
@@ -528,19 +545,19 @@ spec:
                   children:
                     - $formkit: iconify
                       name: icon
-                      key: navigation_floating_fab_items_icon
+                      key: navigation_floating_fab_profiles_items_icon
                       label: 图标
                       format: svg
                       value-only: true
                       validation: required
                     - $formkit: text
                       name: label
-                      key: navigation_floating_fab_items_label
+                      key: navigation_floating_fab_profiles_items_label
                       label: 提示文字
                       value: ""
                     - $formkit: select
                       name: type
-                      key: navigation_floating_fab_items_type
+                      key: navigation_floating_fab_profiles_items_type
                       label: 动作类型
                       value: link
                       options:
@@ -553,20 +570,20 @@ spec:
                     - $formkit: url
                       if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                       name: url
-                      key: navigation_floating_fab_items_url
+                      key: navigation_floating_fab_profiles_items_url
                       label: 链接地址
                       value: ""
                       validation: required
                     - $formkit: switch
                       if: "$value.type === undefined || $value.type === '' || $value.type === 'link'"
                       name: new_tab
-                      key: navigation_floating_fab_items_new_tab
+                      key: navigation_floating_fab_profiles_items_new_tab
                       label: 新标签打开
                       value: true
                     - $formkit: select
                       if: "$value.type === 'builtin'"
                       name: builtin_action
-                      key: navigation_floating_fab_items_builtin_action
+                      key: navigation_floating_fab_profiles_items_builtin_action
                       label: 内置动作
                       value: search
                       options:
@@ -591,14 +608,14 @@ spec:
                     - $formkit: text
                       if: "$value.type === 'custom'"
                       name: custom_handler
-                      key: navigation_floating_fab_items_custom_handler
+                      key: navigation_floating_fab_profiles_items_custom_handler
                       label: 自定义函数名
                       value: ""
                       validation: required
                     - $formkit: code
                       if: "$value.type === 'custom'"
                       name: payload
-                      key: navigation_floating_fab_items_custom_payload
+                      key: navigation_floating_fab_profiles_items_custom_payload
                       label: 自定义函数参数
                       language: json
                       value: ""
@@ -619,16 +636,19 @@ spec:
               value: true
             - $formkit: text
               if: $get(home_hero_enabled).value === true
+              key: home_hero_label
               name: label
               label: Hero 标签
               value: 氢视窗
             - $formkit: text
               if: $get(home_hero_enabled).value === true
+              key: home_hero_title
               name: title
               label: Hero 标题
               value: 探索
             - $formkit: textarea
               if: $get(home_hero_enabled).value === true
+              key: home_hero_description
               name: description
               label: Hero 描述
               value: 精选的想法、故事和创意，全部汇集于此。如氢气般轻快、简洁、流畅的体验。
@@ -664,6 +684,7 @@ spec:
               validation: required
             - $formkit: number
               if: $get(home_hero_enabled).value === true
+              key: home_hero_featured_size
               name: featured_size
               label: Hero 右侧文章数量
               value: 4
@@ -672,6 +693,7 @@ spec:
               step: 1
             - $formkit: postSelect
               if: $get(home_hero_enabled).value === true
+              key: home_hero_featured_posts
               name: featured_posts
               label: Hero 右侧指定文章
               multiple: true
@@ -688,11 +710,13 @@ spec:
               value: true
             - $formkit: text
               if: $get(home_latest_enabled).value === true
+              key: home_latest_title
               name: title
               label: 最新文章标题
               value: 最新文章
             - $formkit: number
               if: $get(home_latest_enabled).value === true
+              key: home_latest_size
               name: size
               label: 首页文章展示数量
               value: 3
@@ -711,11 +735,13 @@ spec:
               value: true
             - $formkit: text
               if: $get(home_categories_enabled).value === true
+              key: home_categories_title
               name: title
               label: 分类模块标题
               value: 分类
             - $formkit: number
               if: $get(home_categories_enabled).value === true
+              key: home_categories_size
               name: size
               label: 首页分类展示数量
               value: 4
@@ -734,41 +760,49 @@ spec:
               value: true
             - $formkit: text
               if: $get(home_about_enabled).value === true
+              key: home_about_eyebrow
               name: eyebrow
               label: 关于模块标签
               value: About
             - $formkit: text
               if: $get(home_about_enabled).value === true
+              key: home_about_title
               name: title
               label: 关于标题
               value: 关于
             - $formkit: text
               if: $get(home_about_enabled).value === true
+              key: home_about_subtitle
               name: subtitle
               label: 关于副标题
               value: 艺术的生活家
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
+              key: home_about_paragraph_1
               name: paragraph_1
               label: 关于段落一
               value: 氢风格博客诞生于对简约美学的追求。我们相信，好的设计应该像氢气一样——轻快、简洁、流畅，却蕴含着无限的可能。
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
+              key: home_about_paragraph_2
               name: paragraph_2
               label: 关于段落二
               value: 在这里，我们分享关于设计、科技与生活方式的思考。每一篇文章都是精心策划的创意表达，旨在为读者带来启发与美的享受。
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
+              key: home_about_paragraph_3
               name: paragraph_3
               label: 关于段落三
               value: 33% 的自由，66% 的内容。这是氢视窗的哲学，也是我们对内容创作的坚持——在结构化的框架中，保留艺术的呼吸空间。
             - $formkit: text
               if: $get(home_about_enabled).value === true
+              key: home_about_readers
               name: readers
               label: 读者展示值
               value: 2.4k
             - $formkit: switch
               if: $get(home_about_enabled).value === true
+              key: home_about_show_socials
               name: show_socials
               label: 显示社交链接
               value: true
@@ -799,6 +833,7 @@ spec:
               value: false
             - $formkit: attachment
               if: $get(content_post_enable_reward).value === true
+              key: content_post_reward_qr
               name: reward_qr
               label: 赞赏二维码
               accepts:
@@ -842,6 +877,7 @@ spec:
               value: true
             - $formkit: number
               if: $get(content_post_enable_related_posts).value === true
+              key: content_post_related_posts_size
               name: related_posts_size
               label: 相关文章数量
               value: 3
@@ -951,6 +987,7 @@ spec:
               value: true
             - $formkit: number
               if: $get(content_search_show_recommendations).value === true
+              key: content_search_recommendation_size
               name: recommendation_size
               label: 推荐文章数量
               value: 3
@@ -975,6 +1012,7 @@ spec:
               value: true
             - $formkit: text
               if: $get(content_share_enable_post_poster).value === true || $get(content_share_enable_moment_poster).value === true
+              key: content_share_title
               name: title
               label: 弹窗标题
               value: 分享海报
