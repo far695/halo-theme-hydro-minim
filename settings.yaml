@@ -16,6 +16,7 @@ spec:
               key: identity_brand_logo_display
               name: logo_display
               label: 顶部品牌展示
+              help: 控制 Header 左侧显示上传的 Logo，还是直接显示 Halo 站点名称。
               value: logo
               options:
                 - label: 展示 Logo
@@ -27,6 +28,7 @@ spec:
               key: identity_brand_logo
               name: logo
               label: 方形标识（胶囊菜单）
+              help: 用于滚动后的胶囊菜单和移动端菜单，建议使用 1:1 透明背景 SVG 或 PNG。
               accepts:
                 - image/*
               width: 160px
@@ -37,6 +39,7 @@ spec:
               key: identity_brand_dark_logo
               name: dark_logo
               label: 深色方形标识（胶囊菜单）
+              help: 深色模式下的方形标识，留空时前台会回退使用浅色方形标识。
               accepts:
                 - image/*
               width: 160px
@@ -47,6 +50,7 @@ spec:
               key: identity_brand_nav_logo
               name: nav_logo
               label: 长方形 Logo（顶部菜单）
+              help: 用于顶部菜单未收缩时的品牌区域，建议使用横向 3:1 Logo。
               accepts:
                 - image/*
               width: 260px
@@ -57,6 +61,7 @@ spec:
               key: identity_brand_dark_nav_logo
               name: dark_nav_logo
               label: 深色长方形 Logo（顶部菜单）
+              help: 深色模式下顶部菜单使用，留空时使用主题内置深色长方形 Logo。
               accepts:
                 - image/*
               width: 260px
@@ -67,6 +72,7 @@ spec:
               key: identity_brand_logo_alt
               name: logo_alt
               label: Logo 替代文本
+              help: 用于无障碍标签和图片替代文本，留空时前台使用站点名称。
               value: 氢·简 Hydro-Minim
         - $formkit: group
           name: defaults
@@ -76,6 +82,7 @@ spec:
               name: article_cover_1
               key: identity_defaults_article_cover_1
               label: 默认文章封面 1
+              help: 文章没有封面时作为兜底封面之一，会在文章列表中按顺序轮换使用。
               accepts:
                 - image/*
               value: /themes/halo-theme-hydro-minim/assets/images/article-1.jpg
@@ -83,6 +90,7 @@ spec:
               name: article_cover_2
               key: identity_defaults_article_cover_2
               label: 默认文章封面 2
+              help: 文章没有封面时作为兜底封面之一，会在文章列表中按顺序轮换使用。
               accepts:
                 - image/*
               value: /themes/halo-theme-hydro-minim/assets/images/article-2.jpg
@@ -90,6 +98,7 @@ spec:
               name: article_cover_3
               key: identity_defaults_article_cover_3
               label: 默认文章封面 3
+              help: 文章没有封面时作为兜底封面之一，会在文章列表中按顺序轮换使用。
               accepts:
                 - image/*
               value: /themes/halo-theme-hydro-minim/assets/images/article-3.jpg
@@ -101,6 +110,7 @@ spec:
               name: links
               key: identity_social_links
               label: 站点社交链接
+              help: 用于页脚和首页关于模块的社交入口，链接为空或为 # 时前台不会展示。
               value:
                 - label: Twitter
                   url: "#"
@@ -128,23 +138,27 @@ spec:
                   name: label
                   key: identity_social_links_label
                   label: 名称
+                  help: 社交平台或联系方式名称，会作为前台展示文字使用。
                   value: ""
                 - $formkit: url
                   name: url
                   key: identity_social_links_url
                   label: 链接
+                  help: 支持 https、mailto 等地址，填写后才会在前台渲染。
                   value: ""
                   validation: required
                 - $formkit: iconify
                   name: icon
                   key: identity_social_links_icon
                   label: 图标（可选）
+                  help: 可选的 Iconify 图标，建议选择线性 SVG 图标以匹配主题细线风格。
                   format: svg
                   value-only: true
                 - $formkit: switch
                   name: new_tab
                   key: identity_social_links_new_tab
                   label: 新标签打开
+                  help: 开启后点击社交链接会在新浏览器标签页打开。
                   value: true
         - $formkit: group
           name: footer
@@ -155,62 +169,74 @@ spec:
               id: identity_footer_show_marquee
               key: identity_footer_show_marquee
               label: 显示页脚滚动字
+              help: 控制页脚顶部的大号横向滚动文字，适合放单字或短词。
               value: true
             - $formkit: text
               if: $get(identity_footer_show_marquee).value === true
               key: identity_footer_marquee_text
               name: marquee_text
               label: 滚动字
+              help: 页脚滚动区域重复显示的文字，建议使用单字或短词，避免过长影响节奏。
               value: 氢
             - $formkit: text
               name: brand_text
               key: identity_footer_brand_text
               label: 页脚品牌短字
+              help: 页脚左侧品牌入口文字，通常使用站点简称、单字标识或短 Logo 文案。
               value: 氢
             - $formkit: textarea
               name: description
               key: identity_footer_description
               label: 页脚描述
+              help: 页脚品牌下方的一段简介，留空时前台会优先使用站点副标题兜底。
               value: 艺术的生活家。在结构化与自由之间，寻找设计的平衡。
             - $formkit: switch
               name: show_nav
               key: identity_footer_show_nav
               label: 显示页脚导航
+              help: 开启后页脚展示主菜单；没有主菜单时展示默认导航配置。
               value: true
             - $formkit: switch
               name: show_social
               key: identity_footer_show_social
               label: 显示页脚社交链接
+              help: 开启后页脚展示上方配置的有效社交链接。
               value: true
             - $formkit: text
               name: copyright
               key: identity_footer_copyright
               label: 版权文案
+              help: 支持 {year} 和 {site} 占位符，前台会自动替换为当前年份和站点名称。
               value: "© {year} {site}. 保留所有权利."
             - $formkit: text
               name: build_text
               key: identity_footer_build_text
               label: 构建署名
+              help: 显示在页脚版权下方的简短署名文案，可用于品牌口号或构建说明。
               value: 用 ♥ 与氢气构建
             - $formkit: text
               name: icp_text
               key: identity_footer_icp_text
               label: ICP 备案号
+              help: 填写后页脚展示 ICP 备案信息；留空则不显示该项。
               value: ""
             - $formkit: url
               name: icp_link
               key: identity_footer_icp_link
               label: ICP 备案链接
+              help: ICP 备案号的跳转地址，国内站点通常使用工信部备案查询地址。
               value: https://beian.miit.gov.cn/
             - $formkit: text
               name: gongan_text
               key: identity_footer_gongan_text
               label: 公安联网备案号
+              help: 填写后页脚展示公安联网备案信息；留空则不显示该项。
               value: ""
             - $formkit: url
               name: gongan_link
               key: identity_footer_gongan_link
               label: 公安联网备案链接
+              help: 公安联网备案号的跳转地址，通常填写备案详情页链接。
               value: ""
 
     - group: presentation
@@ -224,6 +250,7 @@ spec:
               name: color_scheme
               key: presentation_color_color_scheme
               label: 默认配色模式
+              help: 访客未手动切换前使用的默认模式；访客选择会写入浏览器本地偏好。
               value: auto
               options:
                 - label: 跟随系统
@@ -236,11 +263,13 @@ spec:
               name: background_color
               key: presentation_color_background_color
               label: 浅色背景
+              help: 浅色模式的全局页面底色，会同步影响浏览器主题色。
               value: "#F3F3F3"
             - $formkit: color
               name: dark_background_color
               key: presentation_color_dark_background_color
               label: 深色背景
+              help: 深色模式的全局页面底色，建议保持低饱和并避免过高对比。
               value: "#101112"
             - $formkit: color
               name: accent_color
@@ -252,6 +281,7 @@ spec:
               name: dark_accent_color
               key: presentation_color_dark_accent_color
               label: 深色强调色
+              help: 深色模式下的链接、焦点、搜索命中和轻量高亮颜色。
               value: "#FF8A8A"
         - $formkit: group
           name: motion
@@ -312,11 +342,13 @@ spec:
               name: to_light_label
               key: presentation_theme_toggle_to_light_label
               label: 切换到浅色提示
+              help: 用于深浅色切换按钮的无障碍提示和移动端按钮文案。
               value: 切换为浅色模式
             - $formkit: text
               name: to_dark_label
               key: presentation_theme_toggle_to_dark_label
               label: 切换到深色提示
+              help: 用于深浅色切换按钮的无障碍提示和移动端按钮文案。
               value: 切换为深色模式
 
     - group: navigation
@@ -331,6 +363,7 @@ spec:
               id: navigation_header_show_search
               key: navigation_header_show_search
               label: 显示搜索入口
+              help: 开启后 Header 显示搜索按钮；仍需安装并启用 PluginSearchWidget 才会实际出现。
               value: true
             - $formkit: radio
               if: $get(navigation_header_show_search).value === true
@@ -348,11 +381,13 @@ spec:
               name: allow_color_switch
               key: navigation_header_allow_color_switch
               label: 允许访客切换深浅色
+              help: 关闭后隐藏 Header 和移动菜单中的深浅色切换入口，只使用默认配色模式。
               value: true
             - $formkit: text
               name: mobile_menu_label
               key: navigation_header_mobile_menu_label
               label: 移动端菜单按钮提示
+              help: 用于移动端菜单按钮的 aria-label、title 和菜单内动作文案。
               value: 菜单
         - $formkit: group
           name: fallback_menu
@@ -362,6 +397,7 @@ spec:
               name: links
               key: navigation_fallback_menu_links
               label: 无主菜单时的默认导航
+              help: 当 Halo 没有配置主菜单时使用；Header 和页脚都会读取这一组链接。
               value:
                 - label: 文章
                   url: "#articles"
@@ -379,11 +415,13 @@ spec:
                   name: label
                   key: navigation_fallback_menu_links_label
                   label: 名称
+                  help: 默认导航项显示的文字。
                   value: ""
                 - $formkit: url
                   name: url
                   key: navigation_fallback_menu_links_url
                   label: 链接
+                  help: 支持站内路径、锚点和完整 URL。
                   value: ""
         - $formkit: group
           name: pagination
@@ -393,11 +431,13 @@ spec:
               name: previous_label
               key: navigation_pagination_previous_label
               label: 上一页文案
+              help: 用于列表页、插件页等分页组件的上一页按钮。
               value: 上一页
             - $formkit: text
               name: next_label
               key: navigation_pagination_next_label
               label: 下一页文案
+              help: 用于列表页、插件页等分页组件的下一页按钮。
               value: 下一页
         - $formkit: group
           name: floating
@@ -408,12 +448,14 @@ spec:
               key: navigation_floating_show_back_to_top
               name: show_back_to_top
               label: 显示返回顶部按钮
+              help: 开启后页面右下角显示返回顶部按钮，滚动超过阈值后出现。
               value: true
             - $formkit: number
               if: $get(navigation_floating_show_back_to_top).value === true
               key: navigation_floating_back_to_top_threshold
               name: back_to_top_threshold
               label: 返回顶部显示阈值
+              help: 页面向下滚动超过该像素值后显示返回顶部按钮。
               value: 100
               min: 0
               max: 800
@@ -423,18 +465,21 @@ spec:
               key: navigation_floating_fab_enabled
               name: fab_enabled
               label: 启用快捷操作按钮
+              help: 开启后可在右下角展示一组自定义快捷操作；没有配置快捷项时不会显示展开按钮。
               value: true
             - $formkit: text
               if: $get(navigation_floating_fab_enabled).value === true
               key: navigation_floating_fab_label
               name: fab_label
               label: 快捷操作提示
+              help: 用于快捷操作展开按钮的无障碍提示和悬停标题。
               value: 快捷操作
             - $formkit: array
               if: $get(navigation_floating_fab_enabled).value === true
               key: navigation_floating_fab_items
               name: fab_items
               label: 全局默认快捷项
+              help: 所有页面默认使用的快捷项；页面快捷配置命中时会优先使用页面配置。
               value: []
               min: 0
               max: 5
@@ -449,6 +494,7 @@ spec:
                   name: icon
                   key: navigation_floating_fab_items_icon
                   label: 图标
+                  help: 快捷按钮内显示的 Iconify SVG 图标，必填。
                   format: svg
                   value-only: true
                   validation: required
@@ -456,11 +502,13 @@ spec:
                   name: label
                   key: navigation_floating_fab_items_label
                   label: 提示文字
+                  help: 用于按钮 aria-label 和悬停标题，建议写清动作结果。
                   value: ""
                 - $formkit: select
                   name: type
                   key: navigation_floating_fab_items_type
                   label: 动作类型
+                  help: 选择点击后的行为：跳转链接、主题内置动作，或调用全局自定义函数。
                   value: link
                   options:
                     - label: 跳转链接
@@ -474,6 +522,7 @@ spec:
                   name: url
                   key: navigation_floating_fab_items_url
                   label: 链接地址
+                  help: 动作类型为跳转链接时必填，支持站内路径和完整 URL。
                   value: ""
                   validation: required
                 - $formkit: switch
@@ -481,12 +530,14 @@ spec:
                   name: new_tab
                   key: navigation_floating_fab_items_new_tab
                   label: 新标签打开
+                  help: 仅跳转链接生效，开启后在新浏览器标签页打开。
                   value: true
                 - $formkit: select
                   if: "$value.type === 'builtin'"
                   name: builtin_action
                   key: navigation_floating_fab_items_builtin_action
                   label: 内置动作
+                  help: 选择主题已经实现的动作，部分会员相关动作需要对应插件或登录状态支持。
                   value: search
                   options:
                     - label: 打开搜索
@@ -512,6 +563,7 @@ spec:
                   name: custom_handler
                   key: navigation_floating_fab_items_custom_handler
                   label: 自定义函数名
+                  help: 动作类型为自定义函数时必填，前台会从 window 上查找同名函数并调用。
                   value: ""
                   validation: required
                 - $formkit: code
@@ -519,6 +571,7 @@ spec:
                   name: payload
                   key: navigation_floating_fab_items_custom_payload
                   label: 自定义函数参数
+                  help: 传给自定义函数的 JSON 字符串，必须是合法 JSON。
                   language: json
                   value: ""
                   validation: required
@@ -527,6 +580,7 @@ spec:
               key: navigation_floating_fab_profiles
               name: fab_profiles
               label: 页面快捷配置
+              help: 为特定模板或链接单独指定快捷项；命中后会覆盖全局默认快捷项。
               value: []
               min: 0
               max: 10
@@ -539,11 +593,13 @@ spec:
                   name: label
                   key: navigation_floating_fab_profiles_label
                   label: 配置名称
+                  help: 仅用于后台识别这组页面快捷配置，不会在前台展示。
                   value: ""
                 - $formkit: select
                   name: match_type
                   key: navigation_floating_fab_profiles_match_type
                   label: 匹配方式
+                  help: 选择这组快捷项应用到所有页面、某个模板 ID，还是某个永久链接。
                   value: template
                   options:
                     - label: 所有页面
@@ -557,12 +613,14 @@ spec:
                   name: match_value
                   key: navigation_floating_fab_profiles_match_value
                   label: 匹配值
+                  help: 模板 ID 可填 post、page、archives 等；永久链接可填 /photos 或完整链接。
                   value: ""
                   validation: required
                 - $formkit: array
                   name: items
                   key: navigation_floating_fab_profiles_items
                   label: 快捷项
+                  help: 当前页面配置命中时展示的快捷项，最多 5 个。
                   value: []
                   min: 0
                   max: 5
@@ -577,6 +635,7 @@ spec:
                       name: icon
                       key: navigation_floating_fab_profiles_items_icon
                       label: 图标
+                      help: 快捷按钮内显示的 Iconify SVG 图标，必填。
                       format: svg
                       value-only: true
                       validation: required
@@ -584,11 +643,13 @@ spec:
                       name: label
                       key: navigation_floating_fab_profiles_items_label
                       label: 提示文字
+                      help: 用于按钮 aria-label 和悬停标题，建议写清动作结果。
                       value: ""
                     - $formkit: select
                       name: type
                       key: navigation_floating_fab_profiles_items_type
                       label: 动作类型
+                      help: 选择点击后的行为：跳转链接、主题内置动作，或调用全局自定义函数。
                       value: link
                       options:
                         - label: 跳转链接
@@ -602,6 +663,7 @@ spec:
                       name: url
                       key: navigation_floating_fab_profiles_items_url
                       label: 链接地址
+                      help: 动作类型为跳转链接时必填，支持站内路径和完整 URL。
                       value: ""
                       validation: required
                     - $formkit: switch
@@ -609,12 +671,14 @@ spec:
                       name: new_tab
                       key: navigation_floating_fab_profiles_items_new_tab
                       label: 新标签打开
+                      help: 仅跳转链接生效，开启后在新浏览器标签页打开。
                       value: true
                     - $formkit: select
                       if: "$value.type === 'builtin'"
                       name: builtin_action
                       key: navigation_floating_fab_profiles_items_builtin_action
                       label: 内置动作
+                      help: 选择主题已经实现的动作，部分会员相关动作需要对应插件或登录状态支持。
                       value: search
                       options:
                         - label: 打开搜索
@@ -640,6 +704,7 @@ spec:
                       name: custom_handler
                       key: navigation_floating_fab_profiles_items_custom_handler
                       label: 自定义函数名
+                      help: 动作类型为自定义函数时必填，前台会从 window 上查找同名函数并调用。
                       value: ""
                       validation: required
                     - $formkit: code
@@ -647,6 +712,7 @@ spec:
                       name: payload
                       key: navigation_floating_fab_profiles_items_custom_payload
                       label: 自定义函数参数
+                      help: 传给自定义函数的 JSON 字符串，必须是合法 JSON。
                       language: json
                       value: ""
                       validation: required
@@ -663,24 +729,28 @@ spec:
               key: home_hero_enabled
               name: enabled
               label: 显示首屏 Hero
+              help: 控制首页顶部大图 Hero 区域是否显示。
               value: true
             - $formkit: text
               if: $get(home_hero_enabled).value === true
               key: home_hero_label
               name: label
               label: Hero 标签
+              help: 显示在 Hero 媒体图上的短标签，也会作为媒体替代说明使用。
               value: 氢视窗
             - $formkit: text
               if: $get(home_hero_enabled).value === true
               key: home_hero_title
               name: title
               label: Hero 标题
+              help: 首页首屏主标题，建议保持短词或短句，避免过长影响视觉节奏。
               value: 探索
             - $formkit: textarea
               if: $get(home_hero_enabled).value === true
               key: home_hero_description
               name: description
               label: Hero 描述
+              help: 首页首屏标题下方的简介文案，用来说明站点内容气质。
               value: 精选的想法、故事和创意，全部汇集于此。如氢气般轻快、简洁、流畅的体验。
             - $formkit: radio
               if: $get(home_hero_enabled).value === true
@@ -700,6 +770,7 @@ spec:
               name: cover
               key: home_hero_media_image
               label: Hero 封面
+              help: Hero 图片模式直接展示；视频模式下作为 poster 和视频加载前的占位图。
               accepts:
                 - image/*
               value: /themes/halo-theme-hydro-minim/assets/images/hero-featured.jpg
@@ -709,6 +780,7 @@ spec:
               key: home_hero_media_video
               name: video
               label: Hero 视频
+              help: 仅媒体类型选择视频时生效，建议使用体积较小、可循环播放的短视频。
               accepts:
                 - video/*
               value: ""
@@ -718,6 +790,7 @@ spec:
               key: home_hero_featured_size
               name: featured_size
               label: Hero 右侧文章数量
+              help: 控制 Hero 右侧文章列表展示数量；未指定文章时从当前首页文章列表取最新文章。
               value: 4
               min: 1
               max: 8
@@ -727,6 +800,7 @@ spec:
               key: home_hero_featured_posts
               name: featured_posts
               label: Hero 右侧指定文章
+              help: 可手动指定 Hero 右侧文章及顺序；留空时自动使用首页最新文章。
               multiple: true
               value: []
         - $formkit: group
@@ -738,18 +812,21 @@ spec:
               key: home_latest_enabled
               name: enabled
               label: 显示最新文章
+              help: 控制首页 Hero 下方的最新文章模块是否显示。
               value: true
             - $formkit: text
               if: $get(home_latest_enabled).value === true
               key: home_latest_title
               name: title
               label: 最新文章标题
+              help: 首页最新文章模块的标题。
               value: 最新文章
             - $formkit: number
               if: $get(home_latest_enabled).value === true
               key: home_latest_size
               name: size
               label: 首页文章展示数量
+              help: 控制首页最新文章模块展示的文章数量。
               value: 3
               min: 1
               max: 6
@@ -763,18 +840,21 @@ spec:
               key: home_categories_enabled
               name: enabled
               label: 显示分类模块
+              help: 控制首页分类折叠/展示模块是否显示。
               value: true
             - $formkit: text
               if: $get(home_categories_enabled).value === true
               key: home_categories_title
               name: title
               label: 分类模块标题
+              help: 首页分类模块的标题。
               value: 分类
             - $formkit: number
               if: $get(home_categories_enabled).value === true
               key: home_categories_size
               name: size
               label: 首页分类展示数量
+              help: 控制首页分类模块最多展示多少个分类。
               value: 4
               min: 1
               max: 8
@@ -788,54 +868,63 @@ spec:
               key: home_about_enabled
               name: enabled
               label: 显示首页关于模块
+              help: 控制首页底部关于模块是否显示。
               value: true
             - $formkit: text
               if: $get(home_about_enabled).value === true
               key: home_about_eyebrow
               name: eyebrow
               label: 关于模块标签
+              help: 关于模块标题上方的小标签。
               value: About
             - $formkit: text
               if: $get(home_about_enabled).value === true
               key: home_about_title
               name: title
               label: 关于标题
+              help: 首页关于模块的主标题。
               value: 关于
             - $formkit: text
               if: $get(home_about_enabled).value === true
               key: home_about_subtitle
               name: subtitle
               label: 关于副标题
+              help: 首页关于模块标题旁的副标题或身份短句。
               value: 艺术的生活家
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
               key: home_about_paragraph_1
               name: paragraph_1
               label: 关于段落一
+              help: 首页关于模块的第一段正文，通常用于站点介绍。
               value: 氢风格博客诞生于对简约美学的追求。我们相信，好的设计应该像氢气一样——轻快、简洁、流畅，却蕴含着无限的可能。
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
               key: home_about_paragraph_2
               name: paragraph_2
               label: 关于段落二
+              help: 首页关于模块的第二段正文，通常用于内容方向或创作理念。
               value: 在这里，我们分享关于设计、科技与生活方式的思考。每一篇文章都是精心策划的创意表达，旨在为读者带来启发与美的享受。
             - $formkit: textarea
               if: $get(home_about_enabled).value === true
               key: home_about_paragraph_3
               name: paragraph_3
               label: 关于段落三
+              help: 首页关于模块的第三段正文，适合放补充说明或个人宣言。
               value: 33% 的自由，66% 的内容。这是氢视窗的哲学，也是我们对内容创作的坚持——在结构化的框架中，保留艺术的呼吸空间。
             - $formkit: text
               if: $get(home_about_enabled).value === true
               key: home_about_readers
               name: readers
               label: 读者展示值
+              help: 关于模块中的展示数字，仅作为视觉文案，不会自动统计真实读者数。
               value: 2.4k
             - $formkit: switch
               if: $get(home_about_enabled).value === true
               key: home_about_show_socials
               name: show_socials
               label: 显示社交链接
+              help: 开启后首页关于模块展示品牌与站点中的有效社交链接。
               value: true
 
     - group: content
@@ -849,12 +938,14 @@ spec:
               name: show_cover
               key: content_post_show_cover
               label: 显示文章封面 Hero
+              help: 控制文章详情页顶部是否显示封面 Hero 区域。
               value: true
             - $formkit: switch
               name: show_author
               id: content_post_show_author
               key: content_post_show_author
               label: 显示作者信息
+              help: 开启后文章详情页展示作者信息，并可继续配置赞赏区。
               value: true
             - $formkit: switch
               if: $get(content_post_show_author).value === true
@@ -862,12 +953,14 @@ spec:
               id: content_post_enable_reward
               key: content_post_enable_reward
               label: 启用赞赏区
+              help: 开启后文章作者区域显示赞赏入口，需要上传赞赏二维码。
               value: false
             - $formkit: attachment
               if: $get(content_post_enable_reward).value === true
               key: content_post_reward_qr
               name: reward_qr
               label: 赞赏二维码
+              help: 赞赏弹窗中展示的二维码图片，建议上传 1:1 清晰图片。
               accepts:
                 - image/*
               width: 180px
@@ -877,48 +970,57 @@ spec:
               name: show_neighbors
               key: content_post_show_neighbors
               label: 显示上一篇/下一篇
+              help: 开启后文章底部展示上一篇和下一篇文章入口。
               value: true
             - $formkit: switch
               name: enable_comment
               key: content_post_enable_comment
               label: 启用评论区
+              help: 开启后文章详情页渲染 Halo 评论组件；仍需站点或评论插件支持。
               value: true
             - $formkit: switch
               name: enable_toc
               key: content_post_enable_toc
               label: 启用文章目录
+              help: 开启后根据文章正文标题生成目录，适合长文阅读。
               value: true
             - $formkit: switch
               name: enable_reading_progress
               key: content_post_enable_reading_progress
               label: 启用阅读进度
+              help: 开启后文章页显示阅读进度反馈。
               value: true
             - $formkit: switch
               name: enable_action_rail
               key: content_post_enable_action_rail
               label: 启用阅读操作栏
+              help: 开启后文章页显示点赞、分享、目录等侧向阅读操作入口。
               value: true
             - $formkit: switch
               name: enable_upvote
               key: content_post_enable_upvote
               label: 启用点赞动作
+              help: 开启后文章页显示点赞按钮，依赖 Halo 内容统计接口。
               value: true
             - $formkit: switch
               name: enable_share
               key: content_post_enable_share
               label: 启用分享动作
+              help: 开启后文章页显示复制链接和分享海报等分享入口。
               value: true
             - $formkit: switch
               name: enable_related_posts
               id: content_post_enable_related_posts
               key: content_post_enable_related_posts
               label: 启用相关文章
+              help: 开启后文章底部展示同分类或相近内容的相关文章。
               value: true
             - $formkit: number
               if: $get(content_post_enable_related_posts).value === true
               key: content_post_related_posts_size
               name: related_posts_size
               label: 相关文章数量
+              help: 控制文章底部相关文章展示数量。
               value: 3
               min: 1
               max: 6
@@ -931,26 +1033,31 @@ spec:
               name: show_cover
               key: content_page_show_cover
               label: 显示页面封面
+              help: 控制独立页面详情顶部是否显示页面封面。
               value: true
             - $formkit: switch
               name: show_publish_time
               key: content_page_show_publish_time
               label: 显示发布时间
+              help: 开启后独立页面标题区域显示发布时间。
               value: true
             - $formkit: switch
               name: enable_comment
               key: content_page_enable_comment
               label: 启用评论区
+              help: 开启后独立页面渲染 Halo 评论组件；仍需站点或评论插件支持。
               value: true
             - $formkit: switch
               name: about_show_stats
               key: content_page_about_show_stats
               label: 关于页显示统计
+              help: 控制自定义关于页模板中的统计信息是否显示。
               value: true
             - $formkit: switch
               name: about_enable_comment
               key: content_page_about_enable_comment
               label: 关于页启用评论
+              help: 控制自定义关于页模板是否显示评论区。
               value: true
         - $formkit: group
           name: archive
@@ -960,21 +1067,25 @@ spec:
               name: title
               key: content_archive_title
               label: 归档标题
+              help: 归档列表页的主标题。
               value: 归档
             - $formkit: textarea
               name: description
               key: content_archive_description
               label: 归档描述
+              help: 归档列表页标题下方的介绍文案。
               value: 按时间折叠所有文章，像翻阅一组轻薄的创作年表。
             - $formkit: switch
               name: show_meta
               key: content_archive_show_meta
               label: 显示归档统计
+              help: 开启后归档页顶部显示文章数量等统计信息。
               value: true
             - $formkit: switch
               name: show_post_cover
               key: content_archive_show_post_cover
               label: 显示文章封面
+              help: 开启后归档条目中显示文章封面缩略图。
               value: true
         - $formkit: group
           name: taxonomy
@@ -984,31 +1095,37 @@ spec:
               name: category_title
               key: content_taxonomy_category_title
               label: 分类页标题
+              help: 分类索引页的主标题。
               value: 分类
             - $formkit: textarea
               name: category_description
               key: content_taxonomy_category_description
               label: 分类页描述
+              help: 分类索引页标题下方的介绍文案。
               value: 按主题收束文章，从一个分类进入一组连续的阅读线索。
             - $formkit: switch
               name: category_show_meta
               key: content_taxonomy_category_show_meta
               label: 分类页显示统计
+              help: 开启后分类页展示分类数量和索引模式等统计信息。
               value: true
             - $formkit: text
               name: tag_title
               key: content_taxonomy_tag_title
               label: 标签页标题
+              help: 标签索引页的主标题。
               value: 标签
             - $formkit: textarea
               name: tag_description
               key: content_taxonomy_tag_description
               label: 标签页描述
+              help: 标签索引页标题下方的介绍文案。
               value: 把散落的文章压缩成一组轻量关键词，从一个符号进入另一条阅读路径。
             - $formkit: switch
               name: tag_show_meta
               key: content_taxonomy_tag_show_meta
               label: 标签页显示统计
+              help: 开启后标签页展示标签数量和索引模式等统计信息。
               value: true
         - $formkit: group
           name: search
@@ -1018,21 +1135,25 @@ spec:
               name: title
               key: content_search_title
               label: 搜索页标题
+              help: 搜索页的主标题，也会作为 Header 搜索入口的提示文案。
               value: 搜索
             - $formkit: textarea
               name: description
               key: content_search_description
               label: 搜索页描述
+              help: 搜索页标题下方的说明文案。
               value: 输入关键词，在轻量索引里找到想读的内容。
             - $formkit: text
               name: placeholder
               key: content_search_placeholder
               label: 搜索框占位
+              help: 搜索输入框未输入内容时显示的提示文字。
               value: 输入关键词
             - $formkit: number
               name: limit
               key: content_search_limit
               label: 搜索结果数量
+              help: 每次搜索最多展示的结果数量。
               value: 10
               min: 1
               max: 50
@@ -1042,12 +1163,14 @@ spec:
               id: content_search_show_recommendations
               key: content_search_show_recommendations
               label: 显示推荐文章
+              help: 搜索页初始状态或无关键词时展示推荐文章。
               value: true
             - $formkit: number
               if: $get(content_search_show_recommendations).value === true
               key: content_search_recommendation_size
               name: recommendation_size
               label: 推荐文章数量
+              help: 控制搜索页推荐文章展示数量。
               value: 3
               min: 1
               max: 8
@@ -1061,18 +1184,21 @@ spec:
               id: content_share_enable_post_poster
               key: content_share_enable_post_poster
               label: 启用文章分享海报
+              help: 开启后文章分享操作中提供生成海报入口。
               value: true
             - $formkit: switch
               name: enable_moment_poster
               id: content_share_enable_moment_poster
               key: content_share_enable_moment_poster
               label: 启用瞬间分享海报
+              help: 开启后瞬间页面提供生成分享海报入口。
               value: true
             - $formkit: text
               if: $get(content_share_enable_post_poster).value === true || $get(content_share_enable_moment_poster).value === true
               key: content_share_title
               name: title
               label: 弹窗标题
+              help: 分享海报弹窗顶部显示的标题。
               value: 分享海报
 
     - group: plugins
@@ -1086,29 +1212,30 @@ spec:
               name: site_name
               key: plugins_links_site_name
               label: 我的站点名称
-              help: 留空时使用系统设置中的站点名称
+              help: 友链申请页展示的本站名称，留空时使用系统设置中的站点名称。
             - $formkit: url
               name: site_url
               key: plugins_links_site_url
               label: 我的站点链接
-              help: 留空时使用系统设置中的站点链接
+              help: 友链申请页展示的本站链接，留空时使用系统设置中的站点链接。
             - $formkit: attachment
               name: site_logo
               key: plugins_links_site_logo
               label: 我的站点 Logo
-              help: 留空时使用系统设置或主题品牌 Logo
+              help: 友链申请页展示的本站 Logo，留空时使用系统设置或主题品牌 Logo。
               accepts:
                 - "image/*"
             - $formkit: textarea
               name: site_description
               key: plugins_links_site_description
               label: 我的站点描述
-              help: 留空时使用系统 SEO 描述或站点副标题
+              help: 友链申请页展示的本站描述，留空时使用系统 SEO 描述或站点副标题。
             - $formkit: switch
               name: enable_submit
               id: plugins_links_enable_submit
               key: plugins_links_enable_submit
               label: 启用在线提交
+              help: 开启后友链页显示在线申请入口，需要安装并启用 LinksSubmit 相关能力。
               value: true
             - $formkit: switch
               if: $get(plugins_links_enable_submit).value === true
@@ -1116,12 +1243,14 @@ spec:
               id: plugins_links_enable_update
               key: plugins_links_enable_update
               label: 启用友链修改
+              help: 开启后已提交的友链可通过验证流程申请修改。
               value: true
             - $formkit: select
               if: $get(plugins_links_enable_submit).value === true
               name: verify_type
               key: plugins_links_verify_type
               label: 验证方式
+              help: 选择友链提交或修改时的验证方式，请确保对应验证能力已配置。
               value: email
               options:
                 - label: 邮箱验证码
@@ -1133,6 +1262,7 @@ spec:
               id: plugins_links_enable_comment
               key: plugins_links_enable_comment
               label: 启用评论区
+              help: 开启后友链页底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: moments
@@ -1142,6 +1272,7 @@ spec:
               name: page_size
               key: plugins_moments_page_size
               label: 每页数量
+              help: 瞬间列表每页加载的条目数量。
               value: 10
               min: 1
               max: 50
@@ -1150,16 +1281,19 @@ spec:
               name: enable_upvote
               key: plugins_moments_enable_upvote
               label: 启用点赞
+              help: 开启后瞬间卡片显示点赞入口，依赖瞬间插件和统计接口支持。
               value: true
             - $formkit: switch
               name: enable_comment
               key: plugins_moments_enable_comment
               label: 启用评论
+              help: 开启后瞬间列表和详情显示评论入口；仍需评论能力支持。
               value: true
             - $formkit: switch
               name: show_detail_link
               key: plugins_moments_show_detail_link
               label: 显示详情入口
+              help: 开启后瞬间卡片显示进入详情页的链接。
               value: true
         - $formkit: group
           name: photos
@@ -1169,6 +1303,7 @@ spec:
               name: page_size
               key: plugins_photos_page_size
               label: 每页数量
+              help: 图库页每页加载的图片数量。
               value: 12
               min: 1
               max: 60
@@ -1177,6 +1312,7 @@ spec:
               name: enable_comment
               key: plugins_photos_enable_comment
               label: 启用评论区
+              help: 开启后图库页底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: equipment
@@ -1186,6 +1322,7 @@ spec:
               name: enable_comment
               key: plugins_equipment_enable_comment
               label: 启用评论区
+              help: 开启后装备页底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: friends
@@ -1195,6 +1332,7 @@ spec:
               name: page_size
               key: plugins_friends_page_size
               label: 每页数量
+              help: 朋友圈页每页加载的动态数量。
               value: 12
               min: 1
               max: 60
@@ -1203,6 +1341,7 @@ spec:
               name: enable_comment
               key: plugins_friends_enable_comment
               label: 启用评论区
+              help: 开启后朋友圈页底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: bangumi
@@ -1212,6 +1351,7 @@ spec:
               name: item_limit
               key: plugins_bangumi_item_limit
               label: 展示数量
+              help: 追番页最多展示的条目数量。
               value: 24
               min: 1
               max: 100
@@ -1220,6 +1360,7 @@ spec:
               name: enable_comment
               key: plugins_bangumi_enable_comment
               label: 启用评论区
+              help: 开启后追番页底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: steam
@@ -1229,6 +1370,7 @@ spec:
               name: recent_limit
               key: plugins_steam_recent_limit
               label: 最近游玩数量
+              help: Steam 页面最近游玩区域展示的游戏数量。
               value: 8
               min: 1
               max: 20
@@ -1237,6 +1379,7 @@ spec:
               name: game_page_size
               key: plugins_steam_game_page_size
               label: 游戏库每页数量
+              help: Steam 游戏库列表每页展示的游戏数量。
               value: 18
               min: 1
               max: 60
@@ -1245,11 +1388,13 @@ spec:
               name: enable_game_link
               key: plugins_steam_enable_game_link
               label: 启用游戏外链
+              help: 开启后游戏卡片可跳转到对应 Steam 商店或外部详情页。
               value: true
             - $formkit: switch
               name: enable_comment
               key: plugins_steam_enable_comment
               label: 启用评论区
+              help: 开启后 Steam 页面底部渲染评论区；仍需站点或评论插件支持。
               value: true
         - $formkit: group
           name: docs
@@ -1260,16 +1405,19 @@ spec:
               id: plugins_docs_enable_toc
               key: plugins_docs_enable_toc
               label: 启用文档目录
+              help: 开启后 Docsme 文档详情页根据标题生成侧边目录。
               value: true
             - $formkit: switch
               name: enable_comment
               key: plugins_docs_enable_comment
               label: 启用评论区
+              help: 开启后 Docsme 文档页渲染评论区；仍需站点或评论插件支持。
               value: true
             - $formkit: url
               name: install_link
               key: plugins_docs_install_link
               label: 插件安装链接
+              help: 未安装或需升级 Docsme 插件时展示的跳转地址。
               value: https://www.halo.run/store/apps/app-yffxw
 
     - group: advanced
@@ -1283,24 +1431,28 @@ spec:
               name: head_html
               key: advanced_inject_head_html
               label: Head HTML
+              help: 注入到页面 head 中，适合放 meta、验证标签或第三方样式；错误代码会影响全站。
               language: html
               value: ""
             - $formkit: code
               name: footer_html
               key: advanced_inject_footer_html
               label: Footer HTML
+              help: 注入到页面底部，适合放统计代码或第三方挂件；请确认来源可信。
               language: html
               value: ""
             - $formkit: code
               name: code_css
               key: advanced_inject_code_css
               label: 自定义 CSS
+              help: 注入为全站自定义样式，只填写 CSS 内容，不需要包裹 style 标签。
               language: css
               value: ""
             - $formkit: code
               name: code_js
               key: advanced_inject_code_js
               label: 自定义 JavaScript
+              help: 注入为全站自定义脚本，只填写 JavaScript 内容，不需要包裹 script 标签。
               language: javascript
               value: ""
         - $formkit: group
@@ -1311,6 +1463,7 @@ spec:
               name: steam_cache_ttl_minutes
               key: advanced_performance_steam_cache_ttl_minutes
               label: Steam 前端缓存分钟数
+              help: 控制 Steam 前端数据缓存时间；设为 0 可关闭前端缓存，调试时才建议这么干。
               value: 3
               min: 0
               max: 60
