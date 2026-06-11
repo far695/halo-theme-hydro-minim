@@ -1,6 +1,6 @@
 # 氢·简 / Hydro-Minim
 
-Hydro-Minim 是“氢”系列的首款 Halo 主题，项目标识为 `halo-theme-hydro-minim`。主题由原 React + TypeScript + Vite 原型改造而来，但运行时采用 Halo 原生 Thymeleaf 模板 + Vite TypeScript 交互，不依赖 React。
+Hydro-Minim 是“氢”系列的首款 Halo 主题，项目标识为 `halo-theme-hydro-minim`。主题运行时采用 Halo 原生 Thymeleaf 模板 + Vite TypeScript 交互，不依赖 React。
 
 主题已支持浅色、深色和跟随系统三种默认配色，并提供访客侧深浅色切换按钮。主题设置中的“全局外观 / 强调色”会统一驱动文字选中、正文链接、输入焦点、光标、搜索命中和轻量高亮，默认保持低饱和的氢风格，不建议改成高对比霓虹色。
 
@@ -126,5 +126,5 @@ document.addEventListener("DOMContentLoaded", () => {
 继续开发前请先阅读：
 
 - [AGENTS.md](./AGENTS.md)：本主题的 Agent 入口，项目身份、约束、视觉不变量和关键交互。
-- [docs/ai-development-guide.md](./docs/ai-development-guide.md)：本主题的深度开发指南，当前源码地图、参考主题索引、交互/模板开发路线和常见陷阱。
-- [../AI-THEME-DEV-GUIDE.md](../AI-THEME-DEV-GUIDE.md)：工作区级 Halo 主题开发通用指南，整合所有参考主题的模式、Thymeleaf 规范、Finder API、Annotation Setting、前端选型和反模式速查。
+- [docs/ai-development-guide.md](./docs/ai-development-guide.md)：本主题的深度开发指南、源码地图、交互/模板开发路线和常见陷阱。
+- [CONTEXT.md](./CONTEXT.md)：本主题的领域语言和当前关键决策。

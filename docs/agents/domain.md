@@ -6,16 +6,17 @@ How engineering skills should consume this repo's domain documentation when expl
 
 This is a single-context Halo theme repo.
 
-There is currently no root `CONTEXT.md`, no `CONTEXT-MAP.md`, and no `docs/adr/` directory. If those are added later, skills should prefer `CONTEXT.md` for domain language and `docs/adr/` for architectural decisions.
+This repo has a root `CONTEXT.md` and ADRs under `docs/adr/`. Skills should prefer `CONTEXT.md` for domain language and `docs/adr/` for architectural decisions.
 
 ## Before exploring, read these
 
 1. `AGENTS.md` - project identity, editing boundaries, visual invariants, key interactions.
 2. `README.md` - quick start, build commands, source directory map.
-3. `docs/ai-development-guide.md` - deeper Hydro-Minim development guide and reference-theme index.
-4. `../AI-THEME-DEV-GUIDE.md` - workspace-level Halo theme development rules.
+3. `docs/ai-development-guide.md` - deeper Hydro-Minim development guide, source map, and workflow notes.
+4. `CONTEXT.md` - current domain language and decisions.
+5. Relevant files under `docs/adr/` when touching an area covered by an ADR.
 
-If `CONTEXT.md` or ADRs are added later, read the relevant files before proposing architecture, diagnosis, tests, or issue breakdowns.
+Read the relevant context files before proposing architecture, diagnosis, tests, or issue breakdowns.
 
 ## Repo-specific constraints
 
