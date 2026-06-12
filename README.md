@@ -6,6 +6,12 @@ Hydro-Minim 是“氢”系列的首款 Halo 主题，项目标识为 `halo-them
 
 搜索入口依赖官方 `PluginSearchWidget` 插件，主题设置可在“全局组件 / 搜索入口方式”中选择弹窗搜索或页面搜索；未安装插件时主题不会展示无效搜索入口。
 
+## 交流群
+
+[点击链接加入群聊【halo博客-lywq插件】](https://qm.qq.com/q/wuC7NZr0sw)
+
+<img src="https://github.com/user-attachments/assets/bf162401-07fd-49ec-b50f-5218c9510937" style="height: 400px !important; width: auto; object-fit: contain;" />
+
 ## 快速开始
 
 ```bash
