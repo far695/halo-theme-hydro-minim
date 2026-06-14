@@ -81,6 +81,7 @@ pnpm run build
 ### Issue tracker
 
 Issues and PRDs are tracked in GitHub Issues for `liuyiwuqing/halo-theme-hydro-minim`; use the `gh` CLI from this repo. See `docs/agents/issue-tracker.md`.
+Scripted issue → PR workflow: use `scripts/issue-pr.sh` or `pnpm run issue-pr -- ...`. See `docs/agents/issue-pr-workflow.md`.
 
 ### Triage labels
 

@@ -2,6 +2,8 @@
 
 Issues and PRDs for this repo live in GitHub Issues for `liuyiwuqing/halo-theme-hydro-minim`. Use the `gh` CLI for issue operations from inside this clone.
 
+For the standard scripted issue → branch → PR → auto-close workflow, use `scripts/issue-pr.sh`. See `docs/agents/issue-pr-workflow.md`.
+
 ## Conventions
 
 - Create an issue: `gh issue create --title "..." --body "..."`

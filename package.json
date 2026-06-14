@@ -7,6 +7,7 @@
     "build-only": "tsc && vp build",
     "check": "vp check --fix",
     "dev": "vp build --watch",
+    "issue-pr": "bash scripts/issue-pr.sh",
     "package": "theme-package",
     "prepare": "vp config",
     "test": "vp test run --environment jsdom"
