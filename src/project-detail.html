@@ -1,0 +1,161 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${title ?: (project != null ? project.title : '项目详情')} - ${site.title}|">项目详情</title>
+  </template>
+
+  <section
+    class="hydro-portfolio-detail-page"
+    th:with="
+      hasPortfolioPlugin=${pluginFinder.available('portfolio') or pluginFinder.available('plugin-portfolio') or pluginFinder.available('PluginPortfolio')},
+      hasProjectPayload=${project != null},
+      portfolioPlatformLabels=${platformLabels != null ? platformLabels : (hasPortfolioPlugin and projectFinder != null ? projectFinder.platformLabels() : null)},
+      portfolioTypeLabels=${typeLabels != null ? typeLabels : (hasPortfolioPlugin and projectFinder != null ? projectFinder.typeLabels() : null)},
+      projectContent=${projectContentHtml != null ? projectContentHtml : (hasProjectPayload and hasPortfolioPlugin and projectFinder != null ? projectFinder.renderContent(project) : '')},
+      platformText=${hasProjectPayload ? (#strings.isEmpty(project.platform) ? 'other' : (portfolioPlatformLabels != null and portfolioPlatformLabels[project.platform] != null ? portfolioPlatformLabels[project.platform] : project.platform)) : ''},
+      typeText=${hasProjectPayload ? (#strings.isEmpty(project.type) ? 'other' : (portfolioTypeLabels != null and portfolioTypeLabels[project.type] != null ? portfolioTypeLabels[project.type] : project.type)) : ''}"
+  >
+    <div class="hydro-portfolio-detail-shell" th:if="${hasProjectPayload}">
+      <article class="hydro-portfolio-detail-main">
+        <a
+          class="hydro-portfolio-back"
+          href="/projects"
+          th:text="${theme.config.plugins?.portfolio?.back_label ?: '返回项目集'}"
+          >返回项目集</a
+        >
+
+        <figure
+          class="hydro-portfolio-detail-cover"
+          th:if="${not #strings.isEmpty(project.cover)}"
+          th:attr="data-media-error-text=${project.title ?: '项目封面暂时不可见'}"
+          data-progressive-media
+        >
+          <img
+            th:src="${thumbnail.gen(project.cover, 'l')}"
+            th:srcset="|${thumbnail.gen(project.cover, 'm')} 760w, ${thumbnail.gen(project.cover, 'l')} 1160w, ${thumbnail.gen(project.cover, 'xl')} 1600w|"
+            sizes="(max-width: 1100px) calc(100vw - 3rem), 58rem"
+            th:alt="${project.title}"
+            loading="eager"
+            decoding="async"
+            data-progressive-image
+          />
+        </figure>
+
+        <header class="hydro-portfolio-detail-header">
+          <div class="hydro-portfolio-card__meta">
+            <span class="hydro-portfolio-chip" th:text="${platformText}">GitHub</span>
+            <span class="hydro-portfolio-chip" th:text="${typeText}">插件</span>
+            <span
+              class="hydro-portfolio-chip hydro-portfolio-chip--accent"
+              th:if="${project.featured == true}"
+              th:text="${theme.config.plugins?.portfolio?.featured_label ?: '推荐'}"
+              >推荐</span
+            >
+          </div>
+          <p th:text="${theme.config.plugins?.portfolio?.detail_eyebrow ?: 'Project'}">Project</p>
+          <h1 th:text="${project.title}">项目标题</h1>
+          <span th:if="${not #strings.isEmpty(project.summary)}" th:text="${project.summary}">项目摘要</span>
+        </header>
+
+        <div class="hydro-portfolio-detail-tags" th:if="${not #lists.isEmpty(project.techStacks)}">
+          <span th:each="stack : ${project.techStacks}" th:text="${stack}">Java</span>
+        </div>
+
+        <article
+          id="content"
+          class="hydro-post-prose hydro-portfolio-content prose-content"
+          th:if="${not #strings.isEmpty(projectContent)}"
+          th:utext="${projectContent}"
+        >
+          项目详情
+        </article>
+
+        <div th:if="${#strings.isEmpty(projectContent)}" class="hydro-plugin-empty hydro-plugin-empty--small">
+          <span th:text="${theme.config.plugins?.portfolio?.detail_eyebrow ?: 'Project'}">Project</span>
+          <strong th:text="${theme.config.plugins?.portfolio?.content_empty_text ?: '暂无项目详情'}"
+            >暂无项目详情</strong
+          >
+        </div>
+
+        <section
+          id="comment"
+          class="hydro-plugin-comments hydro-portfolio-comments"
+          th:if="${(theme.config.plugins?.portfolio == null or theme.config.plugins.portfolio.enable_comment != false) and haloCommentEnabled and project.metadata != null}"
+        >
+          <h2 th:text="${theme.config.plugins?.portfolio?.comments_title ?: '评论'}">评论</h2>
+          <halo:comment group="portfolio.muyin.site" kind="Project" th:attr="name=${project.metadata.name}" />
+        </section>
+      </article>
+
+      <aside class="hydro-portfolio-detail-aside">
+        <div class="hydro-portfolio-detail-panel">
+          <span th:text="${theme.config.plugins?.portfolio?.action_panel_label ?: 'Links'}">Links</span>
+          <a
+            th:if="${not #strings.isEmpty(project.repoUrl)}"
+            th:href="${project.repoUrl}"
+            target="_blank"
+            rel="noreferrer noopener"
+            th:text="${theme.config.plugins?.portfolio?.repo_detail_label ?: '查看仓库'}"
+            >查看仓库</a
+          >
+          <a
+            th:if="${not #strings.isEmpty(project.demoUrl)}"
+            th:href="${project.demoUrl}"
+            target="_blank"
+            rel="noreferrer noopener"
+            th:text="${theme.config.plugins?.portfolio?.demo_detail_label ?: '在线演示'}"
+            >在线演示</a
+          >
+          <a
+            th:if="${not #strings.isEmpty(project.docsUrl)}"
+            th:href="${project.docsUrl}"
+            target="_blank"
+            rel="noreferrer noopener"
+            th:text="${theme.config.plugins?.portfolio?.docs_detail_label ?: '项目文档'}"
+            >项目文档</a
+          >
+          <p
+            th:if="${#strings.isEmpty(project.repoUrl) and #strings.isEmpty(project.demoUrl) and #strings.isEmpty(project.docsUrl)}"
+            th:text="${theme.config.plugins?.portfolio?.no_links_text ?: '这个项目暂时没有外部链接。'}"
+          >
+            这个项目暂时没有外部链接。
+          </p>
+        </div>
+
+        <div class="hydro-portfolio-detail-panel" th:if="${not #lists.isEmpty(project.tags)}">
+          <span th:text="${theme.config.plugins?.portfolio?.tags_panel_label ?: 'Tags'}">Tags</span>
+          <div class="hydro-portfolio-detail-tags hydro-portfolio-detail-tags--compact">
+            <span th:each="tag : ${project.tags}" th:text="${tag}">Halo</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <article class="hydro-portfolio-detail-empty" th:if="${not hasPortfolioPlugin}">
+      <div class="hydro-plugin-notice">
+        <strong th:text="${theme.config.plugins?.portfolio?.install_title ?: '需要安装项目集插件'}"
+          >需要安装项目集插件</strong
+        >
+        <span
+          class="hydro-plugin-notice__body"
+          th:text="${theme.config.plugins?.portfolio?.install_text ?: '需要安装并启用 portfolio 插件，项目详情页才能读取项目内容。'}"
+        >
+          需要安装并启用 portfolio 插件，项目详情页才能读取项目内容。
+        </span>
+      </div>
+    </article>
+
+    <article class="hydro-portfolio-detail-empty" th:if="${hasPortfolioPlugin and not hasProjectPayload}">
+      <div class="hydro-plugin-empty">
+        <span th:text="${theme.config.plugins?.portfolio?.detail_eyebrow ?: 'Project'}">Project</span>
+        <strong th:text="${theme.config.plugins?.portfolio?.detail_unavailable_text ?: '项目暂时不可用'}"
+          >项目暂时不可用</strong
+        >
+        <p
+          th:text="${theme.config.plugins?.portfolio?.detail_unavailable_description ?: 'portfolio 插件已可用。请确认该项目存在、已发布，并且当前路由由项目集插件正确提供。'}"
+        >
+          portfolio 插件已可用。请确认该项目存在、已发布，并且当前路由由项目集插件正确提供。
+        </p>
+      </div>
+    </article>
+  </section>
+</include>

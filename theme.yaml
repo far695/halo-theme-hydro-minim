@@ -42,6 +42,9 @@ spec:
       - name: Hydro Steam 页
         description: Steam 插件页面模板；未安装插件时显示安装提示
         file: steam.html
+      - name: Hydro 项目集
+        description: 项目集插件页面模板；未安装插件时显示安装提示
+        file: projects.html
   license:
     - name: "GPL-3.0"
       url: "https://www.gnu.org/licenses/gpl-3.0.html"

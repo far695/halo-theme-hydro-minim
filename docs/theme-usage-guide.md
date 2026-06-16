@@ -281,6 +281,7 @@ page_about
 docs
 photos
 moments
+projects
 links
 ```
 
@@ -675,11 +676,12 @@ notice?.close();
 | Hydro 瞬间页   | 瞬间插件页面        |
 | Hydro 图库页   | 图库插件页面        |
 | Hydro Steam 页 | Steam 插件页面      |
+| Hydro 项目集   | 项目集插件页面      |
 
 建议：
 
 - 插件原生路由和独立页面 slug 不要冲突。
-- 如果插件已经占用 `/moments`、`/photos`、`/docs`，独立页面可以用 `/my-moments`、`/gallery`、`/notes` 这类路径。
+- 如果插件已经占用 `/moments`、`/photos`、`/docs`、`/projects`，独立页面可以用 `/my-moments`、`/gallery`、`/notes`、`/portfolio` 这类路径。
 - 修改 `theme.yaml` 自定义模板声明后，需要在主题管理中重新加载主题配置。
 
 ## 上线检查清单

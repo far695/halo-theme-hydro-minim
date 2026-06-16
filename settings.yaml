@@ -1489,6 +1489,31 @@ spec:
               label: 插件安装链接
               help: 未安装或需升级 Docsme 插件时展示的跳转地址。
               value: https://www.halo.run/store/apps/app-yffxw
+        - $formkit: group
+          name: portfolio
+          label: 项目集
+          children:
+            - $formkit: number
+              name: page_size
+              key: plugins_portfolio_page_size
+              label: 每页数量
+              help: 项目集独立页面通过 Finder 读取项目时，每页展示的项目数量。
+              value: 12
+              min: 1
+              max: 60
+              step: 1
+            - $formkit: switch
+              name: enable_comment
+              key: plugins_portfolio_enable_comment
+              label: 启用评论区
+              help: 开启后项目集独立页和项目详情页底部渲染评论区；仍需站点或评论插件支持。
+              value: true
+            - $formkit: url
+              name: install_link
+              key: plugins_portfolio_install_link
+              label: 插件安装链接
+              help: 未安装项目集插件时展示的跳转地址。
+              value: https://github.com/liuyiwuqing/plugin-portfolio
 
     - group: advanced
       label: 高级设置

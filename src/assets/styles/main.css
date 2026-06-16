@@ -14651,6 +14651,9 @@ body.hydro-reward-lock {
 .hydro-steam-profile,
 .hydro-steam-stats > div,
 .hydro-docs-card,
+.hydro-portfolio-card,
+.hydro-portfolio-detail-panel,
+.hydro-portfolio-detail-cover,
 .hydro-equipment-card,
 .hydro-about-links a {
   border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
@@ -15315,6 +15318,342 @@ body.hydro-reward-lock {
 .hydro-docs-card em {
   margin-top: auto;
   font-style: normal;
+}
+
+.hydro-portfolio-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: clamp(1.4rem, 3vw, 2.4rem);
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border-bottom: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  padding: 1rem 0;
+}
+
+.hydro-portfolio-overview div {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 32%);
+  padding: clamp(0.9rem, 2vw, 1.2rem);
+}
+
+.hydro-portfolio-overview span,
+.hydro-portfolio-overview em,
+.hydro-portfolio-filter label span,
+.hydro-portfolio-detail-header p,
+.hydro-portfolio-detail-panel > span {
+  color: rgb(var(--hydro-ink-rgb) / 46%);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hydro-portfolio-overview strong {
+  color: var(--hydro-solid);
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  line-height: 0.95;
+}
+
+.hydro-portfolio-filter {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(9rem, 0.65fr) minmax(9rem, 0.65fr) minmax(10rem, 0.7fr) auto auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: clamp(1.6rem, 3vw, 2.5rem);
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 34%);
+  padding: 0.85rem;
+}
+
+.hydro-portfolio-filter label {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hydro-portfolio-filter input,
+.hydro-portfolio-filter select {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 14%);
+  border-radius: 0.45rem;
+  background: rgb(var(--hydro-paper-rgb) / 46%);
+  color: var(--hydro-solid);
+  padding: 0 0.75rem;
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.hydro-portfolio-filter input:focus,
+.hydro-portfolio-filter select:focus {
+  border-color: var(--hydro-highlight-line);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--hydro-highlight-soft);
+}
+
+.hydro-portfolio-filter button,
+.hydro-portfolio-filter__reset,
+.hydro-portfolio-card__footer a,
+.hydro-portfolio-back,
+.hydro-portfolio-detail-panel a {
+  display: inline-grid;
+  min-height: 2.8rem;
+  place-items: center;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 16%);
+  border-radius: 999px;
+  background: rgb(var(--hydro-ink-rgb) / 4%);
+  color: var(--hydro-solid);
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-portfolio-filter button:hover,
+.hydro-portfolio-filter button:focus-visible,
+.hydro-portfolio-filter__reset:hover,
+.hydro-portfolio-filter__reset:focus-visible,
+.hydro-portfolio-card__footer a:hover,
+.hydro-portfolio-card__footer a:focus-visible,
+.hydro-portfolio-back:hover,
+.hydro-portfolio-back:focus-visible,
+.hydro-portfolio-detail-panel a:hover,
+.hydro-portfolio-detail-panel a:focus-visible {
+  border-color: var(--hydro-highlight-line);
+  background: var(--hydro-highlight-soft);
+  color: var(--hydro-link-hover-text);
+  transform: translateY(-1px);
+}
+
+.hydro-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.hydro-portfolio-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.75rem;
+  transition:
+    border-color 0.3s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-portfolio-card:hover {
+  border-color: var(--hydro-solid);
+  transform: translateY(-0.35rem);
+}
+
+.hydro-portfolio-card__media {
+  display: grid;
+  aspect-ratio: 16 / 9;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 0.38rem;
+  background: linear-gradient(135deg, rgb(var(--hydro-ink-rgb) / 6%), transparent 44%), rgb(var(--hydro-ink-rgb) / 4%);
+}
+
+.hydro-portfolio-card__media img,
+.hydro-portfolio-detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    filter 0.3s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-portfolio-card:hover .hydro-portfolio-card__media img {
+  filter: saturate(0.88) contrast(1.04);
+  transform: scale(1.045);
+}
+
+.hydro-portfolio-card__body {
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 1rem 0.25rem 0.8rem;
+}
+
+.hydro-portfolio-card__meta,
+.hydro-portfolio-card__tags,
+.hydro-portfolio-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.hydro-portfolio-chip,
+.hydro-portfolio-card__tags span,
+.hydro-portfolio-detail-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.65rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  background: rgb(var(--hydro-paper-rgb) / 45%);
+  color: rgb(var(--hydro-ink-rgb) / 58%);
+  padding: 0.22rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hydro-portfolio-chip--accent {
+  border-color: var(--hydro-highlight-line);
+  background: var(--hydro-highlight-soft);
+  color: var(--hydro-link-hover-text);
+}
+
+.hydro-portfolio-card__title {
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.24;
+}
+
+.hydro-portfolio-card__title a {
+  color: var(--hydro-solid);
+}
+
+.hydro-portfolio-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--hydro-muted);
+  font-size: 0.88rem;
+  line-height: 1.75;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.hydro-portfolio-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 9%);
+  padding: 0.8rem 0.25rem 0.1rem;
+}
+
+.hydro-portfolio-card__footer a {
+  min-height: 2.25rem;
+  padding: 0.5rem 0.78rem;
+  font-size: 0.68rem;
+}
+
+.hydro-portfolio-detail-page {
+  padding: clamp(8rem, 12vw, 11rem) 0 clamp(5rem, 8vw, 8rem);
+}
+
+.hydro-portfolio-detail-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 58rem) minmax(13rem, 18rem);
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+  width: min(100% - 4rem, 82rem);
+  margin: 0 auto;
+}
+
+.hydro-portfolio-detail-main {
+  min-width: 0;
+}
+
+.hydro-portfolio-back {
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.hydro-portfolio-detail-cover {
+  display: grid;
+  aspect-ratio: 16 / 8.6;
+  place-items: center;
+  overflow: hidden;
+  margin: 0 0 clamp(1.4rem, 3vw, 2rem);
+  background: linear-gradient(135deg, rgb(var(--hydro-ink-rgb) / 6%), transparent 44%), rgb(var(--hydro-ink-rgb) / 4%);
+}
+
+.hydro-portfolio-detail-header {
+  display: grid;
+  gap: 0.75rem;
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  padding-top: 1.1rem;
+}
+
+.hydro-portfolio-detail-header h1 {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--hydro-solid);
+  font-size: clamp(3rem, 8vw, 6.75rem);
+  line-height: 0.95;
+}
+
+.hydro-portfolio-detail-header > span {
+  max-width: 48rem;
+  color: var(--hydro-muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.85;
+}
+
+.hydro-portfolio-detail-tags {
+  margin-top: 1.2rem;
+}
+
+.hydro-portfolio-content {
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  border-top: 1px solid rgb(var(--hydro-ink-rgb) / 12%);
+  padding-top: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.hydro-portfolio-detail-aside {
+  position: sticky;
+  top: 7rem;
+  display: grid;
+  align-self: start;
+  gap: 1rem;
+}
+
+.hydro-portfolio-detail-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+}
+
+.hydro-portfolio-detail-panel a {
+  justify-content: center;
+}
+
+.hydro-portfolio-detail-panel p {
+  margin: 0;
+  color: var(--hydro-muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.hydro-portfolio-detail-tags--compact {
+  margin-top: 0;
+}
+
+.hydro-portfolio-detail-empty {
+  width: min(100% - 4rem, 54rem);
+  margin: 0 auto;
 }
 
 .hydro-doc-shell {
@@ -17593,7 +17932,8 @@ html[data-hydro-motion="off"] .hydro-list-card.is-hydro-card-hovered h2 {
 
 @media (max-width: 72rem) {
   .hydro-list-grid,
-  .hydro-game-grid {
+  .hydro-game-grid,
+  .hydro-portfolio-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -17631,8 +17971,14 @@ html[data-hydro-motion="off"] .hydro-list-card.is-hydro-card-hovered h2 {
     padding-top: clamp(7rem, 12vw, 9rem);
   }
 
+  .hydro-portfolio-filter,
+  .hydro-portfolio-detail-shell {
+    grid-template-columns: 1fr;
+  }
+
   .hydro-doc-sidebar,
-  .hydro-doc-toc {
+  .hydro-doc-toc,
+  .hydro-portfolio-detail-aside {
     position: static;
   }
 
@@ -17690,11 +18036,31 @@ html[data-hydro-motion="off"] .hydro-list-card.is-hydro-card-hovered h2 {
   .hydro-list-grid,
   .hydro-docs-grid,
   .hydro-docs-overview,
+  .hydro-portfolio-grid,
+  .hydro-portfolio-overview,
   .hydro-equipment-grid,
   .hydro-game-grid,
   .hydro-about-links,
   .hydro-steam-stats {
     grid-template-columns: 1fr;
+  }
+
+  .hydro-portfolio-filter {
+    align-items: stretch;
+  }
+
+  .hydro-portfolio-detail-page {
+    padding-top: 7rem;
+  }
+
+  .hydro-portfolio-detail-shell,
+  .hydro-portfolio-detail-empty {
+    width: min(100% - 2rem, 52rem);
+  }
+
+  .hydro-portfolio-detail-header h1 {
+    max-width: none;
+    font-size: clamp(2.55rem, 14vw, 4.2rem);
   }
 
   .hydro-bangumi-grid {

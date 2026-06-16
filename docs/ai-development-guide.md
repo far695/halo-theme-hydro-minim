@@ -97,12 +97,12 @@ window.HydroNotice?.clear("plugin-action-status");
 
 ### 插件扩展页作为独立页面模板
 
-`bangumis.html`、`docs.html`、`equipments.html`、`friends.html`、`moments.html`、`photos.html`、`steam.html`
+`bangumis.html`、`docs.html`、`equipments.html`、`friends.html`、`moments.html`、`photos.html`、`projects.html`、`steam.html`
 同时服务插件原生路由和 Halo 独立页面自定义模板。后台使用方式：
 
 1. 在 Console 新建独立页面。
 2. 在页面模板中选择对应的 `Hydro ...` 模板。
-3. 自定义页面 slug，建议不要直接使用 `moments`、`photos`、`bangumis`、`docs` 等插件原生路径，避免安装插件后出现路由优先级冲突。
+3. 自定义页面 slug，建议不要直接使用 `moments`、`photos`、`bangumis`、`docs`、`projects` 等插件原生路径，避免安装插件后出现路由优先级冲突。
 4. 修改 `theme.yaml` 模板声明后，需要在主题管理中重新加载主题配置。
 
 这类模板必须先判断插件是否可用，再读取插件 Finder 或路由注入变量；未安装插件时显示安装提示，不要直接访问 `moments.items`、`photos.items`、`groups`、`projects` 等可能不存在的变量。
@@ -111,7 +111,7 @@ window.HydroNotice?.clear("plugin-action-status");
 
 非首页内容页统一走 `Hydro Content Surface` 视觉系统，覆盖范围包括：
 
-- 自定义模板：`page_about.html`、`bangumis.html`、`docs.html`、`equipments.html`、`friends.html`、`moments.html`、`photos.html`、`steam.html`。
+- 自定义模板：`page_about.html`、`bangumis.html`、`docs.html`、`equipments.html`、`friends.html`、`moments.html`、`photos.html`、`projects.html`、`steam.html`。
 - 分类与内容索引：`categories.html`、`category.html`、`tags.html`、`tag.html`、`archives.html`、`search.html`。
 - 插件相邻页面：`links.html`、`moment.html`、`doc.html`、`doc-catalog.html`。
 
