@@ -21,6 +21,9 @@ spec:
       - name: Hydro 关于页
         description: 氢风格关于页，展示站点统计、正文和社交链接
         file: page_about.html
+      - name: Hydro 友链页
+        description: 友链页面模板；支持站点信息、友链列表、申请说明和在线提交入口
+        file: links.html
       - name: Hydro 追番页
         description: 追番插件页面模板；未安装插件时显示安装提示
         file: bangumis.html
