@@ -1,0 +1,89 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${#strings.isEmpty(displayName) ? '受保护资源' : displayName} - 访问验证 - ${site.title}|">
+      访问验证
+    </title>
+  </template>
+
+  <section
+    class="hydro-safebox-page"
+    th:with="
+      safeDisplayName=${#strings.isEmpty(displayName) ? '受保护资源' : displayName},
+      safeDescription=${#strings.isEmpty(description) ? '该资源已开启访问保护，请输入密码后继续访问。' : description},
+      safePath=${#strings.isEmpty(path) ? '/' : path},
+      safeUnlockAction=${#strings.isEmpty(unlockAction) ? '/apis/public.safebox.muyin.site/v1alpha1/unlock' : unlockAction},
+      safeError=${#strings.isEmpty(error) ? '' : error}
+    "
+  >
+    <div class="hydro-container">
+      <article class="hydro-safebox-panel">
+        <header class="hydro-safebox-intro">
+          <div>
+            <span class="hydro-safebox-kicker">Safe Box</span>
+            <h1 th:text="${safeDisplayName}">受保护资源</h1>
+            <p th:text="${safeDescription}">该资源已开启访问保护，请输入密码后继续访问。</p>
+          </div>
+
+          <div class="hydro-safebox-orbit" aria-hidden="true">
+            <span></span>
+            <svg viewBox="0 0 64 64">
+              <rect x="18" y="28" width="28" height="22" rx="4"></rect>
+              <path d="M24 28v-7a8 8 0 0 1 16 0v7"></path>
+              <path d="M32 36v6"></path>
+            </svg>
+          </div>
+
+          <div class="hydro-safebox-route">
+            <span>返回路径</span>
+            <code th:text="${safePath}">/upload/example.png</code>
+          </div>
+        </header>
+
+        <form class="hydro-safebox-form" method="post" th:action="${safeUnlockAction}">
+          <div class="hydro-safebox-form__head">
+            <span class="hydro-safebox-form__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                <path d="M12 14v2"></path>
+              </svg>
+            </span>
+            <div>
+              <strong>输入访问密码</strong>
+              <span>验证通过后自动返回资源</span>
+            </div>
+          </div>
+
+          <p class="hydro-safebox-error" th:if="${not #strings.isEmpty(safeError)}" th:text="${safeError}">
+            密码不正确。
+          </p>
+
+          <input type="hidden" name="path" th:value="${safePath}" />
+
+          <label class="hydro-safebox-field" for="safebox-password">
+            <span>访问密码</span>
+            <input
+              id="safebox-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              autofocus
+              placeholder="输入密码继续访问"
+            />
+          </label>
+
+          <button type="submit" class="hydro-safebox-submit">
+            <span>解锁资源</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"></path>
+              <path d="M9 7h8v8"></path>
+            </svg>
+          </button>
+
+          <p class="hydro-safebox-note">密码只用于本次访问验证。解锁成功后，插件会按规则有效期保持访问状态。</p>
+        </form>
+      </article>
+    </div>
+  </section>
+</include>

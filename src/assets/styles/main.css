@@ -4907,6 +4907,457 @@ html[data-hydro-motion="off"] .hydro-list-card.is-hydro-card-hovered .hydro-list
   line-height: 1.8;
 }
 
+.hydro-safebox-page {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(8rem, 12vw, 10.5rem) 0 clamp(5.5rem, 8vw, 7rem);
+  isolation: isolate;
+}
+
+.hydro-safebox-page::before {
+  position: absolute;
+  inset: 0 -12vw auto;
+  z-index: -1;
+  height: 42rem;
+  background:
+    linear-gradient(90deg, rgb(var(--hydro-ink-rgb) / 5%) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(var(--hydro-ink-rgb) / 4.5%) 1px, transparent 1px),
+    radial-gradient(circle at 74% 18%, rgb(var(--hydro-accent-rgb) / 10%), transparent 32rem),
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 24%), transparent 78%);
+  background-size:
+    2.75rem 2.75rem,
+    2.75rem 2.75rem,
+    100% 100%,
+    100% 100%;
+  content: "";
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 78%), transparent 84%);
+  opacity: 0.74;
+}
+
+.hydro-safebox-page::after {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 42%;
+  background: linear-gradient(180deg, transparent, rgb(var(--hydro-ink-rgb) / 2.5%));
+  content: "";
+}
+
+.hydro-safebox-panel {
+  position: relative;
+  display: grid;
+  width: min(100%, 68rem);
+  min-height: 34rem;
+  margin: 0 auto;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) minmax(21rem, 0.74fr);
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 13%);
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(135deg, rgb(var(--hydro-paper-rgb) / 72%), rgb(var(--hydro-paper-rgb) / 44%)), var(--hydro-bg);
+  box-shadow:
+    0 2rem 5rem rgb(var(--hydro-shadow-rgb) / 10%),
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 62%);
+  backdrop-filter: blur(22px) saturate(1.08);
+}
+
+.hydro-safebox-panel::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.28rem;
+  background: linear-gradient(180deg, var(--hydro-highlight-solid), rgb(var(--hydro-teal-rgb) / 68%));
+  content: "";
+}
+
+.hydro-safebox-intro {
+  position: relative;
+  display: grid;
+  min-height: 34rem;
+  align-content: space-between;
+  overflow: hidden;
+  border-right: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  padding: clamp(2rem, 5vw, 3rem);
+}
+
+.hydro-safebox-intro::before {
+  position: absolute;
+  inset: auto -5rem -8rem auto;
+  width: 26rem;
+  height: 26rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, transparent 42%, rgb(var(--hydro-paper-rgb) / 22%) 43%, transparent 44%),
+    radial-gradient(circle at 50% 50%, rgb(var(--hydro-accent-rgb) / 9%), transparent 58%);
+  content: "";
+}
+
+.hydro-safebox-intro::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0 55%, rgb(var(--hydro-ink-rgb) / 3%) 55% 56%, transparent 56%);
+  content: "";
+  pointer-events: none;
+}
+
+.hydro-safebox-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.05rem;
+  color: rgb(var(--hydro-ink-rgb) / 54%);
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.hydro-safebox-kicker::before {
+  width: 0.7rem;
+  height: 1px;
+  background: var(--hydro-highlight-solid);
+  content: "";
+}
+
+.hydro-safebox-intro h1 {
+  max-width: 9ch;
+  margin: 0;
+  color: var(--hydro-solid);
+  font-size: clamp(3.2rem, 7vw, 5.4rem);
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.hydro-safebox-intro p {
+  max-width: 31rem;
+  margin: 1.1rem 0 0;
+  color: var(--hydro-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+.hydro-safebox-orbit {
+  position: relative;
+  display: grid;
+  width: clamp(8.5rem, 16vw, 12rem);
+  height: clamp(8.5rem, 16vw, 12rem);
+  place-items: center;
+  margin: clamp(1.5rem, 3vw, 2.4rem) 0;
+  color: var(--hydro-solid);
+}
+
+.hydro-safebox-orbit::before,
+.hydro-safebox-orbit::after,
+.hydro-safebox-orbit span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  border-radius: 999px;
+  content: "";
+}
+
+.hydro-safebox-orbit::before {
+  transform: rotate(-10deg) scaleX(1.18);
+}
+
+.hydro-safebox-orbit::after {
+  transform: rotate(28deg) scaleY(0.82);
+}
+
+.hydro-safebox-orbit span {
+  inset: 18%;
+  background: rgb(var(--hydro-paper-rgb) / 36%);
+  box-shadow: inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 72%);
+}
+
+.hydro-safebox-orbit svg {
+  position: relative;
+  z-index: 1;
+  width: 3.8rem;
+  height: 3.8rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.hydro-safebox-route {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.62rem;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 11%);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 34%);
+  padding: 0.9rem 1rem;
+  box-shadow: inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 58%);
+}
+
+.hydro-safebox-route span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgb(var(--hydro-ink-rgb) / 54%);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hydro-safebox-route span::before {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--hydro-highlight-solid);
+  content: "";
+}
+
+.hydro-safebox-route code {
+  display: block;
+  overflow-wrap: anywhere;
+  border-left: 2px solid var(--hydro-highlight-solid);
+  background: rgb(var(--hydro-ink-rgb) / 3.5%);
+  color: var(--hydro-solid);
+  padding: 0.5rem 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.hydro-safebox-form {
+  display: grid;
+  align-content: center;
+  gap: 1.35rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.hydro-safebox-form__head {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+}
+
+.hydro-safebox-form__icon {
+  position: relative;
+  display: inline-grid;
+  width: 2.85rem;
+  height: 2.85rem;
+  flex: 0 0 auto;
+  place-items: center;
+  align-self: center;
+  border: 1px solid rgb(var(--hydro-ink-rgb) / 13%);
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 54%), rgb(var(--hydro-ink-rgb) / 4%)), var(--hydro-bg);
+  color: var(--hydro-solid);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 72%),
+    0 0.55rem 1.25rem rgb(var(--hydro-shadow-rgb) / 6%);
+  transform: translateY(0.12rem);
+}
+
+.hydro-safebox-form__icon::after {
+  position: absolute;
+  right: 0.42rem;
+  bottom: 0.42rem;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 999px;
+  background: var(--hydro-highlight-solid);
+  content: "";
+}
+
+.hydro-safebox-form__icon svg,
+.hydro-safebox-submit svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.hydro-safebox-form__icon svg {
+  transform: translateY(0.04rem);
+}
+
+.hydro-safebox-form__head strong,
+.hydro-safebox-form__head span {
+  display: block;
+}
+
+.hydro-safebox-form__head strong {
+  color: var(--hydro-solid);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.hydro-safebox-form__head span {
+  margin-top: 0.25rem;
+  color: rgb(var(--hydro-ink-rgb) / 50%);
+  font-size: 0.78rem;
+}
+
+.hydro-safebox-error {
+  margin: 0;
+  border: 1px solid rgb(var(--hydro-coral-rgb) / 38%);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-coral-rgb) / 11%);
+  color: var(--hydro-solid);
+  padding: 0.8rem 0.95rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.hydro-safebox-field {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.hydro-safebox-field span {
+  color: rgb(var(--hydro-ink-rgb) / 68%);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.hydro-safebox-field input {
+  width: 100%;
+  min-width: 0;
+  height: 3.65rem;
+  border: 1px solid var(--hydro-form-border);
+  border-radius: 0.5rem;
+  background: rgb(var(--hydro-paper-rgb) / 38%);
+  color: var(--hydro-solid);
+  outline: none;
+  padding: 0 1.05rem;
+  transition:
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-safebox-field input::placeholder {
+  color: rgb(var(--hydro-ink-rgb) / 36%);
+}
+
+.hydro-safebox-field input:hover {
+  border-color: var(--hydro-form-border-hover);
+  background: rgb(var(--hydro-paper-rgb) / 52%);
+}
+
+.hydro-safebox-field input:focus {
+  border-color: var(--hydro-form-border-focus);
+  background: rgb(var(--hydro-paper-rgb) / 66%);
+  box-shadow: var(--hydro-focus-shadow);
+}
+
+.hydro-safebox-submit {
+  display: inline-flex;
+  min-height: 3.65rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 1px solid var(--hydro-solid);
+  border-radius: 999px;
+  background: var(--hydro-solid);
+  color: var(--hydro-solid-contrast);
+  padding: 0 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hydro-safebox-submit:hover,
+.hydro-safebox-submit:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 0.8rem 1.8rem rgb(var(--hydro-shadow-rgb) / 16%);
+}
+
+.hydro-safebox-submit:active {
+  transform: translateY(0);
+}
+
+.hydro-safebox-note {
+  margin: -0.25rem 0 0;
+  color: rgb(var(--hydro-ink-rgb) / 46%);
+  font-size: 0.74rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 58rem) {
+  .hydro-safebox-page {
+    align-items: start;
+    padding: 8rem 0 5.5rem;
+  }
+
+  .hydro-safebox-panel {
+    width: min(100%, 38rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hydro-safebox-intro {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgb(var(--hydro-ink-rgb) / 10%);
+  }
+
+  .hydro-safebox-orbit {
+    margin-block: 1.5rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .hydro-safebox-page {
+    padding: 7rem 0 4.5rem;
+  }
+
+  .hydro-safebox-page::before {
+    background-size: 2.2rem 2.2rem;
+  }
+
+  .hydro-safebox-panel {
+    border-inline: 0;
+    border-radius: 0;
+  }
+
+  .hydro-safebox-intro,
+  .hydro-safebox-form {
+    padding: 1.25rem;
+  }
+
+  .hydro-safebox-intro h1 {
+    max-width: 10ch;
+    font-size: 2.85rem;
+  }
+
+  .hydro-safebox-intro p {
+    font-size: 0.94rem;
+  }
+
+  .hydro-safebox-orbit {
+    width: 7.2rem;
+    height: 7.2rem;
+  }
+
+  .hydro-safebox-orbit svg {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .hydro-safebox-form__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+}
+
 .hydro-prose {
   color: rgb(var(--hydro-ink-rgb) / 78%);
   font-family:
