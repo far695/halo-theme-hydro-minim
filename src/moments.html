@@ -118,7 +118,8 @@
             </header>
 
             <div
-              class="hydro-moment__content hydro-prose"
+              class="hydro-moment__content hydro-prose hydro-moment-rich"
+              data-hydro-moment-content
               th:if="${not #strings.isEmpty(content.html)}"
               th:utext="${content.html}"
             ></div>
@@ -284,14 +285,17 @@
     </div>
   </section>
 
-  <div class="hydro-lightbox" data-lightbox aria-hidden="true">
+  <div class="hydro-lightbox hydro-lightbox--moment" data-lightbox aria-hidden="true">
     <button class="hydro-lightbox__close" data-lightbox-close aria-label="关闭">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
     </button>
     <button class="hydro-lightbox__prev" data-lightbox-prev aria-label="上一张">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18 9 12l6-6"></path></svg>
     </button>
-    <img class="hydro-lightbox__img" data-lightbox-img src="" alt="" />
+    <figure class="hydro-lightbox__figure">
+      <img class="hydro-lightbox__img" data-lightbox-img src="" alt="" />
+      <figcaption class="hydro-lightbox__caption" data-lightbox-caption></figcaption>
+    </figure>
     <button class="hydro-lightbox__next" data-lightbox-next aria-label="下一张">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg>
     </button>
