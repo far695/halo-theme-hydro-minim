@@ -1,0 +1,169 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${title ?: '产品详情'} - ${site.title}|">产品详情</title>
+  </template>
+
+  <section
+    class="hydro-portfolio-detail-page hydro-product-detail-page"
+    th:with="
+      hasProductPlugin=${pluginFinder.available('PluginProduct')},
+      resolvedProductKey=${productKey ?: (product != null ? product.key : '')},
+      productDetail=${hasProductPlugin and themeProductFinder != null and not #strings.isEmpty(resolvedProductKey) ? themeProductFinder.getByKey(resolvedProductKey) : null},
+      hasProductPayload=${productDetail != null},
+      typeName=${hasProductPayload and productDetail.productType != null ? productDetail.productType.name() : ''},
+      typeLabel=${typeName == 'LICENSE' ? '授权产品' : (typeName == 'PHYSICAL' ? '实物商品' : (typeName == 'CARD_KEY' ? '卡密商品' : '产品'))},
+      stockLabel=${hasProductPayload ? (productDetail.stockState == 'SOLD_OUT' ? '已售罄' : (productDetail.stockState == 'AVAILABLE' ? '有库存' : (productDetail.stockState == 'UNLIMITED' ? '不限库存' : (productDetail.stockState == 'UNKNOWN' ? '库存同步中' : '数字交付')))) : ''}"
+  >
+    <div class="hydro-portfolio-detail-shell hydro-product-detail-shell" th:if="${hasProductPayload}">
+      <article class="hydro-portfolio-detail-main">
+        <a class="hydro-portfolio-back" href="/product" data-hydro-product-link>返回商城</a>
+
+        <figure
+          class="hydro-portfolio-detail-cover hydro-product-detail-cover"
+          th:attr="data-media-error-text=${productDetail.name ?: '产品图片暂时不可见'}"
+          data-progressive-media
+        >
+          <img
+            th:if="${not #strings.isEmpty(productDetail.logo)}"
+            th:src="${productDetail.logo}"
+            th:alt="${productDetail.name}"
+            loading="eager"
+            decoding="async"
+            data-progressive-image
+          />
+          <span th:if="${#strings.isEmpty(productDetail.logo)}" class="hydro-plugin-placeholder">PRODUCT</span>
+        </figure>
+
+        <header class="hydro-portfolio-detail-header">
+          <p>Product</p>
+          <h1 th:text="${productDetail.name}">产品名称</h1>
+        </header>
+
+        <div class="hydro-portfolio-detail-meta-grid hydro-product-detail-meta-grid">
+          <div>
+            <span>类型</span>
+            <strong th:text="${typeLabel}">授权产品</strong>
+          </div>
+          <div>
+            <span>价格</span>
+            <strong th:text="${productDetail.displayPrice}">¥0.00</strong>
+          </div>
+          <div>
+            <span>库存</span>
+            <strong th:text="${stockLabel}">数字交付</strong>
+          </div>
+          <div th:if="${not #strings.isEmpty(productDetail.latestVersion)}">
+            <span>版本</span>
+            <strong th:text="${productDetail.latestVersion}">1.0.0</strong>
+          </div>
+        </div>
+
+        <div class="hydro-portfolio-detail-terminal">
+          <span>product dossier</span>
+          <code th:if="${not #strings.isEmpty(productDetail.key)}" th:text="|key: ${productDetail.key}|"
+            >key: demo</code
+          >
+          <code th:if="${not #strings.isEmpty(productDetail.author)}" th:text="|author: ${productDetail.author}|"
+            >author: muyin</code
+          >
+          <code
+            th:if="${not #strings.isEmpty(productDetail.categoryId)}"
+            th:text="|category: ${productDetail.categoryId}|"
+            >category: default</code
+          >
+        </div>
+
+        <section class="hydro-product-price-section" th:if="${not #lists.isEmpty(productDetail.priceItems)}">
+          <div class="hydro-plugin-section__head">
+            <span>Price</span>
+            <h2>价格项</h2>
+          </div>
+          <div class="hydro-product-price-grid">
+            <div class="hydro-product-price-item" th:each="price : ${productDetail.priceItems}">
+              <span th:text="${price.label}">销售价</span>
+              <strong th:text="|¥${price.value}|">¥0.00</strong>
+            </div>
+          </div>
+        </section>
+
+        <article
+          id="content"
+          class="hydro-post-prose hydro-portfolio-content hydro-product-content prose-content"
+          th:if="${not #strings.isEmpty(productDetail.descriptionHtml) or not #strings.isEmpty(productDetail.description)}"
+          th:utext="${#strings.isEmpty(productDetail.descriptionHtml) ? productDetail.description : productDetail.descriptionHtml}"
+        >
+          产品详情
+        </article>
+
+        <div
+          th:if="${#strings.isEmpty(productDetail.descriptionHtml) and #strings.isEmpty(productDetail.description)}"
+          class="hydro-plugin-empty hydro-plugin-empty--small"
+        >
+          <span>Product</span>
+          <strong>暂无产品详情</strong>
+        </div>
+
+        <section
+          class="hydro-product-versions"
+          th:if="${typeName == 'LICENSE'}"
+          data-hydro-product-versions
+          th:attr="data-product-key=${productDetail.key},data-product-type=${typeName},data-api-token=${publicApiToken ?: ''}"
+        >
+          <div class="hydro-plugin-section__head">
+            <span>Versions</span>
+            <h2>授权版本</h2>
+          </div>
+          <p class="hydro-product-versions__status" data-hydro-product-versions-status>版本加载中</p>
+          <div class="hydro-product-version-list" data-hydro-product-versions-list></div>
+        </section>
+      </article>
+
+      <aside class="hydro-portfolio-detail-aside">
+        <div class="hydro-portfolio-detail-panel hydro-product-action-panel">
+          <span>Purchase</span>
+          <strong class="hydro-product-action-panel__price" th:text="${productDetail.displayPrice}">¥0.00</strong>
+          <a
+            th:if="${productDetail.purchasable == true and not #strings.isEmpty(productDetail.purchaseUrl)}"
+            th:href="@{${productDetail.purchaseUrl}}"
+            data-hydro-product-link
+            th:text="${typeName == 'LICENSE' ? '购买' : '立即购买'}"
+            >立即购买</a
+          >
+          <a
+            th:if="${not #strings.isEmpty(productDetail.docsUrl)}"
+            th:href="@{${productDetail.docsUrl}}"
+            target="_blank"
+            rel="noreferrer noopener"
+            >查看文档</a
+          >
+          <p th:if="${productDetail.purchasable != true or #strings.isEmpty(productDetail.purchaseUrl)}">
+            当前产品暂不可购买。
+          </p>
+        </div>
+
+        <div class="hydro-portfolio-detail-panel">
+          <span>Delivery</span>
+          <p th:if="${typeName == 'LICENSE'}">授权产品购买后在用户中心开通授权。</p>
+          <p th:if="${typeName == 'PHYSICAL'}">实物商品购买后进入用户中心完成收货信息和发货流程。</p>
+          <p th:if="${typeName == 'CARD_KEY'}">卡密商品购买后在用户中心查看交付结果。</p>
+        </div>
+      </aside>
+    </div>
+
+    <article class="hydro-portfolio-detail-empty" th:if="${not hasProductPlugin}">
+      <div class="hydro-plugin-empty hydro-plugin-empty--install">
+        <span>Store</span>
+        <strong>需要安装产品管理插件</strong>
+        <p>安装并启用 PluginProduct 后，产品详情页才能读取公开产品内容。</p>
+      </div>
+    </article>
+
+    <article class="hydro-portfolio-detail-empty" th:if="${hasProductPlugin and not hasProductPayload}">
+      <div class="hydro-plugin-empty">
+        <span>Product</span>
+        <strong>产品暂时不可用</strong>
+        <p>请确认产品存在、已发布，并且当前路由由产品管理插件正确提供。</p>
+      </div>
+    </article>
+  </section>
+</include>

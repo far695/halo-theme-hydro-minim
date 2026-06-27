@@ -9,6 +9,7 @@ import { initHydroNotice, type HydroNoticeApi } from "./hydro-notice";
 import { initLenisScrollBoundaries } from "./lenis-scroll-boundaries";
 import { createMediaLoadController } from "./media-loading";
 import { createHydroQrSvg, createHydroQrSvgDataUrl } from "./poster-qr";
+import { initProductStore } from "./product-store";
 import { initSearchWidgetSkin } from "./search-widget-skin";
 import { initHydroTagCloud } from "./tag-cloud";
 
@@ -5128,6 +5129,7 @@ initMomentsReveal();
 initLightbox();
 initPosterShare();
 initHydroPluginFilters();
+initProductStore();
 initHydroDocTreeLevels();
 initHydroDocContentEnhancements();
 initHydroDocsToc();

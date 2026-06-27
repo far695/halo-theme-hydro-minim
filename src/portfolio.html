@@ -20,7 +20,7 @@
     th:with="
       hasPortfolioPlugin=${pluginFinder.available('portfolio') or pluginFinder.available('plugin-portfolio') or pluginFinder.available('PluginPortfolio')},
       isSinglePageRoute=${singlePage != null},
-      pageBaseUrl=${isSinglePageRoute ? singlePage.status.permalink : '/projects'},
+      pageBaseUrl=${isSinglePageRoute ? singlePage.status.permalink : '/portfolio'},
       currentKeyword=${param.keyword != null and not #lists.isEmpty(param.keyword) ? param.keyword[0] : null},
       currentPlatform=${param.platform != null and not #lists.isEmpty(param.platform) ? param.platform[0] : null},
       currentType=${param.type != null and not #lists.isEmpty(param.type) ? param.type[0] : null},
@@ -93,7 +93,7 @@
           <a
             class="hydro-portfolio-featured-card"
             th:each="project,featuredStat : ${featuredProjectsData.items}"
-            th:href="@{'/projects/' + ${project.slug}}"
+            th:href="@{'/portfolio/' + ${project.slug}}"
             th:with="
               platformText=${#strings.isEmpty(project.platform) ? 'other' : (portfolioPlatformLabels != null and portfolioPlatformLabels[project.platform] != null ? portfolioPlatformLabels[project.platform] : project.platform)},
               typeText=${#strings.isEmpty(project.type) ? 'other' : (portfolioTypeLabels != null and portfolioTypeLabels[project.type] != null ? portfolioTypeLabels[project.type] : project.type)}"
@@ -181,7 +181,7 @@
           class="hydro-portfolio-card"
           th:each="project,projectStat : ${projectsData.items}"
           th:with="
-            detailUrl=@{'/projects/' + ${project.slug}},
+            detailUrl=@{'/portfolio/' + ${project.slug}},
             projectDate=${#strings.isEmpty(project.updateTime) ? project.createTime : project.updateTime},
             platformText=${#strings.isEmpty(project.platform) ? 'other' : (portfolioPlatformLabels != null and portfolioPlatformLabels[project.platform] != null ? portfolioPlatformLabels[project.platform] : project.platform)},
             typeText=${#strings.isEmpty(project.type) ? 'other' : (portfolioTypeLabels != null and portfolioTypeLabels[project.type] != null ? portfolioTypeLabels[project.type] : project.type)}"

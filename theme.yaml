@@ -14,7 +14,7 @@ spec:
   issues: https://github.com/liuyiwuqing/halo-theme-hydro-minim/issues
   settingName: "halo-theme-hydro-minim-setting"
   configMapName: "halo-theme-hydro-minim-configMap"
-  version: 1.0.0-beta5
+  version: 1.0.0-beta6
   requires: ">=2.25.0"
   customTemplates:
     page:
@@ -47,7 +47,7 @@ spec:
         file: steam.html
       - name: 氢·简 项目集
         description: 项目集插件页面模板；未安装插件时显示安装提示
-        file: projects.html
+        file: portfolio.html
   license:
     - name: "GPL-3.0"
       url: "https://www.gnu.org/licenses/gpl-3.0.html"
