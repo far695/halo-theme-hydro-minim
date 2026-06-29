@@ -1364,16 +1364,25 @@ body.hydro-auth-page .returntosite-content a:hover {
 
 .hydro-menu-icon {
   display: inline-grid;
+  align-self: center;
+  box-sizing: border-box;
   flex: none;
+  overflow: hidden;
   place-items: center;
   color: currentColor;
+  font-size: 0;
   line-height: 0;
+  vertical-align: middle;
+  --hydro-menu-icon-svg-size: 100%;
 }
 
 .hydro-menu-icon :where(svg) {
   display: block;
-  width: 100%;
-  height: 100%;
+  flex: none;
+  width: var(--hydro-menu-icon-svg-size) !important;
+  height: var(--hydro-menu-icon-svg-size) !important;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .hydro-nav-menu__icon {
@@ -1383,7 +1392,10 @@ body.hydro-auth-page .returntosite-content a:hover {
 }
 
 .hydro-nav-menu__label {
+  display: inline-flex;
+  align-items: center;
   min-width: 0;
+  line-height: 1;
 }
 
 .hydro-nav__actions {
@@ -1795,6 +1807,8 @@ body.hydro-auth-page .returntosite-content a:hover {
 
 .hydro-dropdown {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .hydro-dropdown > a {
@@ -1806,6 +1820,14 @@ body.hydro-auth-page .returntosite-content a:hover {
   font-weight: 700;
   transform-origin: 50% 100%;
   transition: color 0.2s ease;
+}
+
+.hydro-nav__links > a,
+.hydro-dropdown > a {
+  align-items: center;
+  height: 1.5rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .hydro-dropdown > a:hover,
@@ -2335,16 +2357,15 @@ body.hydro-auth-page .returntosite-content a:hover {
   border-radius: 999px;
   background: rgb(var(--hydro-paper-rgb) / 60%);
   color: rgb(var(--hydro-ink-rgb) / 58%);
-}
-
-.hydro-mobile-menu__link--level-1 .hydro-mobile-menu__icon :where(svg) {
-  width: 1rem;
-  height: 1rem;
+  --hydro-menu-icon-svg-size: 1rem;
 }
 
 .hydro-mobile-menu__label {
+  display: inline-flex;
+  align-items: center;
   min-width: 0;
   overflow: hidden;
+  line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -3829,6 +3850,12 @@ html[data-hydro-motion="off"] .hydro-list-card.is-hydro-card-hovered .hydro-list
 
 .hydro-wavy-link:hover {
   color: rgb(var(--hydro-ink-rgb) / 70%);
+}
+
+.hydro-wavy-link > span:not(.hydro-menu-icon) {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .hydro-footer-menu__icon {
