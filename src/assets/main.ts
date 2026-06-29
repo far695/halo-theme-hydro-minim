@@ -6,6 +6,7 @@ import { initAuthAltchaFloatingAnchor } from "./auth-altcha";
 import { initCommentWidgetSkin } from "./comment-widget-skin";
 import { runHydroFabAction, type HydroFabActionDependencies } from "./fab-actions";
 import { initHydroNotice, type HydroNoticeApi } from "./hydro-notice";
+import { initInitialScrollGuard } from "./initial-scroll-guard";
 import { initLenisScrollBoundaries } from "./lenis-scroll-boundaries";
 import { createMediaLoadController } from "./media-loading";
 import { createHydroQrSvg, createHydroQrSvgDataUrl } from "./poster-qr";
@@ -31,8 +32,9 @@ const postUpvoteStorageKey = "halo.upvoted.post.names";
 type ColorSchemeMode = "auto" | "dark" | "light";
 type HydroLenis = {
   animatedScroll?: number;
+  resize?: () => void;
   scroll?: number;
-  scrollTo?: (target: number) => void;
+  scrollTo?: (target: number, options?: { force?: boolean; immediate?: boolean }) => void;
   start?: () => void;
   stop?: () => void;
   targetScroll?: number;
@@ -167,6 +169,8 @@ function writeJsonArray(key: string, value: string[]) {
 function getHydroLenis() {
   return (window as unknown as { __lenis?: HydroLenis }).__lenis;
 }
+
+initInitialScrollGuard(window, { getLenis: getHydroLenis });
 
 function readBooleanData(value: string | undefined, fallback = true) {
   if (value == null || value === "") {

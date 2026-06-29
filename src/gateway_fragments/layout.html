@@ -42,6 +42,14 @@
     ></style>
     <script th:inline="javascript">
       (() => {
+        try {
+          if ("scrollRestoration" in window.history) {
+            window.history.scrollRestoration = "manual";
+          }
+        } catch {
+          // Ignore history access failures in embedded browsers.
+        }
+
         const root = document.documentElement;
         const defaultMode =
           root.dataset.themeDefault || /*[[${theme.config.presentation?.color?.color_scheme ?: 'auto'}]]*/ "auto";
