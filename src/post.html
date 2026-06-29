@@ -132,20 +132,23 @@
           >
         </section>
 
-        <section class="hydro-post-author" th:if="${showAuthor and post.owner != null}">
+        <section
+          class="hydro-post-author"
+          th:if="${showAuthor and post.owner != null}"
+          th:with="
+            ownerName=${post.owner.displayName ?: post.owner.name},
+            ownerInitial=${not #strings.isEmpty(post.owner.displayName ?: post.owner.name) ? #strings.substring(post.owner.displayName ?: post.owner.name, 0, 1) : 'A'}
+          "
+        >
           <div class="hydro-post-author__identity">
             <div class="hydro-post-author__avatar">
               <img
                 th:if="${not #strings.isEmpty(post.owner.avatar)}"
                 th:src="${post.owner.avatar}"
-                th:alt="${post.owner.displayName ?: post.owner.name}"
+                th:alt="${ownerName}"
                 loading="lazy"
               />
-              <span
-                th:if="${#strings.isEmpty(post.owner.avatar)}"
-                th:text="${post.owner.displayName ?: post.owner.name}"
-                >A</span
-              >
+              <span th:if="${#strings.isEmpty(post.owner.avatar)}" th:text="${ownerInitial}">A</span>
             </div>
             <div class="hydro-post-author__body">
               <p class="hydro-post-author__eyebrow">
@@ -157,12 +160,7 @@
                   协作 1 人
                 </span>
               </p>
-              <a
-                class="hydro-post-author__name"
-                th:href="@{${post.owner.permalink}}"
-                th:text="${post.owner.displayName ?: post.owner.name}"
-                >作者名</a
-              >
+              <a class="hydro-post-author__name" th:href="@{${post.owner.permalink}}" th:text="${ownerName}">作者名</a>
               <p
                 class="hydro-post-author__bio"
                 th:if="${not #strings.isEmpty(post.owner.bio)}"
@@ -186,7 +184,7 @@
             <a
               class="hydro-post-author__profile"
               th:href="@{${post.owner.permalink}}"
-              th:attr="aria-label=|查看 ${(post.owner.displayName ?: post.owner.name)} 的主页|"
+              th:attr="aria-label=|查看 ${ownerName} 的主页|"
               title="查看作者主页"
             >
               ↗

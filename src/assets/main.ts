@@ -1899,6 +1899,8 @@ function initPostContentEnhancements() {
   }
 
   enhanceContentBasics(content);
+  lockRichContentTaskListCheckboxes(content);
+  normalizeRichContentColumns(content);
 
   if (!readBooleanData(page.dataset.postEnableLightbox, lightboxEnabled)) {
     return;
@@ -2074,7 +2076,7 @@ function enhanceContentBasics(content: HTMLElement, tableWrapClass = "hydro-post
   });
 }
 
-function lockMomentTaskListCheckboxes(content: HTMLElement) {
+function lockRichContentTaskListCheckboxes(content: HTMLElement) {
   content
     .querySelectorAll<HTMLInputElement>(
       'ul[data-type="taskList"] input[type="checkbox"], ul.contains-task-list input[type="checkbox"], li[data-type="taskItem"] input[type="checkbox"]',
@@ -2087,7 +2089,7 @@ function lockMomentTaskListCheckboxes(content: HTMLElement) {
     });
 }
 
-function normalizeMomentColumns(content: HTMLElement) {
+function normalizeRichContentColumns(content: HTMLElement) {
   content.querySelectorAll<HTMLElement>(".columns").forEach((columns) => {
     const configuredCount = Number.parseInt(columns.getAttribute("cols") || "", 10);
     const childCount = columns.querySelectorAll(":scope > .column").length;
@@ -3552,8 +3554,8 @@ function initMomentsContent() {
     });
 
     enhanceContentBasics(content, "hydro-post-table-wrap hydro-moment-table-wrap");
-    lockMomentTaskListCheckboxes(content);
-    normalizeMomentColumns(content);
+    lockRichContentTaskListCheckboxes(content);
+    normalizeRichContentColumns(content);
 
     if (lightboxEnabled) {
       enhanceContentLightboxImages(content);
