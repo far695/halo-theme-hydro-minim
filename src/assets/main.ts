@@ -285,11 +285,9 @@ function scrollToPosition(top: number, profile?: HydroProgrammaticScrollProfile)
     currentTop: typeof lenis?.scroll === "number" ? lenis.scroll : window.scrollY,
     mobileViewport: programmaticScrollMobileQuery.matches,
     motionEnabled,
-    prefersReducedMotion: prefersReducedMotion.matches,
     profile: profile ?? (safeTop === 0 ? "back-to-top" : "default"),
     smoothScrollEnabled,
     targetTop: safeTop,
-    viewportHeight: window.innerHeight,
   });
 
   if (lenis?.scrollTo) {
