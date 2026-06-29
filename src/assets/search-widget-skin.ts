@@ -219,6 +219,10 @@ function getHydroSearchShadowCss(localName: string) {
         }
 
         @media (max-width: 640px) {
+          input {
+            font-size: 16px !important;
+          }
+
           .sticky.bottom-0 {
             display: none !important;
           }
