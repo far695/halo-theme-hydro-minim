@@ -12,7 +12,7 @@
     };
   </script>
 
-  <script src="/js/main.js"></script>
+  <script vite-ignore src="/js/main.js"></script>
 
   <th:block th:if="${globalInfo != null and #strings.contains(globalInfo.toString(), 'captchaProvider')}">
     <th:block th:if="${#strings.equalsIgnoreCase(globalInfo.captchaProvider, 'ALTCHA')}">
