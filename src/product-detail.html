@@ -7,6 +7,7 @@
     class="hydro-portfolio-detail-page hydro-product-detail-page"
     th:with="
       hasProductPlugin=${pluginFinder.available('PluginProduct')},
+      showProductVersions=${theme.config.plugins?.product == null or theme.config.plugins.product.show_versions != false},
       resolvedProductKey=${productKey ?: (product != null ? product.key : '')},
       productDetail=${hasProductPlugin and themeProductFinder != null and not #strings.isEmpty(resolvedProductKey) ? themeProductFinder.getByKey(resolvedProductKey) : null},
       hasProductPayload=${productDetail != null},
@@ -105,7 +106,7 @@
 
         <section
           class="hydro-product-versions"
-          th:if="${typeName == 'LICENSE'}"
+          th:if="${showProductVersions and typeName == 'LICENSE'}"
           data-hydro-product-versions
           th:attr="data-product-key=${productDetail.key},data-product-type=${typeName},data-api-token=${publicApiToken ?: ''}"
         >
@@ -143,9 +144,24 @@
 
         <div class="hydro-portfolio-detail-panel">
           <span>Delivery</span>
-          <p th:if="${typeName == 'LICENSE'}">授权产品购买后在用户中心开通授权。</p>
-          <p th:if="${typeName == 'PHYSICAL'}">实物商品购买后进入用户中心完成收货信息和发货流程。</p>
-          <p th:if="${typeName == 'CARD_KEY'}">卡密商品购买后在用户中心查看交付结果。</p>
+          <p
+            th:if="${typeName == 'LICENSE'}"
+            th:text="${theme.config.plugins?.product?.license_delivery_text ?: '授权产品购买后在用户中心开通授权。'}"
+          >
+            授权产品购买后在用户中心开通授权。
+          </p>
+          <p
+            th:if="${typeName == 'PHYSICAL'}"
+            th:text="${theme.config.plugins?.product?.physical_delivery_text ?: '实物商品购买后进入用户中心完成收货信息和发货流程。'}"
+          >
+            实物商品购买后进入用户中心完成收货信息和发货流程。
+          </p>
+          <p
+            th:if="${typeName == 'CARD_KEY'}"
+            th:text="${theme.config.plugins?.product?.card_delivery_text ?: '卡密商品购买后在用户中心查看交付结果。'}"
+          >
+            卡密商品购买后在用户中心查看交付结果。
+          </p>
         </div>
       </aside>
     </div>
@@ -155,6 +171,13 @@
         <span>Store</span>
         <strong>需要安装产品管理插件</strong>
         <p>安装并启用 PluginProduct 后，产品详情页才能读取公开产品内容。</p>
+        <a
+          class="hydro-plugin-install-link"
+          href="https://auth.muyin.site/product/PluginProduct"
+          target="_blank"
+          rel="noreferrer noopener"
+          >查看插件</a
+        >
       </div>
     </article>
 

@@ -1,13 +1,17 @@
 <include src="layout.html">
   <template name="head">
-    <title th:text="|${title ?: '产品商城'} - ${site.title}|">产品商城</title>
+    <title th:text="|${theme.config.plugins?.product?.title ?: (title ?: '产品商城')} - ${site.title}|">产品商城</title>
   </template>
 
   <section class="hydro-list-hero">
     <div class="hydro-container">
-      <p>Hydro-Minim / Store</p>
-      <h1>产品商城</h1>
-      <span>浏览授权产品、实物商品和卡密商品，查看价格、库存和购买入口。</span>
+      <p th:text="${theme.config.plugins?.product?.eyebrow ?: 'Hydro-Minim / Store'}">Hydro-Minim / Store</p>
+      <h1 th:text="${theme.config.plugins?.product?.title ?: (title ?: '产品商城')}">产品商城</h1>
+      <span
+        th:text="${theme.config.plugins?.product?.description ?: '浏览授权产品、实物商品和卡密商品，查看价格、库存和购买入口。'}"
+      >
+        浏览授权产品、实物商品和卡密商品，查看价格、库存和购买入口。
+      </span>
     </div>
   </section>
 
@@ -23,9 +27,12 @@
       currentPageText=${param.page != null and not #lists.isEmpty(param.page) ? #strings.trim(param.page[0]) : '1'},
       currentPageRaw=${currentPageText.matches('^[0-9]{1,4}$') ? T(java.lang.Integer).parseInt(currentPageText) : 1},
       currentPage=${currentPageRaw < 1 ? 1 : currentPageRaw},
+      productPageSizeText=${theme.config.plugins?.product?.page_size == null ? '' : #strings.trim('' + theme.config.plugins.product.page_size)},
+      productPageSizeRaw=${productPageSizeText.matches('^[0-9]{1,3}$') ? T(java.lang.Integer).parseInt(productPageSizeText) : 12},
+      productPageSize=${productPageSizeRaw < 1 ? 12 : productPageSizeRaw},
+      showProductCategoryFilter=${theme.config.plugins?.product == null or theme.config.plugins.product.show_category_filter != false},
       productScope=${currentType == 'LICENSE' ? 'license' : ((currentType == 'PHYSICAL' or currentType == 'CARD_KEY') ? 'mall' : 'all')},
       productTypeFilter=${(currentType == 'PHYSICAL' or currentType == 'CARD_KEY') ? currentType : ''},
-      productPageSize=${12},
       productsData=${hasProductPlugin and themeProductFinder != null ? themeProductFinder.list(productScope, productTypeFilter, currentKeyword, currentCategoryId, currentPage, productPageSize) : null},
       hasProductsData=${productsData != null and productsData.items != null and not #lists.isEmpty(productsData.items)},
       hasActiveFilter=${not #strings.isEmpty(currentKeyword) or not #strings.isEmpty(currentType) or not #strings.isEmpty(currentCategoryId)}"
@@ -38,32 +45,11 @@
         </span>
         <a
           class="hydro-plugin-install-link"
-          href="https://auth.muyin.site/docs/PluginProduct"
+          href="https://auth.muyin.site/product/PluginProduct"
           target="_blank"
           rel="noreferrer noopener"
           >查看插件</a
         >
-      </div>
-
-      <div class="hydro-portfolio-overview hydro-product-overview" th:if="${hasProductPlugin}">
-        <div>
-          <span>Products</span>
-          <strong th:text="${productsData != null ? (productsData.total ?: 0) : 0}">0</strong>
-          <em>公开产品</em>
-        </div>
-        <div>
-          <span>Scope</span>
-          <strong
-            th:text="${#strings.isEmpty(currentType) ? 'ALL' : (currentType == 'LICENSE' ? 'AUTH' : (currentType == 'PHYSICAL' ? 'ITEM' : 'CARD'))}"
-            >ALL</strong
-          >
-          <em>当前范围</em>
-        </div>
-        <div>
-          <span>Page</span>
-          <strong th:text="${productsData != null ? (productsData.page ?: currentPage) : currentPage}">1</strong>
-          <em th:text="|/ ${productsData != null ? (productsData.totalPages ?: 1) : 1}|">/ 1</em>
-        </div>
       </div>
 
       <form
@@ -85,7 +71,7 @@
             <option value="CARD_KEY" th:selected="${currentType == 'CARD_KEY'}">卡密商品</option>
           </select>
         </label>
-        <label>
+        <label th:if="${showProductCategoryFilter}">
           <span>分类</span>
           <select
             name="categoryId"
