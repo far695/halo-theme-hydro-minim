@@ -21,6 +21,9 @@ spec:
       - name: 氢·简 关于页
         description: 氢风格关于页，展示站点统计、正文和社交链接
         file: page_about.html
+      - name: 氢·简 留言页
+        description: 留言板自定义页面模板；使用独立页面评论组件承载访客留言
+        file: guestbook.html
       - name: 氢·简 友链页
         description: 友链页面模板；支持站点信息、友链列表、申请说明和在线提交入口
         file: links.html

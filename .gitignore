@@ -5,3 +5,4 @@ templates
 /.idea/
 /.pnpm-store/
 /.vite-hooks/
+/.codebase-memory/

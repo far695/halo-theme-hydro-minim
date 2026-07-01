@@ -1,0 +1,97 @@
+<include src="layout.html">
+  <template name="head">
+    <title th:text="|${singlePage.spec.title} - ${site.title}|">留言</title>
+  </template>
+
+  <article
+    class="hydro-guestbook-page"
+    th:with="
+      pageConfig=${theme.config.content?.page},
+      pageContent=${singlePage.content.content ?: ''},
+      enableGuestbookComment=${pageConfig == null or pageConfig.enable_comment != false}
+    "
+  >
+    <section class="hydro-list-hero hydro-guestbook-hero">
+      <div class="hydro-container">
+        <div class="hydro-guestbook-hero__copy">
+          <p>Guestbook</p>
+          <h1 th:text="${singlePage.spec.title}">留言</h1>
+          <span>把想法、问题和问候放在这里，别整太官方，像路过窗边顺手敲两下。</span>
+        </div>
+        <dl class="hydro-guestbook-hero__meta">
+          <div>
+            <dt>Channel</dt>
+            <dd>SinglePage</dd>
+          </div>
+          <div>
+            <dt>Status</dt>
+            <dd th:text="${enableGuestbookComment and haloCommentEnabled ? 'Open' : 'Paused'}">Open</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="hydro-guestbook-page__body">
+      <div class="hydro-container">
+        <div class="hydro-guestbook-layout">
+          <aside class="hydro-guestbook-guide" aria-label="留言提示">
+            <span>Before writing</span>
+            <h2>留言之前</h2>
+            <p>欢迎闲聊、反馈、勘误和合作想法。说清上下文，回复效率会高不少，省得大家对着半句话猜谜。</p>
+            <ul class="hydro-guestbook-rules">
+              <li>
+                <strong>01</strong>
+                <span>说明你想聊什么，问题越具体越好。</span>
+              </li>
+              <li>
+                <strong>02</strong>
+                <span>留下可联系信息，方便后续接上话。</span>
+              </li>
+              <li>
+                <strong>03</strong>
+                <span>保持友善，别把留言区搞成战场。</span>
+              </li>
+            </ul>
+            <a class="hydro-guestbook-anchor" href="#comment">去留言</a>
+          </aside>
+
+          <div class="hydro-guestbook-main">
+            <div class="hydro-guestbook-intro" th:if="${not #strings.isEmpty(pageContent)}">
+              <div class="hydro-prose" th:utext="${pageContent}"></div>
+            </div>
+            <div class="hydro-guestbook-intro hydro-guestbook-intro--default" th:if="${#strings.isEmpty(pageContent)}">
+              <span>Message board</span>
+              <h2>这里留给访客发声</h2>
+              <p>可以写建议、打招呼、报错，也可以留下一个以后再聊的话题。内容由 Halo 评论组件接管。</p>
+            </div>
+
+            <section id="comment" class="hydro-guestbook-message" aria-label="留言区">
+              <div
+                class="hydro-comments hydro-guestbook-comments"
+                th:if="${enableGuestbookComment and haloCommentEnabled}"
+              >
+                <h2 th:text="${pageConfig?.comments_title ?: '留言'}">留言</h2>
+                <halo:comment group="content.halo.run" kind="SinglePage" th:attr="name=${singlePage.metadata.name}" />
+              </div>
+
+              <div
+                class="hydro-plugin-empty hydro-guestbook-unavailable"
+                th:if="${not enableGuestbookComment or not haloCommentEnabled}"
+              >
+                <span>Comment</span>
+                <strong th:text="${enableGuestbookComment ? '需要启用评论插件' : '留言区已关闭'}"
+                  >需要启用评论插件</strong
+                >
+                <p
+                  th:text="${enableGuestbookComment ? '安装并启用 Halo 评论组件后，留言板会在这里显示输入框和留言列表。' : '当前主题设置关闭了独立页面评论区，开启后留言板会恢复。'}"
+                >
+                  安装并启用 Halo 评论组件后，留言板会在这里显示输入框和留言列表。
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</include>
