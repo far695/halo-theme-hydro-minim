@@ -1255,6 +1255,60 @@ spec:
           name: links
           label: 友链
           children:
+            - $el: div
+              key: plugins_links_install_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #fffbeb;
+                  border-radius: 0.375rem;
+                  border: 1px solid #fcd34d;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #92400e;"
+                  children: "⚠️ 需要安装 "
+                - $el: a
+                  attrs:
+                    href: "https://www.halo.run/store/apps/app-hfbQg"
+                    target: "_blank"
+                    style: |
+                      color: #00a8ff;
+                  children: "【链接管理插件】"
+            - $el: div
+              key: plugins_links_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：链接管理插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/links"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/links"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: text
               name: site_name
               key: plugins_links_site_name
@@ -1362,6 +1416,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【瞬间插件】"
+            - $el: div
+              key: plugins_portfolio_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：瞬间插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/moments"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/moments"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: page_size
               key: plugins_moments_page_size
@@ -1416,6 +1501,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【图库管理插件】"
+            - $el: div
+              key: plugins_portfolio_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：图库管理插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/photos"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/photos"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: page_size
               key: plugins_photos_page_size
@@ -1458,6 +1574,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【装备管理插件】"
+            - $el: div
+              key: plugins_equipment_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：装备管理插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/equipments"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/equipments"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: switch
               name: enable_comment
               key: plugins_equipment_enable_comment
@@ -1491,6 +1638,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【朋友圈插件】"
+            - $el: div
+              key: plugins_friends_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：朋友圈插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/friends"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/friends"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: page_size
               key: plugins_friends_page_size
@@ -1533,6 +1711,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【Bilibili 追番插件】"
+            - $el: div
+              key: plugins_bangumi_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：Bilibili 追番插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/bangumis"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/bangumis"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: item_limit
               key: plugins_bangumi_item_limit
@@ -1575,6 +1784,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【Steam 游戏库插件】"
+            - $el: div
+              key: plugins_steam_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：Steam 游戏库插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/steam"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/steam"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: recent_limit
               key: plugins_steam_recent_limit
@@ -1641,6 +1881,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【Docsme 插件】"
+            - $el: div
+              key: plugins_docs_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：Docsme 插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/docs"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/docs"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: switch
               name: enable_toc
               id: plugins_docs_enable_toc
@@ -1681,6 +1952,37 @@ spec:
                     style: |
                       color: #00a8ff;
                   children: "【项目集插件】"
+            - $el: div
+              key: plugins_portfolio_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：项目集插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/portfolio"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/portfolio"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: number
               name: page_size
               key: plugins_portfolio_page_size
@@ -1700,6 +2002,60 @@ spec:
           name: product
           label: 产品商城
           children:
+            - $el: div
+              key: plugins_product_install_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #fffbeb;
+                  border-radius: 0.375rem;
+                  border: 1px solid #fcd34d;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #92400e;"
+                  children: "⚠️ 需要安装 "
+                - $el: a
+                  attrs:
+                    href: "https://auth.muyin.site/product/PluginProduct"
+                    target: "_blank"
+                    style: |
+                      color: #00a8ff;
+                  children: "【产品管理插件】"
+            - $el: div
+              key: plugins_product_route_notice
+              attrs:
+                class: "text-sm"
+                style: |
+                  display: inline-block;
+                  margin-top: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  background: #eff6ff;
+                  border-radius: 0.375rem;
+                  border: 1px solid #93c5fd;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "提示：产品管理插件提供的前台路由是 "
+                - $el: a
+                  attrs:
+                    href: "/product"
+                    target: "_blank"
+                    rel: "noopener noreferrer"
+                    style: |
+                      color: #1d4ed8;
+                      font-weight: 600;
+                      text-decoration: underline;
+                      text-underline-offset: 2px;
+                  children: "/product"
+                - $el: span
+                  attrs:
+                    style: "color: #1e3a8a;"
+                  children: "，需要导航入口时，把这个路径加到 菜单里。"
             - $formkit: text
               name: eyebrow
               key: plugins_product_eyebrow
