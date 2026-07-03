@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { initAuthAltchaFloatingAnchor } from "./auth-altcha";
 import { initCommentWidgetSkin } from "./comment-widget-skin";
+import { enhanceContentTables } from "./content-tables";
 import { runHydroFabAction, type HydroFabActionDependencies } from "./fab-actions";
 import { initHydroNotice, type HydroNoticeApi } from "./hydro-notice";
 import { initInitialScrollGuard } from "./initial-scroll-guard";
@@ -1990,26 +1991,6 @@ function preserveExplicitContentMediaSize(media: HTMLImageElement | HTMLVideoEle
   }
 }
 
-function reuseContentTableWrapper(content: HTMLElement, table: HTMLTableElement, wrapperClasses: string[]) {
-  const parent = table.parentElement;
-
-  if (!parent || parent === content) {
-    return null;
-  }
-
-  if (wrapperClasses.some((className) => parent.classList.contains(className))) {
-    parent.classList.add(...wrapperClasses);
-    return parent;
-  }
-
-  if (parent.tagName === "DIV" && parent.children.length === 1 && parent.firstElementChild === table) {
-    parent.classList.add(...wrapperClasses);
-    return parent;
-  }
-
-  return null;
-}
-
 function enhanceContentBasics(content: HTMLElement, tableWrapClass = "hydro-post-table-wrap") {
   content.querySelectorAll<HTMLImageElement>("img").forEach((image) => {
     preserveExplicitContentMediaSize(image);
@@ -2054,16 +2035,7 @@ function enhanceContentBasics(content: HTMLElement, tableWrapClass = "hydro-post
     pre.setAttribute("tabindex", "0");
   });
 
-  content.querySelectorAll<HTMLTableElement>("table").forEach((table) => {
-    const wrapperClasses = tableWrapClass.split(/\s+/).filter(Boolean);
-    if (reuseContentTableWrapper(content, table, wrapperClasses)) {
-      return;
-    }
-    const wrapper = document.createElement("div");
-    wrapper.classList.add(...wrapperClasses);
-    table.parentNode?.insertBefore(wrapper, table);
-    wrapper.append(table);
-  });
+  enhanceContentTables(content, tableWrapClass);
 
   content.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
     const href = link.getAttribute("href") || "";

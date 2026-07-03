@@ -12182,6 +12182,15 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
     linear-gradient(180deg, rgb(var(--hydro-accent-rgb) / 13%), rgb(var(--hydro-ink-rgb) / 5%)),
     rgb(var(--hydro-paper-rgb) / 62%);
   --hydro-post-table-head-border: rgb(var(--hydro-accent-rgb) / 36%);
+  --hydro-post-table-title-bg:
+    linear-gradient(90deg, rgb(var(--hydro-accent-rgb) / 11%), transparent 68%), rgb(var(--hydro-paper-rgb) / 58%);
+  --hydro-post-table-body-bg: rgb(var(--hydro-paper-rgb) / 36%);
+  --hydro-post-table-row-bg: rgb(var(--hydro-paper-rgb) / 22%);
+  --hydro-post-table-row-alt-bg: rgb(var(--hydro-ink-rgb) / 3.5%);
+  --hydro-post-table-foot-bg:
+    linear-gradient(180deg, rgb(var(--hydro-ink-rgb) / 5.5%), rgb(var(--hydro-accent-rgb) / 6%)),
+    rgb(var(--hydro-paper-rgb) / 44%);
+  --hydro-post-table-foot-border: rgb(var(--hydro-ink-rgb) / 18%);
   --hydro-post-heading-marker: rgb(var(--hydro-ink-rgb) / 56%);
   --hydro-post-heading-marker-soft: rgb(var(--hydro-accent-rgb) / 74%);
   --hydro-post-heading-icon-h1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 19l-2.1-6.3L4 10.6l5.9-2.1L12 3z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -12852,6 +12861,23 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   font-size: inherit;
 }
 
+.hydro-post-prose .hydro-rich-table-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: stretch;
+  margin: 1.5rem 0;
+}
+
+.hydro-post-prose .hydro-rich-table-figure > .hydro-post-table-wrap {
+  margin: 0;
+}
+
+.hydro-post-prose .hydro-rich-table-figure--titled > .hydro-post-table-wrap {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .hydro-post-table-wrap {
   position: relative;
   max-width: 100%;
@@ -12859,32 +12885,45 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   border: 1px solid var(--hydro-post-border);
-  border-radius: 0.86rem;
+  border-radius: 0.96rem;
   background:
-    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 58%), rgb(var(--hydro-paper-rgb) / 32%)),
-    rgb(var(--hydro-paper-rgb) / 40%);
+    linear-gradient(180deg, rgb(var(--hydro-paper-rgb) / 62%), rgb(var(--hydro-paper-rgb) / 28%)),
+    var(--hydro-post-table-body-bg);
   box-shadow:
-    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 48%),
-    0 12px 30px rgb(var(--hydro-shadow-rgb) / 5%);
+    inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 54%),
+    0 14px 34px rgb(var(--hydro-shadow-rgb) / 6%);
   scrollbar-color: rgb(var(--hydro-ink-rgb) / 28%) transparent;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
 }
 
+.hydro-post-table-wrap::before,
 .hydro-post-table-wrap::after {
   position: absolute;
+  pointer-events: none;
+  content: "";
+}
+
+.hydro-post-table-wrap::before {
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hydro-highlight-line), rgb(var(--hydro-ink-rgb) / 14%), transparent 82%);
+}
+
+.hydro-post-table-wrap::after {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 2.4rem;
-  background: linear-gradient(90deg, transparent, rgb(var(--hydro-paper-rgb) / 78%));
-  content: "";
+  width: 2.6rem;
+  background: linear-gradient(90deg, transparent, rgb(var(--hydro-paper-rgb) / 82%));
   opacity: 0.82;
-  pointer-events: none;
 }
 
 .hydro-post-table-wrap::-webkit-scrollbar {
-  height: 0.5rem;
+  height: 0.52rem;
 }
 
 .hydro-post-table-wrap::-webkit-scrollbar-track {
@@ -12900,24 +12939,48 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 
 .hydro-post-prose table {
   display: table;
-  width: max-content;
+  width: max-content !important;
   min-width: 100%;
-  max-width: 100%;
+  max-width: none !important;
   margin: 0;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: transparent;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: transparent !important;
   font-size: 0.9rem;
 }
 
-.hydro-post-prose caption {
+.hydro-post-prose table caption,
+.hydro-post-prose .hydro-rich-table-title {
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
   caption-side: top;
-  padding: 0.72rem 0.82rem;
-  color: rgb(var(--hydro-ink-rgb) / 54%);
-  font-size: 0.78rem;
-  font-weight: 600;
+  margin: 0;
+  padding: 0.78rem 0.96rem;
+  background: var(--hydro-post-table-title-bg) !important;
+  color: var(--hydro-solid) !important;
+  font-family: "Space Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
   line-height: 1.5;
-  text-align: left;
+  text-align: left !important;
+}
+
+.hydro-post-prose table tr {
+  border: 0 !important;
+  color: inherit !important;
+}
+
+.hydro-post-prose .hydro-rich-table-figure > .hydro-rich-table-title {
+  order: -1;
+  border: 1px solid var(--hydro-post-border);
+  border-bottom: 0;
+  border-radius: 0.96rem 0.96rem 0 0;
+  box-shadow: inset 0 1px 0 rgb(var(--hydro-paper-rgb) / 54%);
+}
+
+.hydro-post-prose table caption {
+  border-bottom: 1px solid var(--hydro-post-border);
 }
 
 .hydro-post-prose thead tr {
@@ -12926,27 +12989,29 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 
 .hydro-post-prose th,
 .hydro-post-prose td {
-  min-width: 5.5rem;
-  border-right: 1px solid var(--hydro-post-border);
-  border-bottom: 1px solid var(--hydro-post-border);
-  padding: 0.62rem 0.78rem;
-  color: rgb(var(--hydro-ink-rgb) / 74%);
-  text-align: left;
-  vertical-align: top;
+  min-width: 6.75rem;
+  border: 0 !important;
+  border-right: 1px solid var(--hydro-post-border) !important;
+  border-bottom: 1px solid var(--hydro-post-border) !important;
+  padding: 0.72rem 0.88rem !important;
+  color: rgb(var(--hydro-ink-rgb) / 74%) !important;
+  text-align: left !important;
+  vertical-align: top !important;
 }
 
 .hydro-post-prose th {
-  background: rgb(var(--hydro-ink-rgb) / 3.5%);
-  color: rgb(var(--hydro-ink-rgb) / 82%);
+  background: rgb(var(--hydro-ink-rgb) / 4%) !important;
+  color: rgb(var(--hydro-ink-rgb) / 84%) !important;
   font-family: "Space Mono", monospace;
-  font-size: 0.76rem;
-  font-weight: 680;
+  font-size: 0.75rem;
+  font-weight: 700 !important;
   line-height: 1.45;
 }
 
 .hydro-post-prose td {
+  background: var(--hydro-post-table-row-bg) !important;
   font-size: 0.88rem;
-  line-height: 1.66;
+  line-height: 1.68;
 }
 
 .hydro-post-prose :where(th, td) > p {
@@ -12957,40 +13022,59 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   margin-top: 0.36rem;
 }
 
-.hydro-post-prose th:last-child,
-.hydro-post-prose td:last-child {
-  border-right: 0;
+.hydro-post-prose tr > :where(th, td):last-child {
+  border-right: 0 !important;
 }
 
-.hydro-post-prose tbody tr:last-child > :where(th, td) {
-  border-bottom: 0;
+.hydro-post-prose tbody:last-child tr:last-child > :where(th, td),
+.hydro-post-prose tfoot tr:last-child > :where(th, td) {
+  border-bottom: 0 !important;
 }
 
 .hydro-post-prose tbody tr:nth-child(even) > td {
-  background: var(--hydro-post-soft);
+  background: var(--hydro-post-table-row-alt-bg) !important;
+}
+
+.hydro-post-prose tbody th {
+  background:
+    linear-gradient(90deg, rgb(var(--hydro-ink-rgb) / 4.5%), transparent 72%), rgb(var(--hydro-paper-rgb) / 34%) !important;
 }
 
 .hydro-post-prose thead th,
-.hydro-post-prose tbody tr:first-child > th {
-  border-bottom-color: var(--hydro-post-table-head-border);
-  background: var(--hydro-post-table-head-bg);
+.hydro-post-prose tbody tr:first-child > th,
+.hydro-post-prose tr[data-hydro-table-head-row] > :where(th, td) {
+  border-bottom-color: var(--hydro-post-table-head-border) !important;
+  background: var(--hydro-post-table-head-bg) !important;
   box-shadow:
     inset 0 2px 0 rgb(var(--hydro-accent-rgb) / 24%),
     inset 0 -1px 0 var(--hydro-post-table-head-border);
-  color: var(--hydro-solid);
-  font-weight: 760;
+  color: var(--hydro-solid) !important;
+  font-family: "Space Mono", monospace;
+  font-size: 0.74rem;
+  font-weight: 760 !important;
+  line-height: 1.45;
+  text-transform: uppercase;
 }
 
 .hydro-post-prose thead tr + tr th {
   border-top: 1px solid rgb(var(--hydro-ink-rgb) / 8%);
 }
 
+.hydro-post-prose tfoot :where(th, td) {
+  border-top: 1px solid var(--hydro-post-table-foot-border) !important;
+  background: var(--hydro-post-table-foot-bg) !important;
+  color: var(--hydro-solid) !important;
+  font-family: "Space Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 720 !important;
+}
+
 .hydro-post-prose tbody tr:hover > :where(th, td) {
-  background: var(--hydro-highlight-soft);
+  background: var(--hydro-highlight-soft) !important;
 }
 
 .hydro-post-prose tbody tr:hover > th {
-  color: var(--hydro-solid);
+  color: var(--hydro-solid) !important;
 }
 
 .hydro-post-prose dl {
