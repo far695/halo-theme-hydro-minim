@@ -6,3 +6,4 @@ templates
 /.pnpm-store/
 /.vite-hooks/
 /.codebase-memory/
+/.playwright-mcp/

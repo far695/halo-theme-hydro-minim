@@ -12182,7 +12182,14 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
     linear-gradient(180deg, rgb(var(--hydro-accent-rgb) / 13%), rgb(var(--hydro-ink-rgb) / 5%)),
     rgb(var(--hydro-paper-rgb) / 62%);
   --hydro-post-table-head-border: rgb(var(--hydro-accent-rgb) / 36%);
-  --hydro-post-heading-index: rgb(var(--hydro-ink-rgb) / 26%);
+  --hydro-post-heading-marker: rgb(var(--hydro-ink-rgb) / 56%);
+  --hydro-post-heading-marker-soft: rgb(var(--hydro-accent-rgb) / 74%);
+  --hydro-post-heading-icon-h1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 19l-2.1-6.3L4 10.6l5.9-2.1L12 3z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hydro-post-heading-icon-h2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 4h10v16l-5-3.2L7 20V4z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hydro-post-heading-icon-h3: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l8 4.6-8 4.6-8-4.6L12 3zM5 12l7 4 7-4M5 16l7 4 7-4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hydro-post-heading-icon-h4: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 4v16M7 5h10l-2 4 2 4H7' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hydro-post-heading-icon-h5: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5H5v5h3M16 5h3v5h-3M8 19H5v-5h3M16 19h3v-5h-3' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hydro-post-heading-icon-h6: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 4h7M9 4a5 5 0 0 0 0 10h2M11 4v16M16 4v16' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   color: rgb(var(--hydro-ink-rgb) / 80%);
   font-family:
     ui-sans-serif,
@@ -12195,7 +12202,6 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
   line-height: 1.94;
   text-wrap: pretty;
   word-break: break-word;
-  counter-reset: hydro-post-h2 hydro-post-h3 hydro-post-h4;
 }
 
 .hydro-post-prose > * + * {
@@ -12225,16 +12231,22 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 .hydro-post-prose h4,
 .hydro-post-prose h5,
 .hydro-post-prose h6 {
+  position: relative;
   margin: 0;
   color: var(--hydro-solid);
   font-family: "Space Mono", monospace;
   font-weight: 650;
   line-height: 1.32;
+  padding-left: var(--hydro-post-heading-marker-space);
   text-wrap: balance;
   scroll-margin-top: 6rem;
 }
 
 .hydro-post-prose h1 {
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h1);
+  --hydro-post-heading-marker-size: 1.28rem;
+  --hydro-post-heading-marker-space: 2.08rem;
+  --hydro-post-heading-marker-top: 0.1em;
   margin-top: 0.4rem;
   margin-bottom: 0.95rem;
   font-size: clamp(1.72rem, 1.56rem + 0.95vw, 2.35rem);
@@ -12242,67 +12254,68 @@ html[data-hydro-lightbox="false"] .hydro-lightbox {
 }
 
 .hydro-post-prose h2 {
-  position: relative;
-  counter-increment: hydro-post-h2;
-  counter-reset: hydro-post-h3 hydro-post-h4;
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h2);
+  --hydro-post-heading-marker-size: 1.08rem;
+  --hydro-post-heading-marker-space: 1.8rem;
+  --hydro-post-heading-marker-top: 0.24em;
   margin-top: var(--hydro-post-section-gap);
-  padding-left: 1.75rem;
   font-size: clamp(1.4rem, 1.28rem + 0.55vw, 1.82rem);
 }
 
 .hydro-post-prose h3 {
-  position: relative;
-  counter-increment: hydro-post-h3;
-  counter-reset: hydro-post-h4;
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h3);
+  --hydro-post-heading-marker-size: 0.98rem;
+  --hydro-post-heading-marker-space: 1.58rem;
+  --hydro-post-heading-marker-top: 0.26em;
   margin-top: calc(var(--hydro-post-section-gap) - 0.4rem);
-  padding-left: 1.45rem;
   font-size: clamp(1.2rem, 1.15rem + 0.3vw, 1.46rem);
 }
 
 .hydro-post-prose h4 {
-  position: relative;
-  counter-increment: hydro-post-h4;
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h4);
+  --hydro-post-heading-marker-size: 0.84rem;
+  --hydro-post-heading-marker-space: 1.36rem;
+  --hydro-post-heading-marker-top: 0.3em;
   margin-top: calc(var(--hydro-post-section-gap) - 0.65rem);
-  padding-left: 1.2rem;
   font-size: 1.1rem;
 }
 
 .hydro-post-prose h5 {
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h5);
+  --hydro-post-heading-marker-size: 0.74rem;
+  --hydro-post-heading-marker-space: 1.18rem;
+  --hydro-post-heading-marker-top: 0.34em;
   margin-top: calc(var(--hydro-post-section-gap) - 0.9rem);
   font-size: 1rem;
 }
 
 .hydro-post-prose h6 {
+  --hydro-post-heading-icon: var(--hydro-post-heading-icon-h6);
+  --hydro-post-heading-marker-size: 0.68rem;
+  --hydro-post-heading-marker-space: 1.08rem;
+  --hydro-post-heading-marker-top: 0.35em;
   margin-top: calc(var(--hydro-post-section-gap) - 1rem);
   color: rgb(var(--hydro-ink-rgb) / 60%);
   font-size: 0.92rem;
   letter-spacing: 0.02em;
 }
 
-.hydro-post-prose h2::before {
-  content: counter(hydro-post-h2, decimal-leading-zero);
-}
-
-.hydro-post-prose h3::before {
-  content: counter(hydro-post-h2) "." counter(hydro-post-h3);
-}
-
-.hydro-post-prose h4::before {
-  content: counter(hydro-post-h2) "." counter(hydro-post-h3) "." counter(hydro-post-h4);
-}
-
+.hydro-post-prose h1::before,
 .hydro-post-prose h2::before,
 .hydro-post-prose h3::before,
-.hydro-post-prose h4::before {
+.hydro-post-prose h4::before,
+.hydro-post-prose h5::before,
+.hydro-post-prose h6::before {
   position: absolute;
+  top: var(--hydro-post-heading-marker-top);
   left: 0;
-  top: 0.1em;
-  color: var(--hydro-post-heading-index);
-  font-family: "Space Mono", monospace;
-  font-size: 0.55em;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0;
+  width: var(--hydro-post-heading-marker-size);
+  height: var(--hydro-post-heading-marker-size);
+  background: linear-gradient(135deg, var(--hydro-post-heading-marker), var(--hydro-post-heading-marker-soft));
+  content: "";
+  opacity: 0.9;
+  -webkit-mask: var(--hydro-post-heading-icon) center / contain no-repeat;
+  mask: var(--hydro-post-heading-icon) center / contain no-repeat;
 }
 
 .hydro-post-heading-anchor {
